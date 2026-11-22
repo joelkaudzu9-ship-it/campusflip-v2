@@ -76,11 +76,14 @@ BEGIN
   IF payment_row.payment_type = 'listing' THEN
     new_expiry_time := now() + interval '14 days';
 
+    -- Only listings still awaiting payment/renewal are activated, so a listing an admin
+    -- removed while the payment was in flight is not silently re-published.
     UPDATE public.listings
     SET status = 'active',
         expires_at = new_expiry_time,
         updated_at = now()
-    WHERE id = payment_row.listing_id;
+    WHERE id = payment_row.listing_id
+      AND status IN ('pending_payment', 'draft', 'expired');
 
     IF payment_row.amount = 0 THEN
       SELECT seller_id INTO v_seller_id
@@ -88,10 +91,15 @@ BEGIN
       WHERE id = payment_row.listing_id;
 
       IF v_seller_id IS NOT NULL THEN
+        -- One credit pays for one listing. The UPDATE is atomic, so several requests sent
+        -- at once with a single credit cannot all succeed; the extra ones raise and roll back.
         UPDATE public.profiles
-        SET referral_credits = GREATEST(0, referral_credits - 1)
+        SET referral_credits = referral_credits - 1
         WHERE id = v_seller_id
           AND referral_credits > 0;
+        IF NOT FOUND THEN
+          RAISE EXCEPTION 'No referral credit available' USING ERRCODE = 'P0001';
+        END IF;
       END IF;
     END IF;
     SELECT public.user_wants_notification(payment_row.user_id, 'payment_updates')

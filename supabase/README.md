@@ -37,3 +37,13 @@ and call the payment-finalising function directly. Details are at the top of the
 - `increment_listing_views` can be called repeatedly by anyone; add a per-user or per-IP limit.
 - Add `UPDATE`/`DELETE` policies if sellers should manage photos (`listing_photos` has insert only).
 - Keep this folder current: after each change in the dashboard, export and commit the schema.
+
+## Edge functions (`supabase/functions/`)
+
+- `cloudinary-sign` – signs uploads and restricts them to jpg/jpeg/png/webp (`allowed_formats`).
+  **Deploy it together with the frontend**: the client must send `allowed_formats` exactly as signed.
+- `campusflip-payment` – hardened: flash-deal price/duration validated before any charge (duration clamped to 1–168h),
+  stale inactive deals removed, and a retried referral-credit payment returns the existing success instead of a 409.
+  Needs `SUPABASE_SERVICE_ROLE_KEY` (the finalizer is no longer callable by clients).
+- `campusflip-paychangu-webhook` / `campusflip-payment-status` need no changes; keep your originals here.
+  Deploy the webhook with `verify_jwt = false`.

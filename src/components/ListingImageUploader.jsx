@@ -140,6 +140,8 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         formData.append('timestamp', String(signedData.timestamp));
         formData.append('folder', signedData.folder);
         formData.append('signature', signedData.signature);
+        // Extra signed parameters (e.g. allowed_formats) must be sent exactly as signed.
+        if (signedData.allowed_formats) formData.append('allowed_formats', signedData.allowed_formats);
 
         const response = await fetch(
           `https://api.cloudinary.com/v1_1/${signedData.cloud_name}/image/upload`,
