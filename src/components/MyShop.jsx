@@ -1059,7 +1059,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                     label="Share listing"
                     sublabel="Send link to friends"
                     onClick={async () => {
-                      const url = `${window.location.origin}/?listing=${activeModal.listing.id}`;
+                      const url = `${window.location.origin}/listing/${activeModal.listing.id}`;
                       const text = `Check out "${activeModal.listing.title}" on CampusFlip!`;
                       try {
                         if (navigator.share) await navigator.share({ title: activeModal.listing.title, text, url });

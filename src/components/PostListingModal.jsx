@@ -141,6 +141,15 @@ export default function PostListingModal({
     }
   });
 
+  // Escape closes the post screen, like every other overlay.
+  const finishRef = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = e => { if (e.key === 'Escape') finishRef.current?.(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   function clearFallbackTimer() {
     if (fallbackTimerRef.current) {
       clearTimeout(fallbackTimerRef.current);
@@ -160,6 +169,8 @@ export default function PostListingModal({
     listingPaymentKey.current = null;
     onClose?.();
   }
+
+  finishRef.current = finish;
 
   async function submit(event) {
     event.preventDefault();

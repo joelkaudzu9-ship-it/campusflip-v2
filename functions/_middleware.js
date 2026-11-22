@@ -8,7 +8,9 @@ const CRAWLER_RE = /(whatsapp|facebookexternalhit|twitterbot|linkedinbot|telegra
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
-  const listingId = url.searchParams.get("listing");
+  // Both /listing/<id> (current) and /?listing=<id> (older shared links) are previewed.
+  const pathMatch = url.pathname.match(/^\/listing\/([^/]+)\/?$/);
+  const listingId = pathMatch ? decodeURIComponent(pathMatch[1]) : url.searchParams.get("listing");
   const ua = request.headers.get("user-agent") || "";
 
   // Not a crawler, or no listing param — pass through to static/SPA

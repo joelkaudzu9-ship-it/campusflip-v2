@@ -28,6 +28,7 @@ try {
   const page = await ctx.newPage();
   const errors = [];
   const urls = [];
+  let adminRpc = false;
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR|WebSocket/.test(m.text())) errors.push(m.text()); });
   await ctx.route('**/*', route => {
@@ -35,7 +36,10 @@ try {
     if (u.includes('mock.supabase.co')) {
       urls.push(decodeURIComponent(u));
       let body = '[]';
-      if (u.includes('/rest/v1/listings')) body = JSON.stringify(route.request().method() === 'HEAD' ? [] : LISTINGS);
+      if (u.includes('/rest/v1/rpc/is_admin')) return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: String(adminRpc) });
+      const byId = u.match(/[?&]id=eq\.([0-9a-f-]{36})/);
+      if (u.includes('/rest/v1/listings') && byId) body = JSON.stringify(LISTINGS.filter(l => l.id === byId[1]));
+      else if (u.includes('/rest/v1/listings')) body = JSON.stringify(route.request().method() === 'HEAD' ? [] : LISTINGS);
       else if (u.includes('/rest/v1/profiles')) body = JSON.stringify([{ id: 's0', display_name: 'Chikondi', is_verified: true }, { id: 's1', display_name: 'Tadala', is_verified: false }, { id: 's2', display_name: 'M-Tech', is_verified: true }]);
       return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*', 'access-control-expose-headers': 'content-range', 'content-range': '0-3/42' }, body });
     }
@@ -79,11 +83,81 @@ try {
   const card = page.locator('.cf-product-card').first();
   check('product cards are keyboard-focusable buttons', (await card.getAttribute('role')) === 'button' && (await card.getAttribute('tabindex')) === '0');
 
-  // Back button: opening and closing a listing must not strand history
+  // ── Routing ──
+  const origin = `http://localhost:${PORT}`;
+  const ID1 = LISTINGS[0].id;
+  const bodyText = async () => (await page.innerText('body')).replace(/\s+/g, ' ');
+  const path = () => new URL(page.url()).pathname + new URL(page.url()).search;
+
   await page.locator('.cf-product-card').first().click(); await wait(900);
-  check('opening a listing puts it in the URL', /[?&]listing=/.test(page.url()), page.url());
+  check('opening a listing gives it a real URL (/listing/<id>)', path() === `/listing/${ID1}`, path());
   await page.goBack(); await wait(700);
-  check('Back closes the listing and clears the URL', !/listing=/.test(page.url()));
+  check('Back closes the listing and returns to the feed', path() === '/', path());
+
+  await page.goto(`${origin}/listing/${ID1}`); await wait(2500);
+  check('a shared /listing/<id> link opens the listing directly', /Gray's Anatomy/.test(await bodyText()) && path() === `/listing/${ID1}`, path());
+  await page.reload(); await wait(2500);
+  check('refreshing a listing page keeps the listing open', /Gray's Anatomy/.test(await bodyText()) && path() === `/listing/${ID1}`, path());
+  await page.goBack().catch(() => {}); await wait(300);
+
+  await page.goto(`${origin}/?listing=${ID1}`); await wait(2500);
+  check('old /?listing=<id> links redirect to /listing/<id>', path() === `/listing/${ID1}`, path());
+
+  await page.goto(`${origin}/listing/00000000-0000-0000-0000-0000000000ff`); await wait(2500);
+  check('a missing listing falls back to the home page', path() === '/' && /no longer available/i.test(await bodyText()), path());
+
+  await page.goto(`${origin}/search`); await wait(2500);
+  check('refreshing /search stays on the search screen', path() === '/search' && (await page.locator('input').count()) > 0, path());
+  await page.goBack().catch(() => {}); await wait(200);
+
+  await page.goto(`${origin}/saved`); await wait(2500);
+  check('private screen while signed out: goes home and asks to sign in', path() === '/' && /Join your campus marketplace/i.test(await bodyText()), path());
+
+  await page.goto(`${origin}/admin`); await wait(2500);
+  check('/admin while signed out goes home', path() === '/', path());
+
+  await page.goto(`${origin}/definitely-not-a-page`); await wait(2500);
+  check('unknown URLs go home with a message', path() === '/' && /does not exist/i.test(await bodyText()), path());
+
+  await page.goto(`${origin}/invite/abc123`); await wait(2500);
+  check('invite link renders the invite page', path() === '/invite/abc123');
+
+  // ── Signed in ──
+  const exp = Math.floor(Date.now() / 1000) + 3600 * 24;
+  const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url');
+  const jwt = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64({ sub: 'u1', role: 'authenticated', exp })}.sig`;
+  const user = { id: 'u1', email: 'tester@example.com', aud: 'authenticated', role: 'authenticated', app_metadata: {}, user_metadata: {}, created_at: new Date().toISOString() };
+  await page.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch { /* ignore */ } },
+    ['sb-mock-auth-token', JSON.stringify({ access_token: jwt, refresh_token: 'r', token_type: 'bearer', expires_in: 86400, expires_at: exp, user })]);
+
+  await page.goto(`${origin}/account/privacy`); await wait(3000);
+  check('signed in: refreshing /account/privacy stays there', path() === '/account/privacy', path());
+  await page.goBack().catch(() => {}); await wait(200);
+
+  await page.goto(`${origin}/saved`); await wait(2500);
+  check('signed in: /saved opens the saved screen', path() === '/saved' && /saved/i.test(await bodyText()), path());
+
+  await page.goto(`${origin}/`); await wait(2500);
+  await page.getByRole('button', { name: /^profile$/i }).click(); await wait(1200);
+  check('bottom nav: Profile goes to /account', path() === '/account', path());
+  await page.goBack(); await wait(900);
+  check('Back from /account returns to the feed', path() === '/', path());
+  await page.getByRole('button', { name: /^saved$/i }).click(); await wait(1200);
+  check('bottom nav: Saved goes to /saved', path() === '/saved', path());
+  await page.goBack(); await wait(900);
+  check('Back from /saved returns to the feed', path() === '/', path());
+
+  await page.goto(`${origin}/admin`); await wait(2500);
+  check('signed-in non-admin is kept out of /admin', path() === '/', path());
+  adminRpc = true;
+  await page.goto(`${origin}/admin`); await wait(3000);
+  check('admin can open /admin directly', path() === '/admin', path());
+  adminRpc = false;
+
+  await page.goto(`${origin}/post`); await wait(2500);
+  check('signed in: /post opens the post screen', path() === '/post', path());
+  await page.keyboard.press('Escape'); await wait(900);
+  check('closing /post directly-opened goes home (no exit from the site)', path() === '/', path());
 
   await browser.close();
 } catch (e) { console.error(e); failed = true; }

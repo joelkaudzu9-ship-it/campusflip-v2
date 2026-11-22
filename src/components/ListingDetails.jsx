@@ -141,7 +141,7 @@ export default function ListingDetails({
     if (sharing) return;
     setSharing(true);
     try {
-      const shareUrl = `${window.location.origin}/?listing=${details.id}`;
+      const shareUrl = `${window.location.origin}/listing/${details.id}`;
       const shareText = `Check out "${details.title}" on CampusFlip!`;
       if (navigator.share) {
         await navigator.share({ title: details.title, text: shareText, url: shareUrl });
