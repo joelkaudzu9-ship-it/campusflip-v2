@@ -424,11 +424,11 @@ export default function ListingDetails({
             overflowY: 'auto',
             overscrollBehavior: 'contain',
             position: 'relative',
-            background: '#F5F8FF',
+            background: 'var(--cf-bg)',
             borderTopLeftRadius: 28,
             borderTopRightRadius: 28,
             boxShadow: '0 -20px 80px rgba(16,28,58,.3)',
-            color: '#101C3A',
+            color: 'var(--cf-navy)',
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
           }}
@@ -446,12 +446,12 @@ export default function ListingDetails({
               }}
             >
               <span className="cf-block-loader"></span>
-              <span style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+              <span style={{ color: 'var(--cf-subtle)', fontSize: 13, fontWeight: 600 }}>
                 Loading listing...
               </span>
             </div>
           ) : error ? (
-            <div style={{ padding: 60, textAlign: 'center', color: '#B42318', minHeight: '60dvh', display: 'grid', placeItems: 'center' }}>
+            <div style={{ padding: 60, textAlign: 'center', color: 'var(--cf-danger)', minHeight: '60dvh', display: 'grid', placeItems: 'center' }}>
               <div>
                 <AlertCircle size={40} style={{ marginBottom: 12, marginInline: 'auto' }} />
                 <b style={{ display: 'block', marginBottom: 8 }}>Couldn't load this listing</b>
@@ -531,7 +531,7 @@ export default function ListingDetails({
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(90deg, #EEF3FC 25%, #F7FAFF 50%, #EEF3FC 75%)',
+                      background: 'linear-gradient(90deg, var(--cf-surface-2) 25%, #F7FAFF 50%, var(--cf-surface-2) 75%)',
                       backgroundSize: '200% 100%',
                       animation: 'cf-shimmer 1.5s infinite',
                       pointerEvents: 'none',
@@ -599,8 +599,8 @@ export default function ListingDetails({
                       transform: 'translateX(-50%)',
                       padding: '6px 12px',
                       borderRadius: 20,
-                      background: '#F5A623',
-                      color: '#101C3A',
+                      background: 'var(--cf-amber)',
+                      color: 'var(--cf-navy)',
                       fontSize: 12,
                       fontWeight: 900,
                       letterSpacing: 0.3,
@@ -642,7 +642,7 @@ export default function ListingDetails({
                         fontSize: 11,
                         fontWeight: 800,
                         letterSpacing: 0.8,
-                        color: '#2563EB',
+                        color: 'var(--cf-blue)',
                       }}
                     >
                       {details.categoryName.toUpperCase()}
@@ -663,7 +663,7 @@ export default function ListingDetails({
                         flexWrap: 'wrap',
                       }}
                     >
-                      <span style={{ fontSize: 26, fontWeight: 900, color: '#101C3A', letterSpacing: -0.5 }}>
+                      <span style={{ fontSize: 26, fontWeight: 900, color: 'var(--cf-navy)', letterSpacing: -0.5 }}>
                         {details.kind === 'sale' ? money(displayPrice) : kindLabels[details.kind]}
                       </span>
                       {originalPrice && (
@@ -797,7 +797,7 @@ export default function ListingDetails({
                     lineHeight: 1.25,
                     letterSpacing: -0.5,
                     margin: '0 0 14px',
-                    color: '#101C3A',
+                    color: 'var(--cf-navy)',
                   }}
                 >
                   {details.title}
@@ -816,7 +816,7 @@ export default function ListingDetails({
                     background: seller?.is_verified
                       ? 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)'
                       : '#fff',
-                    border: seller?.is_verified ? '1px solid #BFDBFE' : '1px solid #E5EAF2',
+                    border: seller?.is_verified ? '1px solid #BFDBFE' : '1px solid var(--cf-line)',
                   }}
                 >
                   <div
@@ -829,7 +829,7 @@ export default function ListingDetails({
                       display: 'grid',
                       placeItems: 'center',
                       background: '#E1EBFF',
-                      color: '#2563EB',
+                      color: 'var(--cf-blue)',
                       fontSize: 16,
                       fontWeight: 800,
                     }}
@@ -849,7 +849,7 @@ export default function ListingDetails({
                       <strong
                         style={{
                           fontSize: 14,
-                          color: '#101C3A',
+                          color: 'var(--cf-navy)',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -864,7 +864,7 @@ export default function ListingDetails({
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: 3,
-                            color: '#2563EB',
+                            color: 'var(--cf-blue)',
                             fontSize: 11,
                             fontWeight: 800,
                             background: '#fff',
@@ -880,7 +880,7 @@ export default function ListingDetails({
                       style={{
                         marginTop: 3,
                         fontSize: 12,
-                        color: '#94A3B8',
+                        color: 'var(--cf-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: 5,
@@ -907,7 +907,7 @@ export default function ListingDetails({
                     padding: 18,
                     background: '#fff',
                     borderRadius: 18,
-                    border: '1px solid #E5EAF2',
+                    border: '1px solid var(--cf-line)',
                   }}
                 >
                   <div
@@ -915,7 +915,7 @@ export default function ListingDetails({
                       fontSize: 11,
                       fontWeight: 800,
                       letterSpacing: 1,
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                       marginBottom: 8,
                     }}
                   >
@@ -926,7 +926,7 @@ export default function ListingDetails({
                       margin: 0,
                       fontSize: 14,
                       lineHeight: 1.7,
-                      color: '#4B5563',
+                      color: 'var(--cf-body)',
                       whiteSpace: 'pre-wrap',
                       overflow: 'hidden',
                       display: '-webkit-box',
@@ -944,7 +944,7 @@ export default function ListingDetails({
                         marginTop: 10,
                         border: 0,
                         background: 'transparent',
-                        color: '#2563EB',
+                        color: 'var(--cf-blue)',
                         fontSize: 12,
                         fontWeight: 800,
                         cursor: 'pointer',
@@ -973,11 +973,11 @@ export default function ListingDetails({
                   margin: '12px 16px 0',
                   padding: 16,
                   background: '#fff',
-                  border: '1px solid #E5EAF2',
+                  border: '1px solid var(--cf-line)',
                   borderRadius: 18,
                   cursor: 'pointer',
                   textAlign: 'left',
-                  color: '#101C3A',
+                  color: 'var(--cf-navy)',
                   boxSizing: 'border-box',
                 }}
               >
@@ -987,7 +987,7 @@ export default function ListingDetails({
                     height: 48,
                     flexShrink: 0,
                     borderRadius: 14,
-                    background: 'linear-gradient(135deg, #2563EB, #1E40AF)',
+                    background: 'linear-gradient(135deg, var(--cf-blue), #1E40AF)',
                     color: '#fff',
                     display: 'grid',
                     placeItems: 'center',
@@ -1002,7 +1002,7 @@ export default function ListingDetails({
                       fontSize: 11,
                       fontWeight: 800,
                       letterSpacing: 1,
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                       marginBottom: 3,
                     }}
                   >
@@ -1012,7 +1012,7 @@ export default function ListingDetails({
                     style={{
                       fontSize: 14,
                       display: 'block',
-                      color: '#101C3A',
+                      color: 'var(--cf-navy)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -1020,7 +1020,7 @@ export default function ListingDetails({
                   >
                     {details.spotName}
                   </b>
-                  <span style={{ fontSize: 12, color: '#94A3B8' }}>
+                  <span style={{ fontSize: 12, color: 'var(--cf-subtle)' }}>
                     Tap for directions
                   </span>
                 </div>
@@ -1067,7 +1067,7 @@ export default function ListingDetails({
                     padding: '8px 12px',
                     border: 0,
                     background: 'transparent',
-                    color: '#94A3B8',
+                    color: 'var(--cf-subtle)',
                     fontSize: 12,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -1089,7 +1089,7 @@ export default function ListingDetails({
                   background: 'rgba(245,248,255,.94)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  borderTop: '1px solid #E5EAF2',
+                  borderTop: '1px solid var(--cf-line)',
                 }}
               >
                 <motion.button
@@ -1104,9 +1104,9 @@ export default function ListingDetails({
                     display: 'grid',
                     placeItems: 'center',
                     borderRadius: 16,
-                    border: isSaved ? '1px solid #2563EB' : '1px solid #E5EAF2',
-                    background: isSaved ? '#2563EB' : '#fff',
-                    color: isSaved ? '#fff' : '#101C3A',
+                    border: isSaved ? '1px solid var(--cf-blue)' : '1px solid var(--cf-line)',
+                    background: isSaved ? 'var(--cf-blue)' : '#fff',
+                    color: isSaved ? '#fff' : 'var(--cf-navy)',
                     cursor: savingBookmark ? 'wait' : 'pointer',
                     transition: 'background 0.2s ease, color 0.2s ease, border-color 0.2s ease',
                   }}
@@ -1307,7 +1307,7 @@ export default function ListingDetails({
                     borderRadius: 24,
                     background: '#fff',
                     boxShadow: '0 30px 90px rgba(16,28,58,.3)',
-                    color: '#101C3A',
+                    color: 'var(--cf-navy)',
                   }}
                 >
                   <div
@@ -1325,7 +1325,7 @@ export default function ListingDetails({
                           fontSize: 12,
                           fontWeight: 900,
                           letterSpacing: 1.3,
-                          color: '#B42318',
+                          color: 'var(--cf-danger)',
                           marginBottom: 6,
                         }}
                       >
@@ -1355,7 +1355,7 @@ export default function ListingDetails({
                         border: 0,
                         borderRadius: 10,
                         background: 'rgba(16,28,58,.06)',
-                        color: '#101C3A',
+                        color: 'var(--cf-navy)',
                         cursor: 'pointer',
                       }}
                     >
@@ -1392,7 +1392,7 @@ export default function ListingDetails({
                         display: 'flex',
                         gap: 7,
                         alignItems: 'flex-start',
-                        color: '#B42318',
+                        color: 'var(--cf-danger)',
                         fontSize: 12,
                         marginBottom: 12,
                       }}
@@ -1442,7 +1442,7 @@ const heroIconButton = {
   background: 'rgba(255,255,255,0.88)',
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   cursor: 'pointer',
   boxShadow: '0 4px 20px rgba(16,28,58,.15)',
 };
@@ -1460,7 +1460,7 @@ const galleryButton = {
   background: 'rgba(255,255,255,.9)',
   backdropFilter: 'blur(10px)',
   WebkitBackdropFilter: 'blur(10px)',
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   cursor: 'pointer',
   boxShadow: '0 4px 14px rgba(16,28,58,.15)',
 };
@@ -1486,7 +1486,7 @@ const fieldLabel = {
   display: 'block',
   fontSize: 12,
   fontWeight: 700,
-  color: '#4B5563',
+  color: 'var(--cf-body)',
   marginBottom: 7,
 };
 
@@ -1496,21 +1496,21 @@ const fieldStyle = {
   boxSizing: 'border-box',
   padding: '12px 13px',
   marginBottom: 15,
-  border: '1px solid #E5EAF2',
+  border: '1px solid var(--cf-line)',
   borderRadius: 12,
   background: 'white',
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   fontSize: 13,
-  outlineColor: '#2563EB',
+  outlineColor: 'var(--cf-blue)',
 };
 
 const secondaryButton = {
   flex: 1,
   padding: 12,
   borderRadius: 12,
-  border: '1px solid #E5EAF2',
+  border: '1px solid var(--cf-line)',
   background: 'white',
-  color: '#4B5563',
+  color: 'var(--cf-body)',
   fontWeight: 700,
   cursor: 'pointer',
 };
@@ -1520,7 +1520,7 @@ const submitButton = {
   padding: 12,
   borderRadius: 12,
   border: 0,
-  background: '#2563EB',
+  background: 'var(--cf-blue)',
   color: '#fff',
   fontWeight: 800,
   cursor: 'pointer',

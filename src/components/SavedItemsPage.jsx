@@ -137,7 +137,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
         padding: 'calc(24px + env(safe-area-inset-top)) 16px 120px',
         maxWidth: 800,
         margin: '0 auto',
-        color: '#101C3A',
+        color: 'var(--cf-navy)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
@@ -146,7 +146,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
         </motion.button>
         <div>
           <h1 style={{ margin: 0, fontSize: 22 }}>Saved Items</h1>
-          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#94A3B8' }}>
+          <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--cf-subtle)' }}>
             {items.length} {items.length === 1 ? 'item' : 'items'} bookmarked
           </p>
         </div>
@@ -162,7 +162,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
           gap: 16,
         }}>
           <span className="cf-block-loader"></span>
-          <span style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+          <span style={{ color: 'var(--cf-subtle)', fontSize: 13, fontWeight: 600 }}>
             Loading your bookmarks...
           </span>
         </div>
@@ -206,7 +206,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                   onClick={() => onOpenListing(item)}
                   style={{ cursor: 'pointer', position: 'relative' }}
                 >
-                  <div style={{ aspectRatio: '4/3', background: '#EEF3FC', overflow: 'hidden', position: 'relative' }}>
+                  <div style={{ aspectRatio: '4/3', background: 'var(--cf-surface-2)', overflow: 'hidden', position: 'relative' }}>
                     {item.image ? (
                       <img
                         src={item.image}
@@ -260,7 +260,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                       gap: 6,
                       marginTop: 4,
                       fontSize: 12,
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                     }}>
                       <span>{item.categoryName}</span>
                       <span>·</span>
@@ -271,7 +271,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                     <b style={{
                       display: 'block',
                       marginTop: 8,
-                      color: item.status === 'active' ? '#2563EB' : '#94A3B8',
+                      color: item.status === 'active' ? 'var(--cf-blue)' : 'var(--cf-subtle)',
                       fontSize: 16,
                     }}>
                       {item.kind === 'sale'
@@ -296,7 +296,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                       border: '1px solid #FCE8E8',
                       borderRadius: 10,
                       background: removingId === item.id ? '#FDF2F2' : '#fff',
-                      color: '#B42318',
+                      color: 'var(--cf-danger)',
                       fontWeight: 700,
                       fontSize: 12,
                       display: 'flex',
@@ -326,10 +326,10 @@ export default memo(SavedItemsPage);
 const iconButton = {
   width: 38,
   height: 38,
-  border: '1px solid #E5EAF2',
+  border: '1px solid var(--cf-line)',
   borderRadius: 12,
   background: 'white',
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   display: 'grid',
   placeItems: 'center',
   cursor: 'pointer',

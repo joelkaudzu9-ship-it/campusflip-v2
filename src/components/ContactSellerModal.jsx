@@ -56,7 +56,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           borderRadius: 26,
           background: '#fff',
           boxShadow: '0 30px 90px rgba(16,28,58,.3)',
-          color: '#101C3A',
+          color: 'var(--cf-navy)',
           overflow: 'hidden',
           maxHeight: 'calc(100dvh - 40px)',
           display: 'flex',
@@ -68,7 +68,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           style={{
             padding: '22px 24px 18px',
             background: 'linear-gradient(135deg, #EFFAF6 0%, #D6F5E7 100%)',
-            borderBottom: '1px solid #E5EAF2',
+            borderBottom: '1px solid var(--cf-line)',
             display: 'flex',
             alignItems: 'center',
             gap: 14,
@@ -94,13 +94,13 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{
               fontSize: 11, fontWeight: 900, letterSpacing: 1.3,
-              color: '#15803D', marginBottom: 3,
+              color: 'var(--cf-success)', marginBottom: 3,
             }}>
               CONTINUE ON WHATSAPP
             </div>
             <h2 style={{
               margin: 0, fontSize: 18, fontWeight: 800, letterSpacing: -0.3,
-              color: '#101C3A', lineHeight: 1.25,
+              color: 'var(--cf-navy)', lineHeight: 1.25,
             }}>
               Chat with {sellerName.split(' ')[0] || 'the seller'}
             </h2>
@@ -118,14 +118,14 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             padding: 14,
             marginBottom: 18,
             borderRadius: 16,
-            background: '#F5F8FF',
-            border: '1px solid #E5EAF2',
+            background: 'var(--cf-bg)',
+            border: '1px solid var(--cf-line)',
           }}>
             <div style={{
               width: 44, height: 44, flexShrink: 0,
               borderRadius: 12, overflow: 'hidden',
               background: seller?.is_verified ? '#E1EBFF' : '#F1F5F9',
-              color: '#2563EB',
+              color: 'var(--cf-blue)',
               display: 'grid', placeItems: 'center',
               fontSize: 16, fontWeight: 800,
             }}>
@@ -136,7 +136,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
                 <b style={{
-                  fontSize: 13, color: '#101C3A',
+                  fontSize: 13, color: 'var(--cf-navy)',
                   overflow: 'hidden', textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap', maxWidth: '80%',
                 }}>
@@ -147,13 +147,13 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                     display: 'inline-flex', alignItems: 'center', gap: 2,
                     fontSize: 11, fontWeight: 800,
                     padding: '2px 6px', borderRadius: 20,
-                    background: '#2563EB', color: '#fff',
+                    background: 'var(--cf-blue)', color: '#fff',
                   }}>
                     <ShieldCheck size={9} /> Verified
                   </span>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 12, color: '#94A3B8' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 12, color: 'var(--cf-subtle)' }}>
                 <Clock size={10} />
                 Typically replies within 2 hours
               </div>
@@ -168,7 +168,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             marginBottom: 20,
             borderRadius: 14,
             background: '#fff',
-            border: '1px solid #E5EAF2',
+            border: '1px solid var(--cf-line)',
           }}>
             {listing.image ? (
               <img
@@ -198,7 +198,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                 {listing.title}
               </b>
               {listing.spotName && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, fontSize: 12, color: '#94A3B8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, fontSize: 12, color: 'var(--cf-subtle)' }}>
                   <MapPin size={10} /> {listing.spotName}
                 </div>
               )}
@@ -209,7 +209,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           <div style={{ marginBottom: 20 }}>
             <div style={{
               fontSize: 11, fontWeight: 800, letterSpacing: 1,
-              color: '#94A3B8', marginBottom: 8,
+              color: 'var(--cf-subtle)', marginBottom: 8,
             }}>
               PICK YOUR FIRST MESSAGE
             </div>
@@ -228,9 +228,9 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                       gap: 10,
                       padding: '11px 13px',
                       borderRadius: 12,
-                      border: selected ? '1.5px solid #25D366' : '1px solid #E5EAF2',
+                      border: selected ? '1.5px solid #25D366' : '1px solid var(--cf-line)',
                       background: selected ? '#F0FDF4' : '#fff',
-                      color: '#101C3A',
+                      color: 'var(--cf-navy)',
                       fontSize: 12,
                       fontWeight: 600,
                       textAlign: 'left',
@@ -255,7 +255,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             <p style={{
               margin: '10px 0 0',
               fontSize: 12,
-              color: '#94A3B8',
+              color: 'var(--cf-subtle)',
               lineHeight: 1.5,
             }}>
               This message opens in WhatsApp. You can edit it before sending.
@@ -267,10 +267,10 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             padding: 14,
             borderRadius: 14,
             background: '#F8FBFF',
-            border: '1px solid #E5EAF2',
+            border: '1px solid var(--cf-line)',
             marginBottom: 4,
           }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: '#101C3A', marginBottom: 10 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--cf-navy)', marginBottom: 10 }}>
               What happens next
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -281,13 +281,13 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
               ].map((step, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', gap: 10,
-                  fontSize: 12, color: '#4B5563',
+                  fontSize: 12, color: 'var(--cf-body)',
                 }}>
                   <div style={{
                     width: 20, height: 20, flexShrink: 0,
                     borderRadius: 6,
                     background: '#E5EDFB',
-                    color: '#2563EB',
+                    color: 'var(--cf-blue)',
                     display: 'grid', placeItems: 'center',
                     fontSize: 11, fontWeight: 800,
                   }}>
@@ -304,7 +304,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
         {/* Sticky footer */}
         <div style={{
           padding: '16px 24px calc(16px + env(safe-area-inset-bottom))',
-          borderTop: '1px solid #E5EAF2',
+          borderTop: '1px solid var(--cf-line)',
           background: '#fff',
           flexShrink: 0,
         }}>
@@ -342,7 +342,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
               padding: 10,
               border: 0,
               background: 'transparent',
-              color: '#94A3B8',
+              color: 'var(--cf-subtle)',
               fontSize: 12,
               fontWeight: 600,
               cursor: 'pointer',

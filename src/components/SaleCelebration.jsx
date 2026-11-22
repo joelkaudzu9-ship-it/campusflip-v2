@@ -200,7 +200,7 @@ function ConfettiBurst() {
     distance: 120 + Math.random() * 80,
     delay: Math.random() * 0.2,
     size: 6 + Math.random() * 8,
-    color: ['#7af0b6', '#FFB900', '#64B5F6', '#ffffff'][Math.floor(Math.random() * 4)]
+    color: ['#7af0b6', '#FFB900', 'var(--cf-sky)', '#ffffff'][Math.floor(Math.random() * 4)]
   }));
 
   return (

@@ -125,7 +125,7 @@ export default function SellerContactSettings({ session }) {
         background: 'rgba(255,255,255,.92)',
         border: '1px solid #e5ebf4',
         boxShadow: '0 8px 24px rgba(16,38,92,.055)',
-        color: '#10265C'
+        color: 'var(--cf-royal)'
       }}
     >
       <div style={{
@@ -203,7 +203,7 @@ export default function SellerContactSettings({ session }) {
               border: 0,
               outline: 'none',
               background: 'transparent',
-              color: '#10265C',
+              color: 'var(--cf-royal)',
               fontSize: 14
             }}
           />
@@ -225,7 +225,7 @@ export default function SellerContactSettings({ session }) {
             display: 'flex',
             gap: 8,
             alignItems: 'flex-start',
-            color: '#b42318',
+            color: 'var(--cf-danger)',
             fontSize: 12,
             lineHeight: 1.5,
             marginBottom: 12

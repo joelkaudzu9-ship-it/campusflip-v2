@@ -37,7 +37,7 @@ export default function InvitePage({ code, onEnter }) {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '24px 20px',
-      background: 'radial-gradient(ellipse at 50% 25%, #F5F8FF 0%, #E5EDFB 100%)',
+      background: 'radial-gradient(ellipse at 50% 25%, var(--cf-bg) 0%, #E5EDFB 100%)',
       textAlign: 'center'
     }}>
       {loading ? (
@@ -51,7 +51,7 @@ export default function InvitePage({ code, onEnter }) {
             style={{
               width: 88, height: 88,
               borderRadius: 26,
-              background: '#101C3A',
+              background: 'var(--cf-navy)',
               color: 'white',
               display: 'grid',
               placeItems: 'center',
@@ -66,7 +66,7 @@ export default function InvitePage({ code, onEnter }) {
               top: 14, right: 14,
               width: 10, height: 10,
               borderRadius: '50%',
-              background: '#F5A623'
+              background: 'var(--cf-amber)'
             }} />
           </motion.div>
 
@@ -80,7 +80,7 @@ export default function InvitePage({ code, onEnter }) {
               fontSize: 12,
               fontWeight: 900,
               letterSpacing: 2,
-              color: '#2563EB',
+              color: 'var(--cf-blue)',
               display: 'block',
               marginBottom: 12
             }}>
@@ -93,7 +93,7 @@ export default function InvitePage({ code, onEnter }) {
               fontWeight: 850,
               letterSpacing: -1,
               lineHeight: 1.15,
-              color: '#101C3A'
+              color: 'var(--cf-navy)'
             }}>
               {referrer ? (
                 <>
@@ -109,7 +109,7 @@ export default function InvitePage({ code, onEnter }) {
               margin: '16px 0 28px',
               fontSize: 15,
               lineHeight: 1.6,
-              color: '#4B5563'
+              color: 'var(--cf-body)'
             }}>
               Sign up and start buying and selling on campus in minutes.
               Your first listing fee is on us.
@@ -136,7 +136,7 @@ export default function InvitePage({ code, onEnter }) {
                   borderRadius: 14,
                   fontSize: 13,
                   fontWeight: 600,
-                  color: '#101C3A',
+                  color: 'var(--cf-navy)',
                   textAlign: 'left'
                 }}>
                   <ShieldCheck size={16} color="#2563EB" />
@@ -154,7 +154,7 @@ export default function InvitePage({ code, onEnter }) {
                 border: 0,
                 borderRadius: 16,
                 padding: 16,
-                background: '#2563EB',
+                background: 'var(--cf-blue)',
                 color: 'white',
                 fontSize: 15,
                 fontWeight: 800,

@@ -205,7 +205,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
     <section className="cf-image-uploader">
       <style>{`
         .cf-image-uploader {
-          color: #10265c;
+          color: var(--cf-royal);
           width: 100%;
           font-family: inherit;
         }
@@ -382,7 +382,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         .cf-progress-fill {
           height: 100%;
           border-radius: 20px;
-          background: linear-gradient(90deg, #1769e8, #64b5f6);
+          background: linear-gradient(90deg, #1769e8, var(--cf-sky));
           transition: width .25s ease;
         }
 

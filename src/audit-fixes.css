@@ -7,7 +7,7 @@
   padding: 0 18px;
   border: 0;
   border-radius: 999px;
-  background: #2563EB !important;
+  background: var(--cf-blue) !important;
   color: #fff !important;
   font: 800 13px/1 Manrope, system-ui, sans-serif;
   cursor: pointer;
@@ -33,7 +33,7 @@
   padding: 0 16px;
   border: 0;
   border-radius: 999px;
-  background: #101C3A;
+  background: var(--cf-navy);
   color: #fff;
   box-shadow: 0 8px 22px rgba(16,28,58,.28);
   font: 800 13px/1 Manrope, system-ui, sans-serif;
@@ -48,7 +48,7 @@
   display: grid;
   place-items: center;
   background: rgba(255,255,255,.7);
-  color: #2563EB;
+  color: var(--cf-blue);
 }
 
 /* ── Listing fee banner at the top of the post form ── */
@@ -63,7 +63,7 @@
   font-weight: 600;
   line-height: 1.4;
 }
-.cf-fee-banner strong { color: #101C3A; font-weight: 900; }
+.cf-fee-banner strong { color: var(--cf-navy); font-weight: 900; }
 .cf-fee-banner-free { background: #ECFDF3; border-color: #A7F0C4; color: #0B5D2E; }
 
 /* ── Tap targets: keep the visual size, grow the hit area to 44 px ── */

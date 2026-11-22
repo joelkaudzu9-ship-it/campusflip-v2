@@ -123,7 +123,7 @@ export default function SearchPage({
       transition={spring}
       style={{
         minHeight: '100vh',
-        background: '#F5F8FF',
+        background: 'var(--cf-bg)',
         paddingBottom: 40,
       }}
     >
@@ -140,7 +140,7 @@ export default function SearchPage({
           background: 'rgba(245,248,255,0.94)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid #E5EAF2',
+          borderBottom: '1px solid var(--cf-line)',
         }}
       >
         <motion.button
@@ -151,10 +151,10 @@ export default function SearchPage({
             width: 40,
             height: 40,
             flexShrink: 0,
-            border: '1px solid #E5EAF2',
+            border: '1px solid var(--cf-line)',
             borderRadius: 12,
             background: '#fff',
-            color: '#101C3A',
+            color: 'var(--cf-navy)',
             display: 'grid',
             placeItems: 'center',
             cursor: 'pointer',
@@ -174,7 +174,7 @@ export default function SearchPage({
             padding: '0 12px 0 14px',
             height: 48,
             background: '#fff',
-            border: '1px solid #E5EAF2',
+            border: '1px solid var(--cf-line)',
             borderRadius: 14,
           }}
         >
@@ -195,7 +195,7 @@ export default function SearchPage({
               border: 0,
               outline: 'none',
               fontSize: 15,
-              color: '#101C3A',
+              color: 'var(--cf-navy)',
             }}
           />
           <AnimatePresence>
@@ -214,8 +214,8 @@ export default function SearchPage({
                   height: 24,
                   border: 0,
                   borderRadius: '50%',
-                  background: '#E5EAF2',
-                  color: '#4B5563',
+                  background: 'var(--cf-line)',
+                  color: 'var(--cf-body)',
                   display: 'grid',
                   placeItems: 'center',
                   cursor: 'pointer',
@@ -246,7 +246,7 @@ export default function SearchPage({
                   fontSize: 12,
                   fontWeight: 800,
                   letterSpacing: 1,
-                  color: '#94A3B8',
+                  color: 'var(--cf-subtle)',
                   marginBottom: 12,
                   padding: '0 4px',
                 }}>
@@ -269,10 +269,10 @@ export default function SearchPage({
                       onClick={() => handleRecentTap(term)}
                       style={{
                         padding: '10px 16px',
-                        border: '1px solid #E5EAF2',
+                        border: '1px solid var(--cf-line)',
                         borderRadius: 20,
                         background: '#fff',
-                        color: '#101C3A',
+                        color: 'var(--cf-navy)',
                         fontSize: 13,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -298,7 +298,7 @@ export default function SearchPage({
                 fontSize: 12,
                 fontWeight: 800,
                 letterSpacing: 1,
-                color: '#94A3B8',
+                color: 'var(--cf-subtle)',
                 marginBottom: 12,
                 padding: '0 4px',
               }}>
@@ -318,9 +318,9 @@ export default function SearchPage({
                     style={{
                       padding: '16px 14px',
                       borderRadius: 14,
-                      border: '1px solid #E5EAF2',
-                      background: 'linear-gradient(135deg, #fff 0%, #F5F8FF 100%)',
-                      color: '#101C3A',
+                      border: '1px solid var(--cf-line)',
+                      background: 'linear-gradient(135deg, #fff 0%, var(--cf-bg) 100%)',
+                      color: 'var(--cf-navy)',
                       fontSize: 14,
                       fontWeight: 700,
                       cursor: 'pointer',
@@ -348,17 +348,17 @@ export default function SearchPage({
               <div style={{
                 width: 40, height: 40,
                 borderRadius: 12,
-                background: '#2563EB',
+                background: 'var(--cf-blue)',
                 color: '#fff',
                 display: 'grid', placeItems: 'center',
                 margin: '0 auto 12px',
               }}>
                 <Search size={20} />
               </div>
-              <b style={{ display: 'block', fontSize: 14, color: '#101C3A', marginBottom: 4 }}>
+              <b style={{ display: 'block', fontSize: 14, color: 'var(--cf-navy)', marginBottom: 4 }}>
                 Search for anything
               </b>
-              <p style={{ margin: 0, fontSize: 12, color: '#4B5563', lineHeight: 1.6 }}>
+              <p style={{ margin: 0, fontSize: 12, color: 'var(--cf-body)', lineHeight: 1.6 }}>
                 Try the name of a textbook, a calculator, or a piece of clothing you need this semester.
               </p>
             </div>
@@ -386,7 +386,7 @@ export default function SearchPage({
                 fontSize: 12,
                 fontWeight: 800,
                 letterSpacing: 1,
-                color: '#94A3B8',
+                color: 'var(--cf-subtle)',
               }}>
                 <Clock3 size={13} />
                 Recent searches
@@ -397,7 +397,7 @@ export default function SearchPage({
                 style={{
                   border: 0,
                   background: 'transparent',
-                  color: '#2563EB',
+                  color: 'var(--cf-blue)',
                   fontSize: 12,
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -410,7 +410,7 @@ export default function SearchPage({
             <div style={{
               background: '#fff',
               borderRadius: 16,
-              border: '1px solid #E5EAF2',
+              border: '1px solid var(--cf-line)',
               overflow: 'hidden',
             }}>
               {recent.map((term, i) => (
@@ -429,7 +429,7 @@ export default function SearchPage({
                     border: 0,
                     borderBottom: i === recent.length - 1 ? 0 : '1px solid #F1F5F9',
                     background: 'transparent',
-                    color: '#101C3A',
+                    color: 'var(--cf-navy)',
                     textAlign: 'left',
                     fontSize: 14,
                     fontWeight: 600,
@@ -442,7 +442,7 @@ export default function SearchPage({
                     <span style={{
                       fontSize: 11,
                       fontWeight: 800,
-                      color: '#2563EB',
+                      color: 'var(--cf-blue)',
                       background: '#E5EDFB',
                       padding: '2px 6px',
                       borderRadius: 6,
@@ -474,7 +474,7 @@ export default function SearchPage({
               fontSize: 12,
               fontWeight: 800,
               letterSpacing: 1,
-              color: '#94A3B8',
+              color: 'var(--cf-subtle)',
               textTransform: 'uppercase',
               marginBottom: 12,
               padding: '0 4px',
@@ -485,7 +485,7 @@ export default function SearchPage({
             <div style={{
               background: '#fff',
               borderRadius: 16,
-              border: '1px solid #E5EAF2',
+              border: '1px solid var(--cf-line)',
               overflow: 'hidden',
             }}>
               {suggestions.map((title, i) => (
@@ -504,7 +504,7 @@ export default function SearchPage({
                     border: 0,
                     borderBottom: i === suggestions.length - 1 ? 0 : '1px solid #F1F5F9',
                     background: 'transparent',
-                    color: '#101C3A',
+                    color: 'var(--cf-navy)',
                     textAlign: 'left',
                     fontSize: 14,
                     fontWeight: 600,
@@ -535,7 +535,7 @@ export default function SearchPage({
                 margin: 0,
                 fontSize: 20,
                 fontWeight: 800,
-                color: '#101C3A',
+                color: 'var(--cf-navy)',
                 letterSpacing: -0.3,
               }}>
                 {results.length === 0
@@ -543,7 +543,7 @@ export default function SearchPage({
                   : `${results.length} ${results.length === 1 ? 'result' : 'results'}`}
               </h2>
               {submitted && (
-                <span style={{ fontSize: 12, color: '#94A3B8' }}>
+                <span style={{ fontSize: 12, color: 'var(--cf-subtle)' }}>
                   for "{submitted}"
                 </span>
               )}
@@ -564,7 +564,7 @@ export default function SearchPage({
                   textAlign: 'center',
                   background: '#fff',
                   borderRadius: 20,
-                  border: '1px dashed #E5EAF2',
+                  border: '1px dashed var(--cf-line)',
                   padding: 30,
                   marginBottom: 20,
                 }}>
@@ -573,17 +573,17 @@ export default function SearchPage({
                     height: 56,
                     borderRadius: 18,
                     background: 'rgba(37,99,235,.08)',
-                    color: '#2563EB',
+                    color: 'var(--cf-blue)',
                     display: 'grid',
                     placeItems: 'center',
                     marginBottom: 14,
                   }}>
                     <Search size={24} />
                   </div>
-                  <b style={{ fontSize: 16, color: '#101C3A', marginBottom: 6 }}>
+                  <b style={{ fontSize: 16, color: 'var(--cf-navy)', marginBottom: 6 }}>
                     Nothing matches "{query}"
                   </b>
-                  <p style={{ fontSize: 13, color: '#94A3B8', margin: 0, maxWidth: 260, lineHeight: 1.6 }}>
+                  <p style={{ fontSize: 13, color: 'var(--cf-subtle)', margin: 0, maxWidth: 260, lineHeight: 1.6 }}>
                     Try a shorter word, or check your spelling.
                   </p>
                 </div>
@@ -597,7 +597,7 @@ export default function SearchPage({
                       fontSize: 12,
                       fontWeight: 800,
                       letterSpacing: 1,
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                       marginBottom: 12,
                       padding: '0 4px',
                     }}>
@@ -612,10 +612,10 @@ export default function SearchPage({
                           onClick={() => handleRecentTap(term)}
                           style={{
                             padding: '8px 14px',
-                            border: '1px solid #E5EAF2',
+                            border: '1px solid var(--cf-line)',
                             borderRadius: 20,
                             background: '#fff',
-                            color: '#101C3A',
+                            color: 'var(--cf-navy)',
                             fontSize: 12,
                             fontWeight: 700,
                             cursor: 'pointer',
@@ -654,14 +654,14 @@ export default function SearchPage({
                     style={{
                       background: '#fff',
                       borderRadius: 16,
-                      border: '1px solid #E5EAF2',
+                      border: '1px solid var(--cf-line)',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                     }}
                   >
-                    <div style={{ position: 'relative', aspectRatio: '1 / 1', background: '#EEF3FC' }}>
+                    <div style={{ position: 'relative', aspectRatio: '1 / 1', background: 'var(--cf-surface-2)' }}>
                       {item.image ? (
                         <img src={item.image} alt={item.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
@@ -675,8 +675,8 @@ export default function SearchPage({
                           top: 8,
                           left: 8,
                           padding: '3px 8px',
-                          background: '#F5A623',
-                          color: '#101C3A',
+                          background: 'var(--cf-amber)',
+                          color: 'var(--cf-navy)',
                           fontSize: 11,
                           fontWeight: 800,
                           borderRadius: 6,
@@ -698,8 +698,8 @@ export default function SearchPage({
                           placeItems: 'center',
                           border: 0,
                           borderRadius: 9,
-                          background: saved.includes(item.id) ? '#2563EB' : 'rgba(255,255,255,.9)',
-                          color: saved.includes(item.id) ? '#fff' : '#101C3A',
+                          background: saved.includes(item.id) ? 'var(--cf-blue)' : 'rgba(255,255,255,.9)',
+                          color: saved.includes(item.id) ? '#fff' : 'var(--cf-navy)',
                           cursor: 'pointer',
                         }}
                       >
@@ -711,7 +711,7 @@ export default function SearchPage({
                         margin: 0,
                         fontSize: 12,
                         fontWeight: 700,
-                        color: '#101C3A',
+                        color: 'var(--cf-navy)',
                         lineHeight: 1.4,
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
@@ -721,17 +721,17 @@ export default function SearchPage({
                       }}>
                         {item.title}
                       </h3>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 11, color: '#94A3B8' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 11, color: 'var(--cf-subtle)' }}>
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                           {item.businessName || item.sellerName}
                         </span>
                         {item.isVerified && <ShieldCheck size={10} color="#2563EB" />}
                       </div>
-                      {item.kind === 'sale' && <b style={{ display: 'block', marginTop: 6, color: '#2563EB', fontSize: 14 }}>{money(item.price)}</b>}
-                      {item.kind === 'wanted' && <b style={{ display: 'block', marginTop: 6, color: '#2563EB', fontSize: 14 }}>Wanted</b>}
-                      {item.kind === 'free' && <b style={{ display: 'block', marginTop: 6, color: '#15803D', fontSize: 14 }}>Free</b>}
-                      {item.kind === 'lost_found' && <b style={{ display: 'block', marginTop: 6, color: '#2563EB', fontSize: 14 }}>Lost & Found</b>}
-                      <p style={{ display: 'flex', alignItems: 'center', gap: 3, margin: '4px 0 0', fontSize: 11, color: '#94A3B8' }}>
+                      {item.kind === 'sale' && <b style={{ display: 'block', marginTop: 6, color: 'var(--cf-blue)', fontSize: 14 }}>{money(item.price)}</b>}
+                      {item.kind === 'wanted' && <b style={{ display: 'block', marginTop: 6, color: 'var(--cf-blue)', fontSize: 14 }}>Wanted</b>}
+                      {item.kind === 'free' && <b style={{ display: 'block', marginTop: 6, color: 'var(--cf-success)', fontSize: 14 }}>Free</b>}
+                      {item.kind === 'lost_found' && <b style={{ display: 'block', marginTop: 6, color: 'var(--cf-blue)', fontSize: 14 }}>Lost & Found</b>}
+                      <p style={{ display: 'flex', alignItems: 'center', gap: 3, margin: '4px 0 0', fontSize: 11, color: 'var(--cf-subtle)' }}>
                         <MapPin size={9} /> {item.location}
                       </p>
                     </div>
@@ -746,7 +746,7 @@ export default function SearchPage({
   );
 }
 
-function ArrowUpRight({ size = 14, color = '#94A3B8' }) {
+function ArrowUpRight({ size = 14, color = 'var(--cf-subtle)' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <line x1="7" y1="17" x2="17" y2="7" />

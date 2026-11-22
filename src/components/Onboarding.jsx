@@ -15,7 +15,7 @@ const SLIDES = [
     title: 'The textbooks\nyou need.\nAt campus prices.',
     body: 'Anatomy atlases, lab coats, calculators, laptops. Everything you need for the semester — from students a few years ahead who already finished with theirs.',
     icon: ShoppingBag,
-    accent: '#2563EB',
+    accent: 'var(--cf-blue)',
     bg: 'linear-gradient(160deg, #EFF5FF 0%, #DCE7FF 100%)',
   },
   {
@@ -33,7 +33,7 @@ const SLIDES = [
     title: 'Meet safely.\nPay securely.',
     body: 'Only students with a KUHeS email can join. Meeting spots are official campus locations. Payments go through mobile money you already trust.',
     icon: ShieldCheck,
-    accent: '#15803D',
+    accent: 'var(--cf-success)',
     bg: 'linear-gradient(160deg, #EFFAF6 0%, #D6F5E7 100%)',
   },
 ];
@@ -77,7 +77,7 @@ export default function Onboarding({ onComplete }) {
               width: 28,
               height: 28,
               borderRadius: 8,
-              background: '#101C3A',
+              background: 'var(--cf-navy)',
               color: 'white',
               display: 'grid',
               placeItems: 'center',
@@ -92,7 +92,7 @@ export default function Onboarding({ onComplete }) {
             style={{
               fontSize: 13,
               fontWeight: 800,
-              color: '#101C3A',
+              color: 'var(--cf-navy)',
               letterSpacing: -0.2,
             }}
           >
@@ -108,7 +108,7 @@ export default function Onboarding({ onComplete }) {
             border: '1px solid rgba(16,28,58,.10)',
             borderRadius: 20,
             background: 'rgba(255,255,255,.6)',
-            color: '#4B5563',
+            color: 'var(--cf-body)',
             fontSize: 12,
             fontWeight: 700,
             cursor: 'pointer',
@@ -177,7 +177,7 @@ export default function Onboarding({ onComplete }) {
               fontWeight: 850,
               letterSpacing: -1.2,
               lineHeight: 1.08,
-              color: '#101C3A',
+              color: 'var(--cf-navy)',
               whiteSpace: 'pre-line',
             }}
           >
@@ -189,7 +189,7 @@ export default function Onboarding({ onComplete }) {
               margin: '20px 0 0',
               fontSize: 14,
               lineHeight: 1.65,
-              color: '#4B5563',
+              color: 'var(--cf-body)',
               maxWidth: 320,
             }}
           >
@@ -231,10 +231,10 @@ export default function Onboarding({ onComplete }) {
                   }}
                 >
                   <div style={{ fontSize: 22, marginBottom: 4 }}>{tag.e}</div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#101C3A' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--cf-navy)' }}>
                     {tag.label}
                   </div>
-                  <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: 'var(--cf-subtle)', marginTop: 1 }}>
                     {tag.count}
                   </div>
                 </div>
@@ -268,10 +268,10 @@ export default function Onboarding({ onComplete }) {
                     width: 36,
                     height: 36,
                     borderRadius: 10,
-                    background: '#F5A623',
+                    background: 'var(--cf-amber)',
                     display: 'grid',
                     placeItems: 'center',
-                    color: '#101C3A',
+                    color: 'var(--cf-navy)',
                     fontSize: 16,
                     fontWeight: 800,
                     flexShrink: 0,
@@ -280,10 +280,10 @@ export default function Onboarding({ onComplete }) {
                   +
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 12, fontWeight: 800, color: '#101C3A' }}>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--cf-navy)' }}>
                     Post an item
                   </div>
-                  <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: 'var(--cf-subtle)', marginTop: 1 }}>
                     2 minutes · Wanted is free
                   </div>
                 </div>
@@ -294,7 +294,7 @@ export default function Onboarding({ onComplete }) {
                   background: 'rgba(255,255,255,.7)',
                   borderRadius: 12,
                   fontSize: 12,
-                  color: '#4B5563',
+                  color: 'var(--cf-body)',
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -342,7 +342,7 @@ export default function Onboarding({ onComplete }) {
                   }}
                 >
                   <tag.icon size={15} color={slide.accent} />
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#101C3A' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-navy)' }}>
                     {tag.label}
                   </span>
                 </div>
@@ -420,7 +420,7 @@ export default function Onboarding({ onComplete }) {
           style={{
             textAlign: 'center',
             fontSize: 12,
-            color: '#94A3B8',
+            color: 'var(--cf-subtle)',
             fontWeight: 600,
           }}
         >

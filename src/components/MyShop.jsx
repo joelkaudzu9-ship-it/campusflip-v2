@@ -60,26 +60,26 @@ const item = {
 const fieldStyle = {
   width: '100%', boxSizing: 'border-box',
   padding: '12px 13px', borderRadius: 12,
-  border: '1px solid #E5EAF2', background: '#fff',
-  fontSize: 14, color: '#101C3A', outline: 'none'
+  border: '1px solid var(--cf-line)', background: '#fff',
+  fontSize: 14, color: 'var(--cf-navy)', outline: 'none'
 };
 
 const primaryButton = {
   width: '100%', border: 0, borderRadius: 14,
   padding: '14px 16px',
-  background: '#2563EB',
+  background: 'var(--cf-blue)',
   color: '#fff', fontSize: 14, fontWeight: 800, cursor: 'pointer'
 };
 
 const secondaryButton = {
-  width: '100%', border: '1px solid #E5EAF2',
+  width: '100%', border: '1px solid var(--cf-line)',
   borderRadius: 14, padding: 13, background: '#fff',
-  color: '#4B5563', fontSize: 13, fontWeight: 700, cursor: 'pointer'
+  color: 'var(--cf-body)', fontSize: 13, fontWeight: 700, cursor: 'pointer'
 };
 
 const iconButton = {
-  width: 40, height: 40, border: '1px solid #E5EAF2',
-  borderRadius: 13, background: '#fff', color: '#101C3A',
+  width: 40, height: 40, border: '1px solid var(--cf-line)',
+  borderRadius: 13, background: '#fff', color: 'var(--cf-navy)',
   display: 'grid', placeItems: 'center', cursor: 'pointer'
 };
 
@@ -130,7 +130,7 @@ function Modal({ open, onClose, children, maxWidth = 430 }) {
               borderRadius: 26,
               background: '#fff',
               boxShadow: '0 30px 90px rgba(16,28,58,.3)',
-              color: '#101C3A',
+              color: 'var(--cf-navy)',
               WebkitOverflowScrolling: 'touch',
             }}
           >
@@ -594,7 +594,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       style={{
         minHeight: '100vh',
         padding: 'calc(24px + env(safe-area-inset-top)) 16px 120px',
-        maxWidth: 720, margin: '0 auto', color: '#101C3A'
+        maxWidth: 720, margin: '0 auto', color: 'var(--cf-navy)'
       }}
     >
       {/* Header */}
@@ -621,7 +621,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           </motion.button>
           <div style={{ minWidth: 0 }}>
             <h1 style={{ margin: 0, fontSize: 22, fontWeight: 800 }}>My Shop</h1>
-            <p style={{ margin: '2px 0 0', fontSize: 12, color: '#94A3B8' }}>
+            <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--cf-subtle)' }}>
               {counts.active || 0} live · {counts.pending_payment || 0} awaiting
             </p>
           </div>
@@ -637,9 +637,9 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
         style={{
           padding: 20,
           marginBottom: 20,
-          border: '1px solid #E5EAF2',
+          border: '1px solid var(--cf-line)',
           borderRadius: 20,
-          background: 'linear-gradient(135deg, #ffffff 0%, #F5F8FF 100%)',
+          background: 'linear-gradient(135deg, #ffffff 0%, var(--cf-bg) 100%)',
           boxShadow: '0 8px 24px rgba(16,28,58,.06)'
         }}
       >
@@ -647,7 +647,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           <div style={{
             width: 54, height: 54, flexShrink: 0, overflow: 'hidden',
             display: 'grid', placeItems: 'center', borderRadius: 17,
-            background: '#E5EDFB', color: '#2563EB', fontSize: 20, fontWeight: 900,
+            background: '#E5EDFB', color: 'var(--cf-blue)', fontSize: 20, fontWeight: 900,
             position: 'relative',
           }}>
             {shopProfile?.avatar_url ? (
@@ -660,7 +660,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   position: 'absolute', bottom: -2, right: -2,
                   width: 20, height: 20,
                   display: 'inline-grid', placeItems: 'center',
-                  borderRadius: '50%', background: '#2563EB', color: '#fff',
+                  borderRadius: '50%', background: 'var(--cf-blue)', color: '#fff',
                   fontSize: 12, fontWeight: 900,
                   border: '2px solid white',
                   boxShadow: '0 2px 6px rgba(37,99,235,.35)'
@@ -674,7 +674,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 {profileLoading ? 'Loading your shop…' : shopDisplayName}
               </h2>
             </div>
-            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: 12 }}>
+            <p style={{ margin: '4px 0 0', color: 'var(--cf-subtle)', fontSize: 12 }}>
               {profileLoading
                 ? 'Loading status…'
                 : shopPlanActive
@@ -693,13 +693,13 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 10,
             paddingTop: 16,
-            borderTop: '1px solid #E5EAF2',
+            borderTop: '1px solid var(--cf-line)',
           }}
         >
           {[
-            { label: 'Live', value: stats.live, icon: Package, accent: '#15803D' },
-            { label: 'Sold', value: stats.sold, icon: TrendingUp, accent: '#2563EB' },
-            { label: 'Views', value: stats.totalViews, icon: Eye, accent: '#F5A623' },
+            { label: 'Live', value: stats.live, icon: Package, accent: 'var(--cf-success)' },
+            { label: 'Sold', value: stats.sold, icon: TrendingUp, accent: 'var(--cf-blue)' },
+            { label: 'Views', value: stats.totalViews, icon: Eye, accent: 'var(--cf-amber)' },
           ].map((s, i) => (
             <motion.div
               key={s.label}
@@ -713,14 +713,14 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 padding: '10px 6px',
                 borderRadius: 12,
                 background: '#fff',
-                border: '1px solid #E5EAF2',
+                border: '1px solid var(--cf-line)',
               }}
             >
               <s.icon size={14} color={s.accent} style={{ marginBottom: 4 }} />
-              <div style={{ fontSize: 18, fontWeight: 850, color: '#101C3A', letterSpacing: -0.3 }}>
+              <div style={{ fontSize: 18, fontWeight: 850, color: 'var(--cf-navy)', letterSpacing: -0.3 }}>
                 {s.value}
               </div>
-              <div style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--cf-subtle)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 2 }}>
                 {s.label}
               </div>
             </motion.div>
@@ -737,9 +737,9 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             onClick={() => setFilter(f.value)}
             style={{
               flexShrink: 0, border: '1px solid',
-              borderColor: filter === f.value ? '#2563EB' : '#E5EAF2',
-              background: filter === f.value ? '#2563EB' : 'white',
-              color: filter === f.value ? 'white' : '#4B5563',
+              borderColor: filter === f.value ? 'var(--cf-blue)' : 'var(--cf-line)',
+              background: filter === f.value ? 'var(--cf-blue)' : 'white',
+              color: filter === f.value ? 'white' : 'var(--cf-body)',
               borderRadius: 20, padding: '8px 14px',
               fontSize: 12, fontWeight: 700, cursor: 'pointer'
             }}
@@ -757,7 +757,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           minHeight: 320, gap: 16
         }}>
           <span className="cf-block-loader"></span>
-          <span style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+          <span style={{ color: 'var(--cf-subtle)', fontSize: 13, fontWeight: 600 }}>
             Loading your shop…
           </span>
         </div>
@@ -783,7 +783,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 style={{
                   display: 'flex', flexDirection: 'column',
                   background: 'rgba(255,255,255,.94)',
-                  border: '1px solid #E5EAF2',
+                  border: '1px solid var(--cf-line)',
                   borderRadius: 20,
                   boxShadow: '0 6px 20px rgba(16,28,58,.05)',
                   overflow: 'hidden'
@@ -793,7 +793,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   <div style={{
                     width: 110, height: 110, flexShrink: 0,
                     borderRadius: 14, overflow: 'hidden',
-                    background: '#EEF3FC', position: 'relative'
+                    background: 'var(--cf-surface-2)', position: 'relative'
                   }}>
                     {listing.image ? (
                       <motion.img
@@ -810,10 +810,10 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                     {listing.is_boosted && (
                       <div style={{
                         position: 'absolute', top: 6, right: 6,
-                        background: '#F5A623', borderRadius: 6,
+                        background: 'var(--cf-amber)', borderRadius: 6,
                         padding: '3px 7px', fontSize: 11, fontWeight: 900,
                         display: 'flex', alignItems: 'center', gap: 2,
-                        color: '#101C3A'
+                        color: 'var(--cf-navy)'
                       }}>
                         <Zap size={10} fill="currentColor" /> Boosted
                       </div>
@@ -834,13 +834,13 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         fontWeight: 800, whiteSpace: 'nowrap',
                         background: listing.status === 'active' ? '#DCFCE7'
                           : listing.status === 'pending_payment' ? '#FFF7D2' : '#EEF2F8',
-                        color: listing.status === 'active' ? '#15803D'
+                        color: listing.status === 'active' ? 'var(--cf-success)'
                           : listing.status === 'pending_payment' ? '#946000' : '#526078'
                       }}>
                         {statusLabels[listing.status]}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, fontSize: 12, color: '#94A3B8', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, fontSize: 12, color: 'var(--cf-subtle)', flexWrap: 'wrap' }}>
                       <span>{listing.categoryName}</span>
                       <span>·</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -854,7 +854,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                       gap: 10,
                       marginTop: 8,
                       fontSize: 11,
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                     }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                         <Eye size={10} /> {listing.views_count || 0} views
@@ -865,9 +865,9 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                     </div>
                     <div style={{ marginTop: 'auto', paddingTop: 8 }}>
                       {listing.kind === 'sale' ? (
-                        <b style={{ fontSize: 18, fontWeight: 850, color: '#2563EB' }}>{money(listing.price)}</b>
+                        <b style={{ fontSize: 18, fontWeight: 850, color: 'var(--cf-blue)' }}>{money(listing.price)}</b>
                       ) : (
-                        <b style={{ fontSize: 15, fontWeight: 800, color: '#15803D' }}>
+                        <b style={{ fontSize: 15, fontWeight: 800, color: 'var(--cf-success)' }}>
                           {listing.kind === 'free' ? 'Free' : listing.kind === 'wanted' ? 'Wanted' : 'Lost & Found'}
                         </b>
                       )}
@@ -889,7 +889,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                           onClick={() => openFlashModal(listing)}
                           style={{
                             flex: 1, border: '1px solid #CCE7DF',
-                            background: '#EFFAF6', color: '#15803D',
+                            background: '#EFFAF6', color: 'var(--cf-success)',
                             borderRadius: 10, padding: '10px 8px',
                             fontSize: 12, fontWeight: 800, cursor: 'pointer',
                             display: 'flex', alignItems: 'center',
@@ -904,8 +904,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         onClick={() => openBoostModal(listing)}
                         style={{
                           flex: 1, border: 0,
-                          background: listing.is_boosted ? 'rgba(245,166,35,0.15)' : '#F5A623',
-                          color: listing.is_boosted ? '#946000' : '#101C3A',
+                          background: listing.is_boosted ? 'rgba(245,166,35,0.15)' : 'var(--cf-amber)',
+                          color: listing.is_boosted ? '#946000' : 'var(--cf-navy)',
                           borderRadius: 10, padding: '10px 8px',
                           fontSize: 12, fontWeight: 800, cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -920,8 +920,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         aria-label="More actions"
                         style={{
                           width: 42, flexShrink: 0,
-                          border: '1px solid #E5EAF2',
-                          background: '#fff', color: '#101C3A',
+                          border: '1px solid var(--cf-line)',
+                          background: '#fff', color: 'var(--cf-navy)',
                           borderRadius: 10, padding: '10px 0',
                           cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -940,7 +940,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         onClick={() => openDeleteModal(listing)}
                         style={{
                           flex: 1, border: '1px solid #FCE8E8',
-                          background: '#FEF2F2', color: '#B42318',
+                          background: '#FEF2F2', color: 'var(--cf-danger)',
                           borderRadius: 10, padding: '10px 8px',
                           fontSize: 12, fontWeight: 800, cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -953,8 +953,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         whileTap={{ scale: 0.96 }}
                         onClick={() => openEditModal(listing)}
                         style={{
-                          flex: 1, border: '1px solid #E5EAF2',
-                          background: '#fff', color: '#101C3A',
+                          flex: 1, border: '1px solid var(--cf-line)',
+                          background: '#fff', color: 'var(--cf-navy)',
                           borderRadius: 10, padding: '10px 8px',
                           fontSize: 12, fontWeight: 700, cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -969,8 +969,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         aria-label="More actions"
                         style={{
                           width: 42, flexShrink: 0,
-                          border: '1px solid #E5EAF2',
-                          background: '#fff', color: '#101C3A',
+                          border: '1px solid var(--cf-line)',
+                          background: '#fff', color: 'var(--cf-navy)',
                           borderRadius: 10, padding: '10px 0',
                           cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -989,7 +989,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         onClick={() => openDeleteModal(listing)}
                         style={{
                           flex: 1, border: '1px solid #FCE8E8',
-                          background: '#FEF2F2', color: '#B42318',
+                          background: '#FEF2F2', color: 'var(--cf-danger)',
                           borderRadius: 10, padding: '10px 8px',
                           fontSize: 12, fontWeight: 800, cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -1004,8 +1004,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         aria-label="More actions"
                         style={{
                           width: 42, flexShrink: 0,
-                          border: '1px solid #E5EAF2',
-                          background: '#fff', color: '#101C3A',
+                          border: '1px solid var(--cf-line)',
+                          background: '#fff', color: 'var(--cf-navy)',
                           borderRadius: 10, padding: '10px 0',
                           cursor: 'pointer',
                           display: 'flex', alignItems: 'center',
@@ -1028,7 +1028,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
         {activeModal?.type === 'more' && (
           <>
             <div style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#94A3B8', marginBottom: 4 }}>
+              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: 'var(--cf-subtle)', marginBottom: 4 }}>
                 ACTIONS FOR
               </div>
               <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, lineHeight: 1.3 }}>
@@ -1105,7 +1105,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#2563EB', marginBottom: 4 }}>
+                <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: 'var(--cf-blue)', marginBottom: 4 }}>
                   EDIT LISTING
                 </div>
                 <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, lineHeight: 1.2 }}>
@@ -1123,7 +1123,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   display: 'grid', placeItems: 'center',
                   border: 0, borderRadius: 10,
                   background: 'rgba(16,28,58,.06)',
-                  color: '#101C3A', cursor: 'pointer'
+                  color: 'var(--cf-navy)', cursor: 'pointer'
                 }}
               >
                 <X size={16} />
@@ -1132,7 +1132,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
 
             <form onSubmit={handleSaveEdit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#4B5563', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', display: 'flex', alignItems: 'center', gap: 6 }}>
                   <Tag size={14} /> Title
                 </span>
                 <input
@@ -1145,7 +1145,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
               </label>
 
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#4B5563', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', display: 'flex', alignItems: 'center', gap: 6 }}>
                   <FileText size={14} /> Description
                 </span>
                 <textarea
@@ -1160,7 +1160,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
 
               <div style={{ display: 'grid', gridTemplateColumns: activeModal.listing.kind === 'sale' ? '1fr 1fr' : '1fr', gap: 12 }}>
                 <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#4B5563' }}>Category</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)' }}>Category</span>
                   <div style={{ position: 'relative' }}>
                     <select
                       value={editCategoryId}
@@ -1173,13 +1173,13 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
                     </select>
-                    <ChevronDown size={16} style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#94A3B8' }} />
+                    <ChevronDown size={16} style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--cf-subtle)' }} />
                   </div>
                 </label>
 
                 {activeModal.listing.kind === 'sale' && (
                   <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#4B5563' }}>Price (MK)</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)' }}>Price (MK)</span>
                     <input
                       type="number"
                       min="1"
@@ -1194,7 +1194,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
               </div>
 
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#4B5563', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', display: 'flex', alignItems: 'center', gap: 6 }}>
                   <MapPin size={14} /> Meeting spot
                 </span>
                 <div style={{ position: 'relative' }}>
@@ -1209,12 +1209,12 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                       <option key={s.id} value={s.id}>{s.name}</option>
                     ))}
                   </select>
-                  <ChevronDown size={16} style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#94A3B8' }} />
+                  <ChevronDown size={16} style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--cf-subtle)' }} />
                 </div>
               </label>
 
               <div style={{ marginTop: 4 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#4B5563', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <ImageIcon size={14} /> Photos
                 </div>
                 <ListingImageUploader
@@ -1230,7 +1230,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
               {editError && (
                 <div style={{
                   padding: 12, borderRadius: 10,
-                  background: '#FEF2F2', color: '#B42318',
+                  background: '#FEF2F2', color: 'var(--cf-danger)',
                   fontSize: 12
                 }}>
                   {editError}
@@ -1275,15 +1275,15 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             <div style={{
               width: 58, height: 58, display: 'grid', placeItems: 'center',
               margin: '0 auto 18px', borderRadius: 19,
-              background: 'rgba(220,53,53,.1)', color: '#B42318'
+              background: 'rgba(220,53,53,.1)', color: 'var(--cf-danger)'
             }}>
               <Trash2 size={26} />
             </div>
             <h2 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 800 }}>
               Delete this listing?
             </h2>
-            <p style={{ margin: '0 0 10px', fontSize: 14, lineHeight: 1.6, color: '#4B5563' }}>
-              <strong style={{ color: '#101C3A' }}>"{activeModal.listing.title}"</strong>
+            <p style={{ margin: '0 0 10px', fontSize: 14, lineHeight: 1.6, color: 'var(--cf-body)' }}>
+              <strong style={{ color: 'var(--cf-navy)' }}>"{activeModal.listing.title}"</strong>
               {' '}will be permanently removed.
             </p>
 
@@ -1301,13 +1301,13 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             )}
 
             {activeModal.listing.status === 'active' && !activeModal.listing.is_boosted && (
-              <p style={{ margin: '0 0 18px', fontSize: 12, color: '#94A3B8', lineHeight: 1.5 }}>
+              <p style={{ margin: '0 0 18px', fontSize: 12, color: 'var(--cf-subtle)', lineHeight: 1.5 }}>
                 If you've sold the item, consider marking it as sold instead so it stays in your history.
               </p>
             )}
 
             {activeModal.listing.status === 'pending_payment' && (
-              <p style={{ margin: '0 0 18px', fontSize: 12, color: '#94A3B8', lineHeight: 1.5 }}>
+              <p style={{ margin: '0 0 18px', fontSize: 12, color: 'var(--cf-subtle)', lineHeight: 1.5 }}>
                 This listing was never published, so deleting it won't affect anything on the marketplace.
               </p>
             )}
@@ -1319,7 +1319,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 onClick={() => handleDelete(activeModal.listing)}
                 style={{
                   width: '100%', border: 0, borderRadius: 14,
-                  padding: 14, background: '#B42318', color: '#fff',
+                  padding: 14, background: 'var(--cf-danger)', color: '#fff',
                   fontSize: 14, fontWeight: 800,
                   cursor: deleting ? 'wait' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6
@@ -1350,7 +1350,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 whileTap={{ scale: 0.97 }}
                 disabled={deleting}
                 onClick={closeModal}
-                style={{ ...secondaryButton, background: 'transparent', border: 0, color: '#94A3B8' }}
+                style={{ ...secondaryButton, background: 'transparent', border: 0, color: 'var(--cf-subtle)' }}
               >
                 Cancel
               </motion.button>
@@ -1380,14 +1380,14 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             </h2>
             {activeModal.listing.kind === 'sale' && (
               <span style={{
-                display: 'inline-block', background: '#DCFCE7', color: '#15803D',
+                display: 'inline-block', background: '#DCFCE7', color: 'var(--cf-success)',
                 padding: '4px 10px', borderRadius: 20, fontSize: 12,
                 fontWeight: 800, marginBottom: 12
               }}>
                 LOYAL SELLER DISCOUNT APPLIED
               </span>
             )}
-            <p style={{ fontSize: 14, lineHeight: 1.65, color: '#4B5563', margin: '0 0 22px' }}>
+            <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--cf-body)', margin: '0 0 22px' }}>
               Pay MK {activeModal.listing.kind === 'sale' ? '400' : '500'} to{' '}
               {activeModal.listing.is_boosted
                 ? 'add another 7 days to your current boost.'
@@ -1420,8 +1420,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   disabled={boosting}
                   style={{
                     width: '100%', border: 0, borderRadius: 15, padding: 15,
-                    background: '#F5A623',
-                    color: '#101C3A', fontSize: 14, fontWeight: 800,
+                    background: 'var(--cf-amber)',
+                    color: 'var(--cf-navy)', fontSize: 14, fontWeight: 800,
                     cursor: boosting ? 'wait' : 'pointer',
                     boxShadow: '0 8px 20px rgba(245,166,35,.25)',
                     opacity: boosting ? 0.7 : 1
@@ -1446,7 +1446,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   <span className="cf-block-loader"></span>
                 </div>
                 <h3 style={{ margin: '0 0 8px', fontSize: 17 }}>Waiting for confirmation…</h3>
-                <p style={{ margin: 0, fontSize: 13, color: '#4B5563', lineHeight: 1.5 }}>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--cf-body)', lineHeight: 1.5 }}>
                   Check your phone and enter your PIN to authorise the payment.
                 </p>
               </div>
@@ -1463,14 +1463,14 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ ...spring, delay: 0.1 }}
                   style={{
                     width: 60, height: 60, borderRadius: '50%',
-                    background: 'rgba(21,128,61,.1)', color: '#15803D',
+                    background: 'rgba(21,128,61,.1)', color: 'var(--cf-success)',
                     display: 'grid', placeItems: 'center', margin: '0 auto 14px'
                   }}
                 >
                   <CheckCircle2 size={32} />
                 </motion.div>
-                <h3 style={{ margin: '0 0 6px', fontSize: 17, color: '#15803D' }}>Boost activated!</h3>
-                <p style={{ margin: 0, fontSize: 13, color: '#4B5563' }}>
+                <h3 style={{ margin: '0 0 6px', fontSize: 17, color: 'var(--cf-success)' }}>Boost activated!</h3>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--cf-body)' }}>
                   Your listing is pinned to the top for 7 days.
                 </p>
               </motion.div>
@@ -1485,15 +1485,15 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           <>
             <div style={{
               width: 54, height: 54, display: 'grid', placeItems: 'center',
-              borderRadius: 17, background: '#EAF8F2', color: '#15803D', marginBottom: 16
+              borderRadius: 17, background: '#EAF8F2', color: 'var(--cf-success)', marginBottom: 16
             }}>
               <Flame size={27} />
             </div>
-            <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#15803D', marginBottom: 7 }}>
+            <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: 'var(--cf-success)', marginBottom: 7 }}>
               CREATE FLASH DEAL
             </div>
             <h2 style={{ margin: '0 0 6px', fontSize: 22 }}>{activeModal.listing.title}</h2>
-            <p style={{ margin: '0 0 18px', color: '#4B5563', fontSize: 13, lineHeight: 1.5 }}>
+            <p style={{ margin: '0 0 18px', color: 'var(--cf-body)', fontSize: 13, lineHeight: 1.5 }}>
               Advertise a temporary price drop. Buyers contact you directly.
             </p>
 
@@ -1503,7 +1503,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   padding: 12, borderRadius: 12, background: '#F3F7FD',
                   display: 'flex', justifyContent: 'space-between', fontSize: 13
                 }}>
-                  <span style={{ color: '#4B5563' }}>Current price</span>
+                  <span style={{ color: 'var(--cf-body)' }}>Current price</span>
                   <b>{money(activeModal.listing.price)}</b>
                 </div>
                 <label style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, fontWeight: 700 }}>
@@ -1517,7 +1517,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 {Number(dealPrice) > 0 && Number(dealPrice) < Number(activeModal.listing.price) && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                    style={{ padding: 12, borderRadius: 12, background: '#EFFAF6', color: '#15803D', fontSize: 13 }}
+                    style={{ padding: 12, borderRadius: 12, background: '#EFFAF6', color: 'var(--cf-success)', fontSize: 13 }}
                   >
                     <b>{Math.round((1 - Number(dealPrice) / Number(activeModal.listing.price)) * 100)}% OFF</b>
                     <span style={{ marginLeft: 8 }}>
@@ -1575,7 +1575,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   <span className="cf-block-loader"></span>
                 </div>
                 <h3 style={{ margin: '0 0 8px', fontSize: 17 }}>Waiting for payment…</h3>
-                <p style={{ margin: 0, fontSize: 13, color: '#4B5563', lineHeight: 1.5 }}>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--cf-body)', lineHeight: 1.5 }}>
                   Approve the prompt on your phone.
                 </p>
               </div>
@@ -1591,14 +1591,14 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ ...spring, delay: 0.1 }}
                   style={{
                     width: 60, height: 60, borderRadius: '50%',
-                    background: 'rgba(21,128,61,.1)', color: '#15803D',
+                    background: 'rgba(21,128,61,.1)', color: 'var(--cf-success)',
                     display: 'grid', placeItems: 'center', margin: '0 auto 14px'
                   }}
                 >
                   <CheckCircle2 size={32} />
                 </motion.div>
-                <h3 style={{ margin: '0 0 6px', fontSize: 17, color: '#15803D' }}>Flash Deal activated!</h3>
-                <p style={{ margin: 0, fontSize: 13, color: '#4B5563' }}>
+                <h3 style={{ margin: '0 0 6px', fontSize: 17, color: 'var(--cf-success)' }}>Flash Deal activated!</h3>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--cf-body)' }}>
                   Discounted price is live for the selected duration.
                 </p>
               </motion.div>
@@ -1614,13 +1614,13 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             <div style={{
               width: 58, height: 58, display: 'grid', placeItems: 'center',
               margin: '0 auto 18px', borderRadius: 19,
-              background: 'rgba(37,99,235,.1)', color: '#2563EB'
+              background: 'rgba(37,99,235,.1)', color: 'var(--cf-blue)'
             }}>
               <CheckCircle2 size={28} />
             </div>
             <h2 style={{ margin: '0 0 8px', fontSize: 21, fontWeight: 800 }}>Mark as sold?</h2>
-            <p style={{ margin: '0 0 22px', fontSize: 14, lineHeight: 1.6, color: '#4B5563' }}>
-              <strong style={{ color: '#101C3A' }}>{activeModal.listing.title}</strong> will move
+            <p style={{ margin: '0 0 22px', fontSize: 14, lineHeight: 1.6, color: 'var(--cf-body)' }}>
+              <strong style={{ color: 'var(--cf-navy)' }}>{activeModal.listing.title}</strong> will move
               from the marketplace to your Sold section.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -1671,10 +1671,10 @@ function MenuAction({ icon, label, sublabel, onClick, danger }) {
         alignItems: 'center',
         gap: 12,
         padding: 14,
-        border: danger ? '1px solid #FCE8E8' : '1px solid #E5EAF2',
+        border: danger ? '1px solid #FCE8E8' : '1px solid var(--cf-line)',
         borderRadius: 14,
         background: danger ? '#FEF2F2' : '#fff',
-        color: danger ? '#B42318' : '#101C3A',
+        color: danger ? 'var(--cf-danger)' : 'var(--cf-navy)',
         textAlign: 'left',
         cursor: 'pointer',
       }}
@@ -1687,13 +1687,13 @@ function MenuAction({ icon, label, sublabel, onClick, danger }) {
         placeItems: 'center',
         borderRadius: 12,
         background: danger ? 'rgba(180,35,24,.08)' : 'rgba(37,99,235,.08)',
-        color: danger ? '#B42318' : '#2563EB',
+        color: danger ? 'var(--cf-danger)' : 'var(--cf-blue)',
       }}>
         {icon}
       </span>
       <span style={{ flex: 1, minWidth: 0 }}>
         <strong style={{ display: 'block', fontSize: 14 }}>{label}</strong>
-        <small style={{ display: 'block', fontSize: 12, color: danger ? '#B42318' : '#94A3B8', marginTop: 2, opacity: 0.85 }}>
+        <small style={{ display: 'block', fontSize: 12, color: danger ? 'var(--cf-danger)' : 'var(--cf-subtle)', marginTop: 2, opacity: 0.85 }}>
           {sublabel}
         </small>
       </span>

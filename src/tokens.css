@@ -1,0 +1,59 @@
+/* ============================================================
+   CAMPUSFLIP DESIGN TOKENS — the one place colours, spacing and
+   radii are defined. Change a value here and the whole app follows.
+   Never write a raw hex colour in a stylesheet or component: use var(--cf-…).
+   ============================================================ */
+:root {
+  font-family: 'Manrope', sans-serif;
+
+  /* Brand */
+  --cf-navy: #101C3A;
+  --cf-royal: #10265C;
+  --cf-blue: #2563EB;
+  --cf-electric: #3B82F6;
+  --cf-sky: #64B5F6;
+  --cf-amber: #F5A623;
+  --cf-white: #FFFFFF;
+
+  /* Text */
+  --cf-text: #152B5B;     /* headings and primary text on light surfaces */
+  --cf-body: #4B5563;     /* paragraphs */
+  --cf-muted: #7788A9;    /* secondary text */
+  --cf-subtle: #94A3B8;   /* placeholders, hints, disabled */
+
+  /* Surfaces and lines */
+  --cf-bg: #F5F8FF;
+  --cf-surface: #FFFFFF;
+  --cf-surface-2: #EEF3FC;
+  --cf-line: #E5EAF2;
+  --cf-glass: rgba(255, 255, 255, 0.72);
+  --cf-border: rgba(255, 255, 255, 0.85);
+
+  /* Status */
+  --cf-success: #15803D;
+  --cf-success-bright: #22C55E;
+  --cf-danger: #B42318;
+
+  /* Spacing scale (4px base) */
+  --cf-space-1: 4px;
+  --cf-space-2: 8px;
+  --cf-space-3: 12px;
+  --cf-space-4: 16px;
+  --cf-space-5: 24px;
+  --cf-space-6: 32px;
+  --cf-space-7: 48px;
+
+  /* Radii */
+  --cf-radius-sm: 10px;
+  --cf-radius-md: 16px;
+  --cf-radius: 24px;
+  --cf-radius-pill: 999px;
+
+  /* Elevation */
+  --cf-shadow: 0 12px 40px rgba(16, 28, 58, 0.08);
+  --cf-shadow-blue: 0 12px 30px rgba(37, 99, 235, 0.20);
+
+  /* Layout */
+  --cf-header-h: 56px;
+  --cf-bottom-nav-h: 64px;
+}

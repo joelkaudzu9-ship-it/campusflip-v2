@@ -62,7 +62,7 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
           alignItems: 'center',
           justifyContent: 'center',
           padding: 20,
-          background: '#F5F8FF',
+          background: 'var(--cf-bg)',
           textAlign: 'center',
         }}
       >
@@ -75,7 +75,7 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
             height: 72,
             borderRadius: '50%',
             background: 'rgba(34,197,94,.1)',
-            color: '#15803D',
+            color: 'var(--cf-success)',
             display: 'grid',
             placeItems: 'center',
             marginBottom: 20,
@@ -83,13 +83,13 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
         >
           <CheckCircle2 size={36} />
         </motion.div>
-        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: '#101C3A' }}>
+        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: 'var(--cf-navy)' }}>
           Password updated
         </h1>
-        <p style={{ marginTop: 10, color: '#4B5563', fontSize: 14, maxWidth: 320 }}>
+        <p style={{ marginTop: 10, color: 'var(--cf-body)', fontSize: 14, maxWidth: 320 }}>
           You can now sign in with your new password.
         </p>
-        <p style={{ marginTop: 16, color: '#94A3B8', fontSize: 12 }}>
+        <p style={{ marginTop: 16, color: 'var(--cf-subtle)', fontSize: 12 }}>
           Redirecting to sign in…
         </p>
       </motion.div>
@@ -108,7 +108,7 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-        background: 'radial-gradient(ellipse at 50% 25%, #F5F8FF 0%, #E5EDFB 100%)',
+        background: 'radial-gradient(ellipse at 50% 25%, var(--cf-bg) 0%, #E5EDFB 100%)',
       }}
     >
       <motion.div
@@ -119,7 +119,7 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
           width: 64,
           height: 64,
           borderRadius: 20,
-          background: '#101C3A',
+          background: 'var(--cf-navy)',
           color: 'white',
           display: 'grid',
           placeItems: 'center',
@@ -132,10 +132,10 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
 
       <div style={{ width: '100%', maxWidth: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: '#101C3A', letterSpacing: -0.5 }}>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: 'var(--cf-navy)', letterSpacing: -0.5 }}>
             Set a new password
           </h1>
-          <p style={{ margin: '8px 0 0', fontSize: 13, color: '#94A3B8', lineHeight: 1.5 }}>
+          <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--cf-subtle)', lineHeight: 1.5 }}>
             Choose a strong password you don't use anywhere else.
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function ResetPasswordPage({ onComplete, onToast }) {
               border: 0,
               borderRadius: 14,
               padding: '15px 18px',
-              background: '#2563EB',
+              background: 'var(--cf-blue)',
               color: 'white',
               fontSize: 14,
               fontWeight: 800,
@@ -235,7 +235,7 @@ const labelStyle = {
   display: 'block',
   fontSize: 12,
   fontWeight: 700,
-  color: '#4B5563',
+  color: 'var(--cf-body)',
   marginBottom: 7,
 };
 
@@ -244,7 +244,7 @@ const iconStyle = {
   left: 14,
   top: '50%',
   transform: 'translateY(-50%)',
-  color: '#94A3B8',
+  color: 'var(--cf-subtle)',
   pointerEvents: 'none',
 };
 
@@ -258,7 +258,7 @@ const showButtonStyle = {
   border: 0,
   borderRadius: 8,
   background: 'transparent',
-  color: '#94A3B8',
+  color: 'var(--cf-subtle)',
   cursor: 'pointer',
   display: 'grid',
   placeItems: 'center',
@@ -268,10 +268,10 @@ const inputStyle = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '13px 44px 13px 42px',
-  border: '1px solid #E5EAF2',
+  border: '1px solid var(--cf-line)',
   borderRadius: 13,
   background: '#fff',
   fontSize: 14,
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   outline: 'none',
 };

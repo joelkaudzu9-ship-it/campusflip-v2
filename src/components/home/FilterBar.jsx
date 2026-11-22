@@ -15,9 +15,9 @@ const cats = [
 
 const chipStyle = (active) => ({
   border: '1px solid',
-  borderColor: active ? '#2563EB' : '#E5EAF2',
-  background: active ? '#2563EB' : '#fff',
-  color: active ? '#fff' : '#4B5563',
+  borderColor: active ? 'var(--cf-blue)' : 'var(--cf-line)',
+  background: active ? 'var(--cf-blue)' : '#fff',
+  color: active ? '#fff' : 'var(--cf-body)',
   borderRadius: 20,
   padding: '10px 14px',
   minHeight: 40,
@@ -80,7 +80,7 @@ export default function FilterBar({ cat, onCat, verifiedOnly, onVerified, sort, 
             Verified
           </motion.button>
   
-          <div style={{ width: 1, height: 20, background: '#E5EAF2', margin: '0 4px', flexShrink: 0 }} />
+          <div style={{ width: 1, height: 20, background: 'var(--cf-line)', margin: '0 4px', flexShrink: 0 }} />
   
           <motion.button
             whileTap={{ scale: 0.95 }}

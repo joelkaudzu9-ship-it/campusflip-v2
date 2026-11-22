@@ -66,7 +66,7 @@ export default function Feed({
                 }}
               >
                 <span className="cf-block-loader" />
-                <span style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+                <span style={{ color: 'var(--cf-subtle)', fontSize: 13, fontWeight: 600 }}>
                   Finding listings...
                 </span>
               </div>
@@ -120,10 +120,10 @@ export default function Feed({
               style={{
                 width: '100%',
                 padding: 14,
-                border: '1px solid #E5EAF2',
+                border: '1px solid var(--cf-line)',
                 borderRadius: 14,
                 background: '#fff',
-                color: '#101C3A',
+                color: 'var(--cf-navy)',
                 fontSize: 13,
                 fontWeight: 700,
                 cursor: loadingMore ? 'wait' : 'pointer',

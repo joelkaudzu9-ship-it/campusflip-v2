@@ -58,10 +58,10 @@ export default function FlashDeals({ deals, onOpen }) {
                     aria-label="Back to featured deal"
                     style={{
                       width: 34, height: 34,
-                      border: '1px solid #E5EAF2',
+                      border: '1px solid var(--cf-line)',
                       borderRadius: 10,
                       background: '#fff',
-                      color: '#101C3A',
+                      color: 'var(--cf-navy)',
                       display: 'grid', placeItems: 'center',
                       cursor: 'pointer',
                       flexShrink: 0,
@@ -99,18 +99,18 @@ export default function FlashDeals({ deals, onOpen }) {
                       onClick={() => onOpen(dealToListing(fd))}
                       style={{
                         background: '#fff',
-                        border: '1px solid #E5EAF2',
+                        border: '1px solid var(--cf-line)',
                         borderRadius: 16,
                         overflow: 'hidden',
                         cursor: 'pointer',
                         boxShadow: '0 4px 14px rgba(16,28,58,.05)',
                       }}
                     >
-                      <div style={{ aspectRatio: '4/3', background: '#EEF3FC', position: 'relative', overflow: 'hidden' }}>
+                      <div style={{ aspectRatio: '4/3', background: 'var(--cf-surface-2)', position: 'relative', overflow: 'hidden' }}>
                         {fd.image ? (
                           <img src={fd.image} alt={fd.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
-                          <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', color: '#94A3B8' }}>
+                          <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', color: 'var(--cf-subtle)' }}>
                             <ShoppingBasket size={28} />
                           </div>
                         )}
@@ -128,7 +128,7 @@ export default function FlashDeals({ deals, onOpen }) {
                           {fd.title}
                         </div>
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                          <b style={{ color: '#2563EB', fontSize: 15 }}>{money(fd.dealPrice)}</b>
+                          <b style={{ color: 'var(--cf-blue)', fontSize: 15 }}>{money(fd.dealPrice)}</b>
                           <span style={{ fontSize: 12, color: '#8995A8', textDecoration: 'line-through' }}>
                             {money(fd.originalPrice)}
                           </span>

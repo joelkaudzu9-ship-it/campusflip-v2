@@ -37,7 +37,7 @@ export default class ErrorBoundary extends React.Component {
       gap: 12,
       textAlign: 'center',
       padding: 24,
-      color: '#101C3A',
+      color: 'var(--cf-navy)',
       background: '#fff',
       font: '600 15px/1.4 Manrope, system-ui, sans-serif',
       ...(inline
@@ -51,7 +51,7 @@ export default class ErrorBoundary extends React.Component {
       minHeight: 44,
       font: '700 14px Manrope, system-ui, sans-serif',
       cursor: 'pointer',
-      background: '#2563EB',
+      background: 'var(--cf-blue)',
       color: '#fff',
     };
 
@@ -59,7 +59,7 @@ export default class ErrorBoundary extends React.Component {
       <div role="alert" style={box}>
         <div style={{ fontSize: 40 }} aria-hidden="true">😕</div>
         <div style={{ fontSize: 18, fontWeight: 800 }}>Something went wrong</div>
-        <div style={{ color: '#4B5563', fontWeight: 500, maxWidth: 320 }}>
+        <div style={{ color: 'var(--cf-body)', fontWeight: 500, maxWidth: 320 }}>
           This screen hit an unexpected problem. Your data is safe.
         </div>
         <div style={{ display: 'flex', gap: 10 }}>

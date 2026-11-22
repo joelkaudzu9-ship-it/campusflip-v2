@@ -30,7 +30,7 @@ export default function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(90deg, #EEF3FC 25%, #F7FAFF 50%, #EEF3FC 75%)',
+                  background: 'linear-gradient(90deg, var(--cf-surface-2) 25%, #F7FAFF 50%, var(--cf-surface-2) 75%)',
                   backgroundSize: '200% 100%',
                   animation: 'cf-shimmer 1.5s infinite',
                 }}
@@ -54,7 +54,7 @@ export default function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }
             width: '100%', height: '100%',
             display: 'grid', placeItems: 'center',
             background: 'linear-gradient(135deg, #EFF5FF 0%, #E1EBFF 100%)',
-            color: '#94A3B8',
+            color: 'var(--cf-subtle)',
           }}>
             <ShoppingBasket size={32} />
           </div>
@@ -78,8 +78,8 @@ export default function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }
           <label
             className="gold"
             style={{
-              background: '#F5A623',
-              color: '#101C3A',
+              background: 'var(--cf-amber)',
+              color: 'var(--cf-navy)',
               display: 'inline-flex',
               alignItems: 'center',
               gap: 4,
@@ -125,7 +125,7 @@ export default function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }
                 width: 15,
                 height: 15,
                 borderRadius: '50%',
-                background: '#2563EB',
+                background: 'var(--cf-blue)',
                 color: '#fff',
                 fontSize: 11,
                 fontWeight: 900,

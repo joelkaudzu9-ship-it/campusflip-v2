@@ -17,7 +17,7 @@ export default function Splash({ show }) {
             className="cf-splash-logo"
           >
             <span className="mark">CF</span>
-            <span>Campus<span style={{ color: '#2563EB' }}>Flip</span></span>
+            <span>Campus<span style={{ color: 'var(--cf-blue)' }}>Flip</span></span>
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}

@@ -105,10 +105,10 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
   return (
     <div>
       <div style={{ marginBottom: 22 }}>
-        <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800, letterSpacing: -0.5, color: '#101C3A' }}>
+        <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800, letterSpacing: -0.5, color: 'var(--cf-navy)' }}>
           {heading}
         </h2>
-        <p style={{ margin: '6px 0 0', fontSize: 13, color: '#94A3B8', lineHeight: 1.5 }}>
+        <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--cf-subtle)', lineHeight: 1.5 }}>
           {subheading}
         </p>
       </div>
@@ -166,12 +166,12 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
               <div>
                 <label
                   htmlFor="auth-password"
-                  style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#4B5563', marginBottom: 7 }}
+                  style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', marginBottom: 7 }}
                 >
                   Password
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>
+                  <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--cf-subtle)', pointerEvents: 'none' }}>
                     <Lock size={16} />
                   </div>
                   <input
@@ -188,11 +188,11 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
                       width: '100%',
                       boxSizing: 'border-box',
                       padding: '13px 44px 13px 42px',
-                      border: '1px solid #E5EAF2',
+                      border: '1px solid var(--cf-line)',
                       borderRadius: 13,
                       background: '#fff',
                       fontSize: 14,
-                      color: '#101C3A',
+                      color: 'var(--cf-navy)',
                       outline: 'none'
                     }}
                   />
@@ -207,7 +207,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
                       width: 32, height: 32,
                       border: 0, borderRadius: 8,
                       background: 'transparent',
-                      color: '#94A3B8',
+                      color: 'var(--cf-subtle)',
                       cursor: 'pointer',
                       display: 'grid', placeItems: 'center'
                     }}
@@ -234,7 +234,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
                 onClick={() => switchMode('reset')}
                 style={{
                   border: 0, background: 'transparent',
-                  color: '#2563EB', fontSize: 12, fontWeight: 700,
+                  color: 'var(--cf-blue)', fontSize: 12, fontWeight: 700,
                   cursor: 'pointer', padding: 0
                 }}
               >
@@ -255,7 +255,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
             border: 0,
             borderRadius: 14,
             padding: '15px 18px',
-            background: '#2563EB',
+            background: 'var(--cf-blue)',
             color: 'white',
             fontSize: 14,
             fontWeight: 800,
@@ -286,7 +286,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
       <div style={{
         marginTop: 22,
         paddingTop: 18,
-        borderTop: '1px solid #E5EAF2',
+        borderTop: '1px solid var(--cf-line)',
         textAlign: 'center',
         minHeight: 20
       }}>
@@ -298,13 +298,13 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              style={{ fontSize: 13, color: '#94A3B8' }}
+              style={{ fontSize: 13, color: 'var(--cf-subtle)' }}
             >
               New to CampusFlip?{' '}
               <button
                 type="button"
                 onClick={() => switchMode('signup')}
-                style={{ border: 0, background: 'transparent', color: '#2563EB', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                style={{ border: 0, background: 'transparent', color: 'var(--cf-blue)', fontWeight: 700, cursor: 'pointer', padding: 0 }}
               >
                 Create an account
               </button>
@@ -317,13 +317,13 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              style={{ fontSize: 13, color: '#94A3B8' }}
+              style={{ fontSize: 13, color: 'var(--cf-subtle)' }}
             >
               Already have an account?{' '}
               <button
                 type="button"
                 onClick={() => switchMode('login')}
-                style={{ border: 0, background: 'transparent', color: '#2563EB', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                style={{ border: 0, background: 'transparent', color: 'var(--cf-blue)', fontWeight: 700, cursor: 'pointer', padding: 0 }}
               >
                 Sign in
               </button>
@@ -340,7 +340,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
               <button
                 type="button"
                 onClick={() => switchMode('login')}
-                style={{ border: 0, background: 'transparent', color: '#2563EB', fontWeight: 700, cursor: 'pointer', padding: 0, fontSize: 13 }}
+                style={{ border: 0, background: 'transparent', color: 'var(--cf-blue)', fontWeight: 700, cursor: 'pointer', padding: 0, fontSize: 13 }}
               >
                 ← Back to sign in
               </button>
@@ -356,11 +356,11 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
 function AuthField({ icon: Icon, label, id, name, type, value, onChange, placeholder, autoComplete, required }) {
   return (
     <div>
-      <label htmlFor={id} style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#4B5563', marginBottom: 7 }}>
+      <label htmlFor={id} style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--cf-body)', marginBottom: 7 }}>
         {label}
       </label>
       <div style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--cf-subtle)', pointerEvents: 'none' }}>
           <Icon size={16} />
         </div>
         <input
@@ -376,11 +376,11 @@ function AuthField({ icon: Icon, label, id, name, type, value, onChange, placeho
             width: '100%',
             boxSizing: 'border-box',
             padding: '13px 13px 13px 42px',
-            border: '1px solid #E5EAF2',
+            border: '1px solid var(--cf-line)',
             borderRadius: 13,
             background: '#fff',
             fontSize: 14,
-            color: '#101C3A',
+            color: 'var(--cf-navy)',
             outline: 'none'
           }}
         />

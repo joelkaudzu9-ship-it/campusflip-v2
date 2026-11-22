@@ -14,28 +14,28 @@ const PREFERENCES = [
     icon: Target,
     title: 'Wanted board matches',
     description: 'Get notified when someone posts an item that matches your Wanted ad.',
-    accent: '#F5A623',
+    accent: 'var(--cf-amber)',
   },
   {
     key: 'payment_updates',
     icon: CreditCard,
     title: 'Payment updates',
     description: 'Confirmations, failures, and reminders about payments for listings and boosts.',
-    accent: '#22C55E',
+    accent: 'var(--cf-success-bright)',
   },
   {
     key: 'listing_expiry',
     icon: Clock,
     title: 'Listing expiry reminders',
     description: 'Know a day before your listing expires so you can renew it.',
-    accent: '#2563EB',
+    accent: 'var(--cf-blue)',
   },
   {
     key: 'chat_messages',
     icon: MessageCircle,
     title: 'New messages',
     description: 'Get notified when a buyer messages you about one of your listings.',
-    accent: '#64B5F6',
+    accent: 'var(--cf-sky)',
   },
   {
     key: 'marketing',
@@ -140,7 +140,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.65 }}
           transition={{ delay: 0.3 }}
-          style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}
+          style={{ color: 'var(--cf-subtle)', fontSize: 13, fontWeight: 600 }}
         >
           Loading preferences…
         </motion.span>
@@ -158,7 +158,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         padding: 'calc(24px + env(safe-area-inset-top)) 16px 120px',
         maxWidth: 600,
         margin: '0 auto',
-        color: '#101C3A',
+        color: 'var(--cf-navy)',
       }}
     >
       {/* ── Sticky header ──────────────────────────────────────────────── */}
@@ -184,8 +184,8 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
           aria-label="Back"
           style={{
             width: 38, height: 38,
-            border: '1px solid #E5EAF2', borderRadius: 12,
-            background: 'white', color: '#101C3A',
+            border: '1px solid var(--cf-line)', borderRadius: 12,
+            background: 'white', color: 'var(--cf-navy)',
             display: 'grid', placeItems: 'center', cursor: 'pointer',
           }}
         >
@@ -195,7 +195,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
           <h1 style={{ margin: 0, fontSize: 22, display: 'flex', alignItems: 'center', gap: 8 }}>
             <Bell size={20} color="#2563EB" /> Notifications
           </h1>
-          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#94A3B8' }}>
+          <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--cf-subtle)' }}>
             Choose what you want to hear about
           </p>
         </div>
@@ -209,7 +209,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         style={{
           background: '#fff',
           borderRadius: 20,
-          border: '1px solid #E5EAF2',
+          border: '1px solid var(--cf-line)',
           boxShadow: '0 6px 20px rgba(16,28,58,.04)',
           overflow: 'hidden',
           marginBottom: 20,
@@ -238,7 +238,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 1,
-          color: '#94A3B8',
+          color: 'var(--cf-subtle)',
           textTransform: 'uppercase',
         }}
       >
@@ -252,7 +252,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         style={{
           background: '#fff',
           borderRadius: 20,
-          border: '1px solid #E5EAF2',
+          border: '1px solid var(--cf-line)',
           boxShadow: '0 6px 20px rgba(16,28,58,.04)',
           overflow: 'hidden',
         }}
@@ -276,7 +276,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         style={{
           margin: '24px 8px 0',
           fontSize: 12,
-          color: '#94A3B8',
+          color: 'var(--cf-subtle)',
           textAlign: 'center',
           lineHeight: 1.6,
         }}
@@ -309,17 +309,17 @@ function PrefRow({ pref, value, saving, onToggle, isLast }) {
         width: 40, height: 40, flexShrink: 0,
         display: 'grid', placeItems: 'center',
         borderRadius: 12,
-        background: `${pref.accent || '#2563EB'}15`,
-        color: pref.accent || '#2563EB',
+        background: `${pref.accent || 'var(--cf-blue)'}15`,
+        color: pref.accent || 'var(--cf-blue)',
       }}>
         <Icon size={18} />
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#101C3A' }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--cf-navy)' }}>
           {pref.title}
         </div>
-        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2, lineHeight: 1.5 }}>
+        <div style={{ fontSize: 12, color: 'var(--cf-subtle)', marginTop: 2, lineHeight: 1.5 }}>
           {pref.description}
         </div>
       </div>
@@ -337,7 +337,7 @@ function PrefRow({ pref, value, saving, onToggle, isLast }) {
           padding: 3,
           border: 0,
           borderRadius: 13,
-          background: value ? '#2563EB' : '#E5EAF2',
+          background: value ? 'var(--cf-blue)' : 'var(--cf-line)',
           cursor: saving ? 'wait' : 'pointer',
           position: 'relative',
           transition: 'background 0.25s ease',

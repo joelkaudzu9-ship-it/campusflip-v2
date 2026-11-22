@@ -69,7 +69,7 @@ export default function InstallPrompt() {
           maxWidth: 400,
           margin: '0 auto',
           zIndex: 9000,
-          background: '#101C3A',
+          background: 'var(--cf-navy)',
           color: 'white',
           borderRadius: 20,
           padding: 20,
@@ -93,7 +93,7 @@ export default function InstallPrompt() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
           <div style={{
             width: 44, height: 44, borderRadius: 12,
-            background: '#2563EB', display: 'grid', placeItems: 'center',
+            background: 'var(--cf-blue)', display: 'grid', placeItems: 'center',
             fontSize: 18, fontWeight: 900,
           }}>
             CF
@@ -122,7 +122,7 @@ export default function InstallPrompt() {
             onClick={handleInstall}
             style={{
               width: '100%', padding: 13, border: 0, borderRadius: 12,
-              background: '#2563EB', color: 'white',
+              background: 'var(--cf-blue)', color: 'white',
               fontSize: 14, fontWeight: 800, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}

@@ -388,7 +388,7 @@ export default function PostListingModal({
 
                 {createdListing.kind === 'sale' && !isPaid && (
                   <div style={{
-                    border: '1px solid #E5EAF2',
+                    border: '1px solid var(--cf-line)',
                     borderRadius: 16,
                     padding: 18,
                     marginBottom: 22,
@@ -402,19 +402,19 @@ export default function PostListingModal({
                       marginBottom: 16,
                     }}>
                       <div>
-                        <span style={{ fontSize: 12, color: '#4B5563', fontWeight: 700 }}>
+                        <span style={{ fontSize: 12, color: 'var(--cf-body)', fontWeight: 700 }}>
                           STANDARD LISTING FEE
                         </span>
-                        <h2 style={{ margin: '4px 0 0', color: '#101C3A', fontSize: 27 }}>
+                        <h2 style={{ margin: '4px 0 0', color: 'var(--cf-navy)', fontSize: 27 }}>
                           MK 200
                         </h2>
-                        <small style={{ color: '#4B5563' }}>
+                        <small style={{ color: 'var(--cf-body)' }}>
                           Active for 14 days · Free with referral credits
                         </small>
                       </div>
                       <div style={{
                         width: 46, height: 46, borderRadius: 13,
-                        background: '#E8F0FF', color: '#2563EB',
+                        background: '#E8F0FF', color: 'var(--cf-blue)',
                         display: 'grid', placeItems: 'center',
                       }}>
                         <Smartphone size={23} />
@@ -423,15 +423,15 @@ export default function PostListingModal({
 
                     {paymentStatus === 'pending' ? (
                       <div style={{
-                        background: '#fff', border: '1px solid #E5EAF2',
+                        background: '#fff', border: '1px solid var(--cf-line)',
                         borderRadius: 12, padding: 16, textAlign: 'center',
                       }}>
                         <LoaderCircle size={30} color="#2563EB" className="cf-spin" />
-                        <h4 style={{ margin: '10px 0 6px', color: '#101C3A' }}>Checking payment status</h4>
-                        <p style={{ fontSize: 13, color: '#4B5563', lineHeight: 1.6 }}>
+                        <h4 style={{ margin: '10px 0 6px', color: 'var(--cf-navy)' }}>Checking payment status</h4>
+                        <p style={{ fontSize: 13, color: 'var(--cf-body)', lineHeight: 1.6 }}>
                           Check your phone for the PayChangu prompt and enter your mobile-money PIN to authorise payment.
                         </p>
-                        <p style={{ fontSize: 12, color: '#94A3B8', marginTop: 12, overflowWrap: 'anywhere' }}>
+                        <p style={{ fontSize: 12, color: 'var(--cf-subtle)', marginTop: 12, overflowWrap: 'anywhere' }}>
                           Reference: {chargeId}
                         </p>
                         <button
@@ -450,7 +450,7 @@ export default function PostListingModal({
                           style={{
                             display: 'block', width: '100%', marginTop: 10,
                             padding: 10, border: 0, background: 'transparent',
-                            color: '#94A3B8', fontSize: 12, fontWeight: 600,
+                            color: 'var(--cf-subtle)', fontSize: 12, fontWeight: 600,
                             cursor: paymentBusy ? 'not-allowed' : 'pointer',
                           }}
                         >
@@ -464,8 +464,8 @@ export default function PostListingModal({
                         borderRadius: 12, padding: 16, textAlign: 'center',
                       }}>
                         <Clock3 size={30} color="#D28A00" />
-                        <h4 style={{ margin: '10px 0 6px', color: '#101C3A' }}>Payment not successful</h4>
-                        <p style={{ fontSize: 13, color: '#4B5563', margin: 0, lineHeight: 1.6 }}>{paymentError}</p>
+                        <h4 style={{ margin: '10px 0 6px', color: 'var(--cf-navy)' }}>Payment not successful</h4>
+                        <p style={{ fontSize: 13, color: 'var(--cf-body)', margin: 0, lineHeight: 1.6 }}>{paymentError}</p>
                         <button
                           type="button"
                           className="cf-post-submit"
@@ -527,7 +527,7 @@ export default function PostListingModal({
                       alignItems: 'flex-start',
                       gap: 8,
                       marginTop: 13,
-                      color: '#4B5563',
+                      color: 'var(--cf-body)',
                       fontSize: 12,
                       lineHeight: 1.5,
                     }}>
@@ -544,7 +544,7 @@ export default function PostListingModal({
                   <h4 style={{ marginBottom: 6 }}>
                     Add photos <span style={{ fontWeight: 400 }}>(optional)</span>
                   </h4>
-                  <p style={{ fontSize: 13, color: '#4B5563' }}>
+                  <p style={{ fontSize: 13, color: 'var(--cf-body)' }}>
                     Photos help buyers understand what you are offering. You can skip this step and add them later.
                   </p>
                   <ListingImageUploader
@@ -554,7 +554,7 @@ export default function PostListingModal({
                 </div>
 
                 {photosUploaded && (
-                  <p style={{ color: '#15803D', fontSize: 13, textAlign: 'center' }}>
+                  <p style={{ color: 'var(--cf-success)', fontSize: 13, textAlign: 'center' }}>
                     <CheckCircle2 size={15} style={{ verticalAlign: 'middle', marginRight: 5 }} />
                     Photos uploaded successfully.
                   </p>
@@ -571,7 +571,7 @@ export default function PostListingModal({
                     style={{
                       display: 'block', width: '100%', marginTop: 12,
                       padding: 12, border: 'none', background: 'transparent',
-                      color: '#4B5563', fontWeight: 600, cursor: 'pointer',
+                      color: 'var(--cf-body)', fontWeight: 600, cursor: 'pointer',
                     }}
                   >
                     Finish later
@@ -598,7 +598,7 @@ export default function PostListingModal({
                     fontSize: 11,
                     fontWeight: 800,
                     letterSpacing: 1,
-                    color: '#94A3B8',
+                    color: 'var(--cf-subtle)',
                     marginBottom: 8,
                     display: 'flex',
                     alignItems: 'center',
@@ -612,13 +612,13 @@ export default function PostListingModal({
                     padding: 12,
                     borderRadius: 16,
                     background: 'linear-gradient(145deg, #F8FBFF 0%, #EFF5FF 100%)',
-                    border: '1px solid #E5EAF2',
+                    border: '1px solid var(--cf-line)',
                     minHeight: 80,
                   }}>
                     <div style={{
                       width: 68, height: 68, flexShrink: 0,
                       borderRadius: 12,
-                      background: '#EEF3FC',
+                      background: 'var(--cf-surface-2)',
                       display: 'grid', placeItems: 'center',
                       overflow: 'hidden',
                     }}>
@@ -629,7 +629,7 @@ export default function PostListingModal({
                         margin: 0,
                         fontSize: 13,
                         fontWeight: 700,
-                        color: title ? '#101C3A' : '#94A3B8',
+                        color: title ? 'var(--cf-navy)' : 'var(--cf-subtle)',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -643,7 +643,7 @@ export default function PostListingModal({
                       <div style={{
                         marginTop: 'auto',
                         fontSize: 12,
-                        color: '#94A3B8',
+                        color: 'var(--cf-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: 4,
@@ -655,13 +655,13 @@ export default function PostListingModal({
                         <b style={{
                           marginTop: 4,
                           fontSize: 15,
-                          color: '#2563EB',
+                          color: 'var(--cf-blue)',
                         }}>
                           {price ? `MK ${Number(price).toLocaleString()}` : 'MK —'}
                         </b>
                       )}
                       {kind !== 'sale' && (
-                        <b style={{ marginTop: 4, fontSize: 13, color: '#15803D' }}>
+                        <b style={{ marginTop: 4, fontSize: 13, color: 'var(--cf-success)' }}>
                           {TYPES.find(t => t.value === kind)?.label}
                         </b>
                       )}

@@ -159,7 +159,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
         padding: 'calc(24px + env(safe-area-inset-top)) 16px 120px',
         maxWidth: 600,
         margin: '0 auto',
-        color: '#101C3A',
+        color: 'var(--cf-navy)',
       }}
     >
       {/* ── Sticky header ──────────────────────────────────────────────── */}
@@ -191,7 +191,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
           <h1 style={{ margin: 0, fontSize: 22, display: 'flex', alignItems: 'center', gap: 8 }}>
             <Shield size={20} color="#2563EB" /> Privacy & Security
           </h1>
-          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#94A3B8' }}>
+          <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--cf-subtle)' }}>
             Manage your account security
           </p>
         </div>
@@ -278,7 +278,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                   required
                   style={inputStyle}
                 />
-                <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 6 }}>
+                <div style={{ fontSize: 12, color: 'var(--cf-subtle)', marginTop: 6 }}>
                   Supabase will send a confirmation link to both your old and new inboxes.
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
         style={{
           background: '#fff',
           borderRadius: 20,
-          border: '1px solid #E5EAF2',
+          border: '1px solid var(--cf-line)',
           boxShadow: '0 6px 20px rgba(16,28,58,.04)',
           padding: 18,
           marginBottom: 14,
@@ -313,7 +313,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 14, fontWeight: 700 }}>Active sessions</div>
-            <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>
+            <div style={{ fontSize: 12, color: 'var(--cf-subtle)', marginTop: 2 }}>
               Devices currently signed in
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
               border: '1px solid #FCE8E8',
               borderRadius: 10,
               background: '#fff',
-              color: '#B42318',
+              color: 'var(--cf-danger)',
               fontSize: 12,
               fontWeight: 700,
               cursor: signingOutOthers ? 'wait' : 'pointer',
@@ -349,7 +349,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
             <LoaderCircle size={20} className="cf-spin" color="#94A3B8" style={{ margin: '0 auto' }} />
           </div>
         ) : sessions.length === 0 ? (
-          <div style={{ padding: 16, textAlign: 'center', fontSize: 12, color: '#94A3B8' }}>
+          <div style={{ padding: 16, textAlign: 'center', fontSize: 12, color: 'var(--cf-subtle)' }}>
             No sessions found.
           </div>
         ) : (
@@ -369,8 +369,8 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                     gap: 10,
                     padding: '10px 12px',
                     borderRadius: 11,
-                    background: isRecent ? '#F5F8FF' : '#FAFBFC',
-                    border: '1px solid #E5EAF2',
+                    background: isRecent ? 'var(--cf-bg)' : '#FAFBFC',
+                    border: '1px solid var(--cf-line)',
                   }}
                 >
                   <DeviceIcon size={15} color="#2563EB" />
@@ -382,7 +382,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                           marginLeft: 6,
                           padding: '2px 6px',
                           background: '#DCFCE7',
-                          color: '#15803D',
+                          color: 'var(--cf-success)',
                           fontSize: 11,
                           fontWeight: 800,
                           borderRadius: 5,
@@ -392,7 +392,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                         </span>
                       )}
                     </div>
-                    <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 2 }}>
+                    <div style={{ fontSize: 11, color: 'var(--cf-subtle)', marginTop: 2 }}>
                       Last active {formatDate(s.updated_at)}
                     </div>
                   </div>
@@ -419,7 +419,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
           <div style={{
             width: 40, height: 40,
             background: 'rgba(180,35,24,.1)',
-            color: '#B42318',
+            color: 'var(--cf-danger)',
             borderRadius: 12,
             display: 'grid', placeItems: 'center',
             flexShrink: 0,
@@ -427,10 +427,10 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
             <Trash2 size={18} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#B42318' }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--cf-danger)' }}>
               Delete account
             </div>
-            <div style={{ fontSize: 12, color: '#B42318', opacity: 0.7, marginTop: 2 }}>
+            <div style={{ fontSize: 12, color: 'var(--cf-danger)', opacity: 0.7, marginTop: 2 }}>
               Permanently delete your profile, listings, and data.
             </div>
           </div>
@@ -442,7 +442,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
               border: '1px solid #F5C2C2',
               borderRadius: 10,
               background: 'white',
-              color: '#B42318',
+              color: 'var(--cf-danger)',
               fontSize: 12,
               fontWeight: 700,
               cursor: 'pointer',
@@ -497,7 +497,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                   width: 56, height: 56,
                   margin: '0 auto 16px',
                   background: 'rgba(180,35,24,.1)',
-                  color: '#B42318',
+                  color: 'var(--cf-danger)',
                   borderRadius: '50%',
                   display: 'grid', placeItems: 'center',
                 }}
@@ -507,10 +507,10 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
               <h2 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 800 }}>
                 Delete your account?
               </h2>
-              <p style={{ margin: '0 0 8px', fontSize: 14, color: '#4B5563', lineHeight: 1.6 }}>
+              <p style={{ margin: '0 0 8px', fontSize: 14, color: 'var(--cf-body)', lineHeight: 1.6 }}>
                 Your listings will be removed and your profile will be scheduled for permanent deletion.
               </p>
-              <p style={{ margin: '0 0 24px', fontSize: 12, color: '#94A3B8', lineHeight: 1.5 }}>
+              <p style={{ margin: '0 0 24px', fontSize: 12, color: 'var(--cf-subtle)', lineHeight: 1.5 }}>
                 You will be signed out immediately. This cannot be undone after 30 days.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -523,7 +523,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                     padding: 14,
                     border: 0,
                     borderRadius: 14,
-                    background: '#B42318',
+                    background: 'var(--cf-danger)',
                     color: 'white',
                     fontSize: 14,
                     fontWeight: 800,
@@ -549,10 +549,10 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                   style={{
                     width: '100%',
                     padding: 13,
-                    border: '1px solid #E5EAF2',
+                    border: '1px solid var(--cf-line)',
                     borderRadius: 14,
                     background: '#fff',
-                    color: '#4B5563',
+                    color: 'var(--cf-body)',
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -578,7 +578,7 @@ function Section({ icon: Icon, title, description, action, children }) {
       style={{
         background: '#fff',
         borderRadius: 20,
-        border: '1px solid #E5EAF2',
+        border: '1px solid var(--cf-line)',
         boxShadow: '0 6px 20px rgba(16,28,58,.04)',
         padding: 18,
         marginBottom: 14,
@@ -590,7 +590,7 @@ function Section({ icon: Icon, title, description, action, children }) {
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 700 }}>{title}</div>
-          <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 12, color: 'var(--cf-subtle)', marginTop: 2, lineHeight: 1.5 }}>
             {description}
           </div>
         </div>
@@ -608,10 +608,10 @@ function SectionButton({ onClick, children }) {
       onClick={onClick}
       style={{
         padding: '8px 14px',
-        border: '1px solid #E5EAF2',
+        border: '1px solid var(--cf-line)',
         borderRadius: 10,
         background: 'white',
-        color: '#2563EB',
+        color: 'var(--cf-blue)',
         fontSize: 12,
         fontWeight: 700,
         cursor: 'pointer',
@@ -649,7 +649,7 @@ function PasswordField({ label, value, onChange, show, onToggleShow, placeholder
               width: 28, height: 28,
               border: 0,
               background: 'transparent',
-              color: '#94A3B8',
+              color: 'var(--cf-subtle)',
               cursor: 'pointer',
               display: 'grid',
               placeItems: 'center',
@@ -673,10 +673,10 @@ function FormActions({ onCancel, submitLabel, submitting, disabled }) {
         style={{
           flex: 1,
           padding: 12,
-          border: '1px solid #E5EAF2',
+          border: '1px solid var(--cf-line)',
           borderRadius: 12,
           background: '#fff',
-          color: '#4B5563',
+          color: 'var(--cf-body)',
           fontSize: 13,
           fontWeight: 700,
           cursor: 'pointer',
@@ -692,7 +692,7 @@ function FormActions({ onCancel, submitLabel, submitting, disabled }) {
           padding: 12,
           border: 0,
           borderRadius: 12,
-          background: '#2563EB',
+          background: 'var(--cf-blue)',
           color: '#fff',
           fontSize: 13,
           fontWeight: 800,
@@ -718,15 +718,15 @@ function FormActions({ onCancel, submitLabel, submitting, disabled }) {
 
 const iconBtn = {
   width: 38, height: 38,
-  border: '1px solid #E5EAF2', borderRadius: 12,
-  background: 'white', color: '#101C3A',
+  border: '1px solid var(--cf-line)', borderRadius: 12,
+  background: 'white', color: 'var(--cf-navy)',
   display: 'grid', placeItems: 'center', cursor: 'pointer',
 };
 
 const iconBubble = {
   width: 40, height: 40,
   background: 'rgba(37,99,235,.08)',
-  color: '#2563EB',
+  color: 'var(--cf-blue)',
   borderRadius: 12,
   display: 'grid',
   placeItems: 'center',
@@ -737,7 +737,7 @@ const labelStyle = {
   display: 'block',
   fontSize: 12,
   fontWeight: 700,
-  color: '#4B5563',
+  color: 'var(--cf-body)',
   marginBottom: 6,
 };
 
@@ -745,10 +745,10 @@ const inputStyle = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '12px 14px',
-  border: '1px solid #E5EAF2',
+  border: '1px solid var(--cf-line)',
   borderRadius: 12,
   background: '#fff',
   fontSize: 14,
-  color: '#101C3A',
+  color: 'var(--cf-navy)',
   outline: 'none',
 };

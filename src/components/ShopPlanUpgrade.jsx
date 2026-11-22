@@ -154,12 +154,12 @@ export default function ShopPlanUpgrade({
 
   return (
     <section className="cf-shop-plan-card" style={{
-      background: isVerified ? 'linear-gradient(145deg, #13794E, #15803D)' : '#101C3A',
+      background: isVerified ? 'linear-gradient(145deg, #13794E, var(--cf-success))' : 'var(--cf-navy)',
       transition: 'background 0.5s ease'
     }}>
       <div className="cf-shop-plan-heading">
         <div>
-          <span className="cf-shop-plan-eyebrow" style={{ color: isVerified ? '#7AF0B6' : '#64B5F6' }}>
+          <span className="cf-shop-plan-eyebrow" style={{ color: isVerified ? '#7AF0B6' : 'var(--cf-sky)' }}>
             {isVerified ? 'ACTIVE SUBSCRIPTION' : 'CAMPUSFLIP VERIFIED'}
           </span>
           <h3>{isVerified ? 'Verified Shop' : 'Upgrade to Verified Shop'}</h3>
