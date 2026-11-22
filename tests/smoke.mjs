@@ -151,7 +151,9 @@ try {
   check('signed-in non-admin is kept out of /admin', path() === '/', path());
   adminRpc = true;
   await page.goto(`${origin}/admin`); await wait(3000);
-  check('admin can open /admin directly', path() === '/admin', path());
+  check('admin can open /admin directly', path() === '/admin' && /Admin Console/.test(await bodyText()), path());
+  for (const t of ['Reports', 'Users']) { await page.getByRole('button', { name: new RegExp(`^${t}`) }).first().click(); await wait(700); }
+  check('admin tabs switch without crashing', /Admin Console/.test(await bodyText()));
   adminRpc = false;
 
   await page.goto(`${origin}/post`); await wait(2500);

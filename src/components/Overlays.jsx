@@ -132,7 +132,7 @@ export default function Overlays({
         {name === 'admin' && signedIn && isAdmin && (
           <PageTransition key="admin-dashboard" onBack={() => goBack(PATHS.account)}>
             <Guard onClose={() => goBack(PATHS.account)}>
-              <AdminDashboard session={session} onBack={() => goBack(PATHS.account)} />
+              <AdminDashboard onBack={() => goBack(PATHS.account)} onToast={onToast} />
             </Guard>
           </PageTransition>
         )}
