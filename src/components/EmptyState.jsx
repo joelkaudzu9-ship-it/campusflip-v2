@@ -197,7 +197,7 @@ export default function EmptyState({
                 borderRadius: 20,
                 background: '#F1F5F9',
                 color: '#4B5563',
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
               }}
             >

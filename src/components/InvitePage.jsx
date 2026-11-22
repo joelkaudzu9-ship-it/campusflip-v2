@@ -77,7 +77,7 @@ export default function InvitePage({ code, onEnter }) {
             style={{ maxWidth: 420 }}
           >
             <span style={{
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 900,
               letterSpacing: 2,
               color: '#2563EB',

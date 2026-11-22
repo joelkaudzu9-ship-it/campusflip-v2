@@ -93,7 +93,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           </motion.div>
           <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{
-              fontSize: 10, fontWeight: 900, letterSpacing: 1.3,
+              fontSize: 11, fontWeight: 900, letterSpacing: 1.3,
               color: '#15803D', marginBottom: 3,
             }}>
               CONTINUE ON WHATSAPP
@@ -145,7 +145,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                 {seller?.is_verified && (
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', gap: 2,
-                    fontSize: 9, fontWeight: 800,
+                    fontSize: 11, fontWeight: 800,
                     padding: '2px 6px', borderRadius: 20,
                     background: '#2563EB', color: '#fff',
                   }}>
@@ -153,7 +153,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                   </span>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 11, color: '#94A3B8' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 12, color: '#94A3B8' }}>
                 <Clock size={10} />
                 Typically replies within 2 hours
               </div>
@@ -198,7 +198,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                 {listing.title}
               </b>
               {listing.spotName && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, fontSize: 11, color: '#94A3B8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, fontSize: 12, color: '#94A3B8' }}>
                   <MapPin size={10} /> {listing.spotName}
                 </div>
               )}
@@ -208,7 +208,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
           {/* Quick reply templates */}
           <div style={{ marginBottom: 20 }}>
             <div style={{
-              fontSize: 10, fontWeight: 800, letterSpacing: 1,
+              fontSize: 11, fontWeight: 800, letterSpacing: 1,
               color: '#94A3B8', marginBottom: 8,
             }}>
               PICK YOUR FIRST MESSAGE
@@ -254,7 +254,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             </div>
             <p style={{
               margin: '10px 0 0',
-              fontSize: 11,
+              fontSize: 12,
               color: '#94A3B8',
               lineHeight: 1.5,
             }}>
@@ -270,7 +270,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
             border: '1px solid #E5EAF2',
             marginBottom: 4,
           }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#101C3A', marginBottom: 10 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#101C3A', marginBottom: 10 }}>
               What happens next
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -289,7 +289,7 @@ export default function ContactSellerModal({ open, seller, listing, onProceed, o
                     background: '#E5EDFB',
                     color: '#2563EB',
                     display: 'grid', placeItems: 'center',
-                    fontSize: 10, fontWeight: 800,
+                    fontSize: 11, fontWeight: 800,
                   }}>
                     {i + 1}
                   </div>

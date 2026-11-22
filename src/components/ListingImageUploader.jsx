@@ -12,9 +12,10 @@ import {
   Images,
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { MAX_PICKED_BYTES, resizeImage, runPool } from '../lib/imageTools';
 
 const MAX_IMAGES = 5;
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = MAX_PICKED_BYTES; // photos are resized before upload, so large originals are fine
 
 export default function ListingImageUploader({ listingId, onUploaded }) {
   const inputRef = useRef(null);
@@ -53,7 +54,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
       }
 
       if (file.size > MAX_SIZE) {
-        setError(`${file.name} is larger than the 5 MB limit.`);
+        setError(`${file.name} is too large (max 25 MB).`);
         continue;
       }
 
@@ -106,6 +107,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
       return;
     }
 
+    let done = 0;
     setUploading(true);
     setProgress(0);
     setError('');
@@ -128,10 +130,9 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         throw new Error('Could not obtain an upload signature.');
       }
 
-      const uploadedUrls = [];
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      // Resize on the phone, then upload up to 3 photos at a time.
+      const results = await runPool(files, 3, async (original) => {
+        const file = await resizeImage(original);
         const formData = new FormData();
 
         formData.append('file', file);
@@ -142,40 +143,52 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
 
         const response = await fetch(
           `https://api.cloudinary.com/v1_1/${signedData.cloud_name}/image/upload`,
-          {
-            method: 'POST',
-            body: formData,
-          }
+          { method: 'POST', body: formData }
         );
-
         const result = await response.json();
-
         if (!response.ok) {
-          throw new Error(
-            result.error?.message || 'Cloudinary upload failed.'
-          );
+          throw new Error(result.error?.message || 'Cloudinary upload failed.');
         }
+        done += 1;
+        setProgress(Math.round((done / files.length) * 100));
+        return result.secure_url;
+      });
 
-        uploadedUrls.push(result.secure_url);
-        setProgress(Math.round(((i + 1) / files.length) * 100));
+      // Save every photo that made it, even if another one failed, so retrying
+      // only re-uploads the failures.
+      const uploadedUrls = [];
+      const failedFiles = [];
+      results.forEach((res, index) => {
+        if (res.ok) uploadedUrls.push(res.value);
+        else failedFiles.push(files[index]);
+      });
+
+      if (uploadedUrls.length) {
+        const { count: existing } = await supabase
+          .from('listing_photos')
+          .select('id', { count: 'exact', head: true })
+          .eq('listing_id', listingId);
+        const start = typeof existing === 'number' ? existing : 0;
+        const rows = uploadedUrls.map((url, index) => ({
+          listing_id: listingId,
+          image_url: url,
+          display_order: start + index,
+        }));
+        const { error: databaseError } = await supabase.from('listing_photos').insert(rows);
+        if (databaseError) throw databaseError;
+        if (onUploaded) onUploaded(uploadedUrls);
       }
 
-      const rows = uploadedUrls.map((url, index) => ({
-        listing_id: listingId,
-        image_url: url,
-        display_order: index,
-      }));
-
-      const { error: databaseError } = await supabase
-        .from('listing_photos')
-        .insert(rows);
-
-      if (databaseError) throw databaseError;
+      if (failedFiles.length) {
+        setFiles(failedFiles);
+        setError(
+          `${failedFiles.length} photo(s) could not be uploaded. ${uploadedUrls.length ? `${uploadedUrls.length} saved. ` : ''}Tap upload to retry the rest.`
+        );
+        return;
+      }
 
       setMessage(`${uploadedUrls.length} photo(s) uploaded successfully.`);
       setFiles([]);
-
-      if (onUploaded) onUploaded(uploadedUrls);
     } catch (err) {
       console.error('Image upload error:', err);
       setError(err.message || 'Something went wrong during upload.');
@@ -606,7 +619,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
 
       <div className="cf-uploader-footer">
         <CheckCircle2 size={12} />
-        JPG, PNG or WebP · Up to 5 MB each · Maximum 5 photos
+        JPG, PNG or WebP · Resized automatically · Maximum 5 photos
       </div>
     </section>
   );

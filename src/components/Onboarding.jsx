@@ -81,7 +81,7 @@ export default function Onboarding({ onComplete }) {
               color: 'white',
               display: 'grid',
               placeItems: 'center',
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 900,
               letterSpacing: -0.5,
             }}
@@ -160,7 +160,7 @@ export default function Onboarding({ onComplete }) {
 
           <span
             style={{
-              fontSize: 10,
+              fontSize: 11,
               fontWeight: 900,
               letterSpacing: 2,
               color: slide.accent,
@@ -212,10 +212,10 @@ export default function Onboarding({ onComplete }) {
               }}
             >
               {[
-                { e: '📚', label: 'Books', count: '120+' },
-                { e: '💻', label: 'Tech', count: '80+' },
-                { e: '👕', label: 'Gear', count: '60+' },
-                { e: '🔬', label: 'Lab', count: '40+' },
+                { e: '📚', label: 'Books', count: 'Textbooks' },
+                { e: '💻', label: 'Tech', count: 'Laptops' },
+                { e: '👕', label: 'Gear', count: 'Clothes' },
+                { e: '🔬', label: 'Lab', count: 'Equipment' },
               ].map((tag) => (
                 <div
                   key={tag.label}
@@ -231,10 +231,10 @@ export default function Onboarding({ onComplete }) {
                   }}
                 >
                   <div style={{ fontSize: 22, marginBottom: 4 }}>{tag.e}</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: '#101C3A' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#101C3A' }}>
                     {tag.label}
                   </div>
-                  <div style={{ fontSize: 9, color: '#94A3B8', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 1 }}>
                     {tag.count}
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export default function Onboarding({ onComplete }) {
                   <div style={{ fontSize: 12, fontWeight: 800, color: '#101C3A' }}>
                     Post an item
                   </div>
-                  <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 1 }}>
                     2 minutes · Wanted is free
                   </div>
                 </div>
@@ -293,7 +293,7 @@ export default function Onboarding({ onComplete }) {
                   padding: '10px 14px',
                   background: 'rgba(255,255,255,.7)',
                   borderRadius: 12,
-                  fontSize: 11,
+                  fontSize: 12,
                   color: '#4B5563',
                   fontWeight: 600,
                   display: 'flex',
@@ -342,7 +342,7 @@ export default function Onboarding({ onComplete }) {
                   }}
                 >
                   <tag.icon size={15} color={slide.accent} />
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#101C3A' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#101C3A' }}>
                     {tag.label}
                   </span>
                 </div>
@@ -419,7 +419,7 @@ export default function Onboarding({ onComplete }) {
         <div
           style={{
             textAlign: 'center',
-            fontSize: 11,
+            fontSize: 12,
             color: '#94A3B8',
             fontWeight: 600,
           }}

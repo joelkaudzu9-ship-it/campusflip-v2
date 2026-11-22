@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useFocusTrap } from '../lib/useFocusTrap';
 
 const pageVariants = {
   initial: { opacity: 0, x: '100%' }, 
@@ -15,9 +16,24 @@ const pageVariants = {
   }
 };
 
-export default function PageTransition({ children, onBack }) {
+export default function PageTransition({ children, onBack, label = 'Page' }) {
+  const ref = useRef(null);
+  useFocusTrap(ref, true);
+
+  // Escape closes the page, like the Back button.
+  useEffect(() => {
+    if (!onBack) return undefined;
+    const onKey = e => { if (e.key === 'Escape') onBack(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onBack]);
+
   return (
     <motion.div
+      ref={ref}
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
       variants={pageVariants}
       initial="initial"
       animate="animate"
@@ -38,7 +54,8 @@ export default function PageTransition({ children, onBack }) {
         overflowY: 'auto',
         background: '#f5f8fd',
         willChange: 'transform, opacity',
-        touchAction: 'pan-y' // Allows vertical scroll but catches horizontal swipes
+        touchAction: 'pan-y', // Allows vertical scroll but catches horizontal swipes
+        outline: 'none'
       }}
     >
       {children}

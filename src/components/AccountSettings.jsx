@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { resizeImage } from '../lib/imageTools';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import {
@@ -8,7 +9,7 @@ import {
 import ShopPlanUpgrade from './ShopPlanUpgrade';
 import './account-pages.css';
 
-const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const MAX_AVATAR_SIZE = 25 * 1024 * 1024; // resized to 512 px before upload
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const spring = { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 };
 
@@ -95,7 +96,7 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
     }
 
     if (file.size > MAX_AVATAR_SIZE) {
-      onToast?.('Your profile picture must be 5 MB or smaller.', 'error');
+      onToast?.('Please choose a picture under 25 MB.', 'error');
       return;
     }
 
@@ -130,8 +131,9 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
         throw new Error('Could not obtain an upload signature.');
       }
 
+      const resized = await resizeImage(file, { maxSide: 512, quality: 0.85 });
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', resized);
       formData.append('api_key', signedData.api_key);
       formData.append('timestamp', String(signedData.timestamp));
       formData.append('folder', signedData.folder);
@@ -407,7 +409,7 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
             />
 
             <span className="cf-settings-image-note">
-              JPG, PNG or WebP · Maximum 5 MB
+              JPG, PNG or WebP · Photos are resized automatically
             </span>
           </div>
 

@@ -110,6 +110,18 @@ export default function AdminDashboard({ session, onBack, onToast }) {
   const [userSearch, setUserSearch] = useState('');
   const [inspectUser, setInspectUser] = useState(null);
 
+  // Admin-only user list via RPC (includes private email/phone). Falls back to a direct
+  // select until the security migration has been applied.
+  async function loadAdminUsers() {
+    const rpc = await supabase.rpc('admin_list_profiles');
+    if (!rpc.error) return { data: rpc.data || [], error: null };
+    if (!/could not find the function|does not exist/i.test(rpc.error.message || '')) return rpc;
+    return supabase
+      .from('profiles')
+      .select('id, display_name, business_name, is_verified, email, phone, created_at, avatar_url')
+      .order('created_at', { ascending: false });
+  }
+
   // ── Stable loadAll wrapped in useCallback ────────────────────────────────
   const loadAll = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -120,15 +132,12 @@ export default function AdminDashboard({ session, onBack, onToast }) {
       supabase
         .from('reports')
         .select(`
-          id, reason, details, status, created_at,
+          id, reason, details, status, created_at, reporter_id,
           listings(id, title, seller_id),
-          profiles(email, display_name, phone)
+          profiles(display_name)
         `)
         .order('created_at', { ascending: false }),
-      supabase
-        .from('profiles')
-        .select('id, display_name, business_name, is_verified, email, phone, created_at, avatar_url')
-        .order('created_at', { ascending: false }),
+      loadAdminUsers(),
     ]);
 
     if (statsRes.error) {
@@ -136,6 +145,15 @@ export default function AdminDashboard({ session, onBack, onToast }) {
       if (!silent) setError(`Analytics failed: ${statsRes.error.message}`);
     } else {
       setAnalytics(statsRes.data);
+    }
+
+    // Email/phone are private columns: reporter contact details come from the admin-only user list.
+    const usersById = new Map((usersRes.data || []).map(u => [u.id, u]));
+    if (!reportsRes.error && reportsRes.data) {
+      reportsRes.data = reportsRes.data.map(r => ({
+        ...r,
+        profiles: { ...(r.profiles || {}), ...(usersById.get(r.reporter_id) || {}) },
+      }));
     }
 
     if (reportsRes.error) {
@@ -161,18 +179,24 @@ export default function AdminDashboard({ session, onBack, onToast }) {
 
   // ── Realtime subscriptions + 60s fallback poll ──────────────────────────
   useEffect(() => {
+    // Listings change on every view (views_count), so coalesce bursts into one refresh.
+    let debounce = null;
+    const refreshSoon = () => {
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => loadAll(true), 3000);
+    };
     const channel = supabase
       .channel('admin-live')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, () => loadAll(true))
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => loadAll(true))
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'payments' }, () => loadAll(true))
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, () => loadAll(true))
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, refreshSoon)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'payments' }, refreshSoon)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'listings' }, refreshSoon)
       .subscribe();
 
     const poll = setInterval(() => loadAll(true), 60000);
 
     return () => {
       supabase.removeChannel(channel);
+      if (debounce) clearTimeout(debounce);
       clearInterval(poll);
     };
   }, [loadAll]);
@@ -200,7 +224,11 @@ export default function AdminDashboard({ session, onBack, onToast }) {
 
   async function toggleVerification(userId, currentStatus) {
     setActionLoading(userId);
-    const { error: e } = await supabase.from('profiles').update({ is_verified: !currentStatus }).eq('id', userId);
+    // Preferred: admin-only RPC (profiles are not directly writable for this column).
+    let { error: e } = await supabase.rpc('admin_set_verified', { p_user_id: userId, p_verified: !currentStatus });
+    if (e && /could not find the function|does not exist/i.test(e.message || '')) {
+      ({ error: e } = await supabase.from('profiles').update({ is_verified: !currentStatus }).eq('id', userId));
+    }
     if (e) onToast?.(`Failed: ${e.message}`, 'error');
     else { onToast?.(currentStatus ? 'Verification removed.' : 'Seller verified.'); await loadAll(); }
     setActionLoading(null);

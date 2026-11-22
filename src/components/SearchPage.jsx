@@ -243,7 +243,7 @@ export default function SearchPage({
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6,
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 800,
                   letterSpacing: 1,
                   color: '#94A3B8',
@@ -295,7 +295,7 @@ export default function SearchPage({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 800,
                 letterSpacing: 1,
                 color: '#94A3B8',
@@ -383,7 +383,7 @@ export default function SearchPage({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 800,
                 letterSpacing: 1,
                 color: '#94A3B8',
@@ -398,7 +398,7 @@ export default function SearchPage({
                   border: 0,
                   background: 'transparent',
                   color: '#2563EB',
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   cursor: 'pointer',
                   padding: '4px 8px',
@@ -440,7 +440,7 @@ export default function SearchPage({
                   <span style={{ flex: 1 }}>{term}</span>
                   {i === 0 && (
                     <span style={{
-                      fontSize: 9,
+                      fontSize: 11,
                       fontWeight: 800,
                       color: '#2563EB',
                       background: '#E5EDFB',
@@ -471,7 +471,7 @@ export default function SearchPage({
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 800,
               letterSpacing: 1,
               color: '#94A3B8',
@@ -594,7 +594,7 @@ export default function SearchPage({
                       display: 'flex',
                       alignItems: 'center',
                       gap: 6,
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: 800,
                       letterSpacing: 1,
                       color: '#94A3B8',
@@ -677,7 +677,7 @@ export default function SearchPage({
                           padding: '3px 8px',
                           background: '#F5A623',
                           color: '#101C3A',
-                          fontSize: 9,
+                          fontSize: 11,
                           fontWeight: 800,
                           borderRadius: 6,
                         }}>
@@ -721,7 +721,7 @@ export default function SearchPage({
                       }}>
                         {item.title}
                       </h3>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 10, color: '#94A3B8' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 11, color: '#94A3B8' }}>
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                           {item.businessName || item.sellerName}
                         </span>
@@ -731,7 +731,7 @@ export default function SearchPage({
                       {item.kind === 'wanted' && <b style={{ display: 'block', marginTop: 6, color: '#2563EB', fontSize: 14 }}>Wanted</b>}
                       {item.kind === 'free' && <b style={{ display: 'block', marginTop: 6, color: '#15803D', fontSize: 14 }}>Free</b>}
                       {item.kind === 'lost_found' && <b style={{ display: 'block', marginTop: 6, color: '#2563EB', fontSize: 14 }}>Lost & Found</b>}
-                      <p style={{ display: 'flex', alignItems: 'center', gap: 3, margin: '4px 0 0', fontSize: 10, color: '#94A3B8' }}>
+                      <p style={{ display: 'flex', alignItems: 'center', gap: 3, margin: '4px 0 0', fontSize: 11, color: '#94A3B8' }}>
                         <MapPin size={9} /> {item.location}
                       </p>
                     </div>

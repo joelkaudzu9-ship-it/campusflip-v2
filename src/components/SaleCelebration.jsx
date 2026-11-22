@@ -19,13 +19,18 @@ export default function SaleCelebration({ sale, onClose, onPostAnother }) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('referral_code')
-      .eq('id', user.id)
-      .maybeSingle();
-
-    const code = profile?.referral_code;
+    // referral_code is a private column; get_referral_stats returns it for the signed-in user.
+    let code = null;
+    const stats = await supabase.rpc('get_referral_stats');
+    if (!stats.error && stats.data?.code) code = stats.data.code;
+    if (!code) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('referral_code')
+        .eq('id', user.id)
+        .maybeSingle();
+      code = profile?.referral_code;
+    }
     if (!code) return;
 
     const url = `${window.location.origin}/invite/${code}`;

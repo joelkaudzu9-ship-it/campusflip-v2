@@ -1,69 +1,120 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Hooks into the browser back button for a "page" that's really an overlay.
+ * Back-button handling for "pages" that are really overlays.
  *
- * When `active` becomes true:
- *  - pushes a history entry so back doesn't exit the site
- *  - on popstate, calls `onBack` instead of navigating
+ * All overlays share ONE stack, so a single Back press closes only the
+ * top-most overlay (e.g. a listing opened over Search closes first).
  *
- * When the user closes via UI (X button, back arrow), call `close()`
- * which pops the history entry via history.back().
+ * - Opening an overlay pushes a history entry.
+ * - Back (popstate) closes the top overlay only.
+ * - Closing from the UI calls `close()`, which pops our entry with history.back().
+ * - If an overlay is closed in code (no Back, no `close()`), its stale
+ *   history entry is removed on the next tick so Back never gets stuck.
  *
- * Pattern:
  *   const { close } = useBackButton(open, () => setOpen(false));
- *   <button onClick={close}>Close</button>
  */
+const stack = []; // entries: { id, onBack }
+let nextId = 1;
+let ignorePops = 0; // popstate events caused by our own history.back() calls
+let listening = false;
+const afterPop = []; // pushes waiting for one of our own history.back() calls to finish
+
+function flushAfterPop() {
+  while (afterPop.length) afterPop.shift()();
+}
+
+function onPop() {
+  if (ignorePops > 0) {
+    ignorePops -= 1;
+    if (ignorePops === 0) flushAfterPop();
+    return;
+  }
+  const top = stack[stack.length - 1];
+  if (!top) return;
+  top.poppedByBrowser = true; // browser already removed the history entry
+  top.onBack?.();
+}
+
+function ensureListener() {
+  if (listening || typeof window === 'undefined') return;
+  window.addEventListener('popstate', onPop);
+  listening = true;
+}
+
 export function useBackButton(active, onBack) {
-  const pushedRef = useRef(false);
   const onBackRef = useRef(onBack);
-  const closingViaUi = useRef(false);
+  const entryRef = useRef(null);
 
   useEffect(() => {
     onBackRef.current = onBack;
   }, [onBack]);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active) return undefined;
+    ensureListener();
 
-    // Push one history entry when the overlay opens
-    if (!pushedRef.current) {
-      window.history.pushState({ cfOverlay: true }, '');
-      pushedRef.current = true;
+    const entry = {
+      id: nextId++,
+      poppedByBrowser: false,
+      closedByUi: false,
+      onBack: () => onBackRef.current?.(),
+    };
+    entryRef.current = entry;
+    stack.push(entry);
+
+    // If another overlay is mid-close (its history.back() not finished), wait for it
+    // so our new entry is not popped by that pending back.
+    const push = () => {
+      entry.pushed = true;
+      window.history.pushState({ cfOverlay: entry.id }, '');
+    };
+    let waiter = null;
+    let fallbackTimer = null;
+    if (ignorePops > 0) {
+      waiter = () => { clearTimeout(fallbackTimer); push(); };
+      afterPop.push(waiter);
+      fallbackTimer = setTimeout(() => {
+        const i = afterPop.indexOf(waiter);
+        if (i !== -1) { afterPop.splice(i, 1); ignorePops = 0; push(); }
+      }, 400);
+    } else {
+      push();
     }
 
-    const handlePop = () => {
-      // User pressed hardware/browser back
-      if (closingViaUi.current) {
-        // We're the ones who triggered back() — let it go through
-        closingViaUi.current = false;
-        pushedRef.current = false;
-        return;
-      }
-      // Otherwise: intercept and close the overlay
-      pushedRef.current = false;
-      onBackRef.current?.();
-    };
-
-    window.addEventListener('popstate', handlePop);
-
     return () => {
-      window.removeEventListener('popstate', handlePop);
+      const index = stack.indexOf(entry);
+      if (index !== -1) stack.splice(index, 1);
+      entryRef.current = null;
+      if (waiter) {
+        const i = afterPop.indexOf(waiter);
+        if (i !== -1) afterPop.splice(i, 1);
+        clearTimeout(fallbackTimer);
+      }
+      if (!entry.pushed) return; // never reached history, nothing to clean up
 
-      // If we're unmounting while our entry is still on the stack
-      // (e.g. parent forced unmount, navigation, etc.), clean up
-      if (pushedRef.current && !closingViaUi.current) {
-        pushedRef.current = false;
-        // Don't call back() here — we're already tearing down
+      // Closed in code: our pushed entry is still in history. Remove it quietly.
+      if (!entry.poppedByBrowser && !entry.closedByUi) {
+        // Deferred so React StrictMode's mount/unmount/mount in dev can't pop the wrong entry.
+        setTimeout(() => {
+          const state = window.history.state;
+          if (state && state.cfOverlay === entry.id) {
+            ignorePops += 1;
+            window.history.back();
+          }
+        }, 0);
       }
     };
   }, [active]);
 
-  // Called by UI buttons (X, back arrow) so history stays clean
   const close = () => {
-    if (pushedRef.current) {
-      closingViaUi.current = true;
+    const entry = entryRef.current;
+    if (entry && entry.pushed && !entry.poppedByBrowser) {
+      entry.closedByUi = true;
+      // history.back() fires popstate; run the handler for this entry only.
+      ignorePops += 1;
       window.history.back();
+      onBackRef.current?.();
     } else {
       onBackRef.current?.();
     }

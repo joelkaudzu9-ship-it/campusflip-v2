@@ -278,7 +278,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                   required
                   style={inputStyle}
                 />
-                <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 6 }}>
+                <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 6 }}>
                   Supabase will send a confirmation link to both your old and new inboxes.
                 </div>
               </div>
@@ -383,7 +383,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                           padding: '2px 6px',
                           background: '#DCFCE7',
                           color: '#15803D',
-                          fontSize: 9,
+                          fontSize: 11,
                           fontWeight: 800,
                           borderRadius: 5,
                           letterSpacing: 0.3,
@@ -392,7 +392,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
                         </span>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 2 }}>
+                    <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 2 }}>
                       Last active {formatDate(s.updated_at)}
                     </div>
                   </div>

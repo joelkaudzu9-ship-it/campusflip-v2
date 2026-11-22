@@ -3,6 +3,18 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // Stable vendor chunks cache well across deploys.
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-supabase': ['@supabase/supabase-js'],
+          'vendor-motion': ['framer-motion'],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -45,29 +57,9 @@ export default defineConfig({
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api/, /^\/functions/, /^\/invite/],
         runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/pfomxbhofdoorqfdekfd\.supabase\.co\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'supabase-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24,
-              },
-              networkTimeoutSeconds: 10,
-            },
-          },
-          {
-            urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'unsplash-cache',
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 60 * 60 * 24 * 30,
-              },
-            },
-          },
+          // NOTE: Supabase API responses are deliberately NOT cached. They contain
+          // per-user data (saved items, notifications) that must not survive sign-out
+          // on a shared phone.
           {
             urlPattern: /^https:\/\/res\.cloudinary\.com\/.*/i,
             handler: 'CacheFirst',

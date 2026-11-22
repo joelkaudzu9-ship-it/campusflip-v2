@@ -235,7 +235,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         style={{
           padding: '14px 16px 8px',
           marginBottom: 8,
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 800,
           letterSpacing: 1,
           color: '#94A3B8',
@@ -275,7 +275,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
         transition={{ delay: 0.4 }}
         style={{
           margin: '24px 8px 0',
-          fontSize: 11,
+          fontSize: 12,
           color: '#94A3B8',
           textAlign: 'center',
           lineHeight: 1.6,

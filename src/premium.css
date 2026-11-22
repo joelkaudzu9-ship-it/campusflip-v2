@@ -10,7 +10,6 @@
 
 
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 
 
@@ -342,7 +341,7 @@ p { line-height: 1.65; }
 
 .cf-brand small {
 
-  font-size: 9px;
+  font-size: 11px;
 
   margin-top: 1px;
 
@@ -464,7 +463,7 @@ p { line-height: 1.65; }
 
 .cf-bottom-nav button svg { width: 20px; height: 20px; }
 
-.cf-bottom-nav button span { font-size: 10px; font-weight: 700; }
+.cf-bottom-nav button span { font-size: 11px; font-weight: 700; }
 
 
 
@@ -494,7 +493,7 @@ p { line-height: 1.65; }
 
 .cf-post-button span {
 
-  font-size: 10px;
+  font-size: 11px;
 
   margin-top: 1px;
 
@@ -976,7 +975,7 @@ p { line-height: 1.65; }
 
 }
 
-.cf-category > span { font-size: 11px; font-weight: 700; }
+.cf-category > span { font-size: 12px; font-weight: 700; }
 
 
 
@@ -1116,7 +1115,7 @@ p { line-height: 1.65; }
 
   border-radius: 20px;
 
-  font-size: 10px; font-weight: 900; letter-spacing: .5px;
+  font-size: 11px; font-weight: 900; letter-spacing: .5px;
 
 }
 
@@ -1244,7 +1243,7 @@ p { line-height: 1.65; }
 
   color: #ffdd7a;
 
-  font-size: 11px; font-weight: 800;
+  font-size: 12px; font-weight: 800;
 
 }
 
@@ -1502,7 +1501,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-muted);
 
-  font-size: 11px;
+  font-size: 12px;
 
 }
 
@@ -1522,7 +1521,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-navy);
 
-  font-size: 10px; font-weight: 800;
+  font-size: 11px; font-weight: 800;
 
   backdrop-filter: blur(12px);
 
@@ -1824,7 +1823,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-blue);
 
-  font-size: 10px; font-weight: 800;
+  font-size: 11px; font-weight: 800;
 
   letter-spacing: .13em;
 
@@ -2006,7 +2005,7 @@ p { line-height: 1.65; }
 
 .cf-account-menu-item strong { font-size: 14px; }
 
-.cf-account-menu-item small { font-size: 11px; opacity: .65; }
+.cf-account-menu-item small { font-size: 12px; opacity: .65; }
 
 
 
@@ -2056,7 +2055,7 @@ p { line-height: 1.65; }
 
   text-align: center;
 
-  font-size: 11px;
+  font-size: 12px;
 
   opacity: .5;
 
@@ -2312,7 +2311,7 @@ p { line-height: 1.65; }
 
 .cf-post-types button b { font-size: 12px; color: #18356f; }
 
-.cf-post-types button small { font-size: 10px; line-height: 1.35; color: #8793a8; }
+.cf-post-types button small { font-size: 11px; line-height: 1.35; color: #8793a8; }
 
 .cf-post-types button.selected {
 
@@ -2408,7 +2407,7 @@ p { line-height: 1.65; }
 
 
 
-.cf-field-hint { font-size: 11px; color: #9a5c24; font-weight: 500; }
+.cf-field-hint { font-size: 12px; color: #9a5c24; font-weight: 500; }
 
 
 
@@ -2434,7 +2433,7 @@ p { line-height: 1.65; }
 
 .cf-upload-placeholder b { font-size: 12px; color: #203968; }
 
-.cf-upload-placeholder small { font-size: 11px; color: #7c8ba4; }
+.cf-upload-placeholder small { font-size: 12px; color: #7c8ba4; }
 
 
 
@@ -2492,7 +2491,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-muted);
 
-  font-size: 10px; line-height: 1.5;
+  font-size: 11px; line-height: 1.5;
 
 }
 
@@ -2596,7 +2595,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-navy);
 
-  font-size: 10px; font-weight: 800;
+  font-size: 11px; font-weight: 800;
 
   line-height: 1;
 
@@ -2696,7 +2695,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-blue);
 
-  font-size: 11px; font-weight: 700; cursor: pointer;
+  font-size: 12px; font-weight: 700; cursor: pointer;
 
 }
 
@@ -2774,7 +2773,7 @@ p { line-height: 1.65; }
 
   color: #65738c;
 
-  font-size: 11px; line-height: 1.55;
+  font-size: 12px; line-height: 1.55;
 
   overflow-wrap: anywhere;
 
@@ -2782,7 +2781,7 @@ p { line-height: 1.65; }
 
 
 
-.cf-notification-copy > span { color: #9aa5b7; font-size: 10px; }
+.cf-notification-copy > span { color: #9aa5b7; font-size: 11px; }
 
 
 
@@ -2844,7 +2843,7 @@ p { line-height: 1.65; }
 
 .cf-notification-empty b { color: var(--cf-navy); font-size: 13px; }
 
-.cf-notification-empty p { max-width: 250px; margin: 7px 0 0; color: #8793a7; font-size: 11px; line-height: 1.6; }
+.cf-notification-empty p { max-width: 250px; margin: 7px 0 0; color: #8793a7; font-size: 12px; line-height: 1.6; }
 
 
 
@@ -2918,7 +2917,7 @@ p { line-height: 1.65; }
 
 .cf-settings-field > span small,
 
-.cf-settings-field > small { font-size: 11px; font-weight: 400; opacity: .6; }
+.cf-settings-field > small { font-size: 12px; font-weight: 400; opacity: .6; }
 
 
 
@@ -3032,7 +3031,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-sky);
 
-  font-size: 10px; font-weight: 800;
+  font-size: 11px; font-weight: 800;
 
   letter-spacing: 1.5px;
 
@@ -3062,7 +3061,7 @@ p { line-height: 1.65; }
 
 .cf-shop-plan-price strong { display: block; color: var(--cf-amber); font-size: 22px; }
 
-.cf-shop-plan-price span { color: rgba(255,255,255,.65); font-size: 11px; }
+.cf-shop-plan-price span { color: rgba(255,255,255,.65); font-size: 12px; }
 
 
 
@@ -3162,7 +3161,7 @@ p { line-height: 1.65; }
 
   color: rgba(255,255,255,.58);
 
-  font-size: 11px; line-height: 1.5;
+  font-size: 12px; line-height: 1.5;
 
 }
 
@@ -3442,7 +3441,7 @@ p { line-height: 1.65; }
 
   margin-bottom: 8px;
 
-  font-size: 11px;
+  font-size: 12px;
 
   font-weight: 800;
 
@@ -3464,7 +3463,7 @@ p { line-height: 1.65; }
 
   color: var(--cf-blue);
 
-  font-size: 11px;
+  font-size: 12px;
 
   font-weight: 700;
 
@@ -3900,7 +3899,7 @@ p { line-height: 1.65; }
   border-radius: 999px;
   color: #10265C;
   background: #FFB900;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 1.05px;
 }
@@ -3959,7 +3958,7 @@ p { line-height: 1.65; }
   gap: 8px;
   margin-top: 20px;
   color: rgba(230,239,255,.78);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -4016,7 +4015,7 @@ p { line-height: 1.65; }
 .cf-hero-product small {
   margin-top: 8px;
   color: rgba(255,255,255,.83);
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -4095,7 +4094,7 @@ p { line-height: 1.65; }
   border-radius: 999px;
   color: #fff;
   background: rgba(7,20,53,.58);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   backdrop-filter: blur(12px);
 }
@@ -4158,7 +4157,7 @@ p { line-height: 1.65; }
   border-radius: 999px;
   color: #10265C;
   background: #FFB900;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: .35px;
 }
@@ -4194,7 +4193,7 @@ p { line-height: 1.65; }
 
 .cf-deal-prices span {
   color: rgba(222,233,255,.62);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-decoration: line-through;
 }
@@ -4207,7 +4206,7 @@ p { line-height: 1.65; }
   padding: 0;
   color: #FFCA52;
   background: transparent;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -4333,7 +4332,7 @@ p { line-height: 1.65; }
   .cf-hero-eyebrow {
     margin-bottom: 12px;
     padding: 6px 9px;
-    font-size: 8px;
+    font-size: 11px;
     letter-spacing: .75px;
   }
 
@@ -4344,7 +4343,7 @@ p { line-height: 1.65; }
 
   .cf-hero-copy p {
     margin: 12px 0 15px;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.55;
   }
 
@@ -4353,7 +4352,7 @@ p { line-height: 1.65; }
     gap: 7px;
     padding: 0 12px;
     border-radius: 11px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .cf-hero-cta svg { width: 15px; height: 15px; }
@@ -4361,7 +4360,7 @@ p { line-height: 1.65; }
   .cf-hero-stats {
     gap: 6px;
     margin-top: 15px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-hero-art {
@@ -4384,7 +4383,7 @@ p { line-height: 1.65; }
   }
 
   .cf-hero-product-bag span { font-size: 57px; }
-  .cf-hero-product small { font-size: 6px; }
+  .cf-hero-product small { font-size: 11px; }
 
   .cf-hero-product-laptop {
     width: 78px;
@@ -4418,7 +4417,7 @@ p { line-height: 1.65; }
     bottom: 0;
     gap: 5px;
     padding: 6px 8px;
-    font-size: 7px;
+    font-size: 11px;
   }
 
   .cf-hero-caption-icon {
@@ -4447,7 +4446,7 @@ p { line-height: 1.65; }
   .cf-deal-copy .pill {
     gap: 4px;
     padding: 6px 8px;
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .cf-deal-copy .pill svg { width: 11px; height: 11px; }
@@ -4463,12 +4462,12 @@ p { line-height: 1.65; }
   }
 
   .cf-deal-prices b { font-size: clamp(16px, 4.5vw, 20px); }
-  .cf-deal-prices span { font-size: 9px; }
+  .cf-deal-prices span { font-size: 11px; }
 
   .cf-deal-countdown {
     gap: 4px;
     margin-top: 9px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-deal-countdown svg { width: 12px; height: 12px; }
@@ -4479,7 +4478,7 @@ p { line-height: 1.65; }
     margin-top: 12px;
     padding: 0 11px;
     border-radius: 10px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .cf-deal-visual { min-height: 205px; }
@@ -4494,7 +4493,7 @@ p { line-height: 1.65; }
   }
 
   .cf-hero-copy h1 { font-size: 25px; }
-  .cf-hero-copy p { font-size: 10px; }
+  .cf-hero-copy p { font-size: 11px; }
   .cf-hero-art { margin-left: -15px; }
   .cf-hero-art-caption { display: none; }
 
@@ -4506,8 +4505,8 @@ p { line-height: 1.65; }
   .cf-deal-copy { padding-left: 11px; }
   .cf-deal-copy strong { font-size: 14px; }
   .cf-deal-prices b { font-size: 16px; }
-  .cf-deal-prices span { font-size: 8px; }
-  .cf-deal-countdown { font-size: 8px; }
+  .cf-deal-prices span { font-size: 11px; }
+  .cf-deal-countdown { font-size: 11px; }
   .cf-deal-visual { min-height: 190px; }
 }
 

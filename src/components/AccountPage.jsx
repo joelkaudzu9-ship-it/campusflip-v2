@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { cfImage } from '../lib/cloudinary';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import {
   ArrowLeft, ShieldCheck, LogOut, UserRound, Bell, Lock, Shield,
@@ -332,7 +333,7 @@ export default function AccountPage({
             <div className="cf-account-avatar-wrap">
               <div className="cf-account-avatar">
                 {profile?.avatar_url
-                  ? <img src={profile.avatar_url} alt={`${displayName}'s profile`} />
+                  ? <img src={cfImage(profile.avatar_url, 240)} alt={`${displayName}'s profile`} />
                   : <span>{initials}</span>}
               </div>
               {shopPlanActive && <VerifiedMark />}

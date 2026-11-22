@@ -1,3 +1,4 @@
+import { safeStorage } from '../lib/safeStorage';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, X, Share } from 'lucide-react';
@@ -13,7 +14,7 @@ export default function InstallPrompt() {
     if (window.navigator.standalone === true) return;
 
     // Don't show if dismissed recently
-    const dismissed = localStorage.getItem('cf_install_dismissed');
+    const dismissed = safeStorage.get('cf_install_dismissed');
     if (dismissed && Date.now() - Number(dismissed) < 30 * 24 * 60 * 60 * 1000) return;
 
     // Detect iOS
@@ -40,7 +41,7 @@ export default function InstallPrompt() {
 
   function dismiss() {
     setShowPrompt(false);
-    localStorage.setItem('cf_install_dismissed', String(Date.now()));
+    safeStorage.set('cf_install_dismissed', String(Date.now()));
   }
 
   async function handleInstall() {

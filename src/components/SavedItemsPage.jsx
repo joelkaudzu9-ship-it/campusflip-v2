@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { cfImage } from '../lib/cloudinary';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Heart, Trash2, MapPin } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -51,7 +52,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
           );
           return {
             ...listing,
-            image: photos[0]?.image_url || null,
+            image: cfImage(photos[0]?.image_url, 480) || null,
             categoryName: Array.isArray(listing.categories)
               ? listing.categories[0]?.name
               : listing.categories?.name,
@@ -229,7 +230,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                           ? 'rgba(21,128,61,.9)'
                           : 'rgba(148,163,184,.9)',
                         color: '#fff',
-                        fontSize: 10,
+                        fontSize: 11,
                         fontWeight: 800,
                         letterSpacing: 0.3,
                         backdropFilter: 'blur(8px)',
@@ -258,7 +259,7 @@ function SavedItemsPage({ session, onBack, onOpenListing, onToast }) {
                       alignItems: 'center',
                       gap: 6,
                       marginTop: 4,
-                      fontSize: 11,
+                      fontSize: 12,
                       color: '#94A3B8',
                     }}>
                       <span>{item.categoryName}</span>

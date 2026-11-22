@@ -1,0 +1,107 @@
+/* Audit fixes: loaded after premium.css so these rules win. */
+
+/* ── Header sign-in button (shown when logged out) ── */
+.cf-signin-btn,
+.actions .cf-signin-btn {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #2563EB !important;
+  color: #fff !important;
+  font: 800 13px/1 Manrope, system-ui, sans-serif;
+  cursor: pointer;
+}
+.cf-signin-btn:focus-visible,
+.cf-new-activity:focus-visible,
+.cf-product-card:focus-visible {
+  outline: 3px solid #FFB900;
+  outline-offset: 2px;
+}
+
+/* ── "New listings" pill (replaces auto-reloading the feed under the user's thumb) ── */
+.cf-new-activity {
+  position: sticky;
+  top: 84px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px auto 0;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #101C3A;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(16,28,58,.28);
+  font: 800 13px/1 Manrope, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+/* ── Lazy overlay loading spinner ── */
+.cf-lazy-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.7);
+  color: #2563EB;
+}
+
+/* ── Listing fee banner at the top of the post form ── */
+.cf-fee-banner {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #FFF8E1;
+  border: 1px solid #FFE08A;
+  color: #5B4300;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.cf-fee-banner strong { color: #101C3A; font-weight: 900; }
+.cf-fee-banner-free { background: #ECFDF3; border-color: #A7F0C4; color: #0B5D2E; }
+
+/* ── Tap targets: keep the visual size, grow the hit area to 44 px ── */
+.cf-product-card .heart,
+.avatar,
+.actions button {
+  position: relative;
+}
+.cf-product-card .heart::after,
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+/* ── Compact hero on phones: products visible on the first screen ── */
+@media (max-width: 700px) {
+  .cf-hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    margin: 10px 12px 0;
+    padding: 16px 16px 14px;
+    border-radius: 22px;
+  }
+  .cf-hero-art,
+  .cf-hero-copy p { display: none; }
+  .cf-hero-eyebrow { margin-bottom: 8px; min-height: 24px; padding: 4px 10px; font-size: 11px; }
+  .cf-hero-copy h1 { font-size: 24px; letter-spacing: -.8px; line-height: 1.05; }
+  .cf-hero-copy h1 span { display: inline; margin: 0 0 0 6px; }
+  .cf-hero-copy { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 12px; row-gap: 8px; }
+  .cf-hero-eyebrow, .cf-hero-copy h1 { grid-column: 1 / -1; justify-self: start; }
+  .cf-hero-cta { min-height: 44px; font-size: 13px; padding: 0 14px; }
+  .cf-hero-stats { margin-top: 0; font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-new-activity { scroll-behavior: auto; }
+}
+
+/* Header avatar: 40 px visual, 44+ px hit area */
+.avatar { min-width: 40px; min-height: 40px; }

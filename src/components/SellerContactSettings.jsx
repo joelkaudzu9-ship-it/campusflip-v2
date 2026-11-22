@@ -212,7 +212,7 @@ export default function SellerContactSettings({ session }) {
         <p style={{
           margin: '8px 0 15px',
           color: '#8491a5',
-          fontSize: 11,
+          fontSize: 12,
           lineHeight: 1.6
         }}>
           Use a Malawi mobile number. Buyers will be able to contact you

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useFocusTrap } from '../lib/useFocusTrap';
 import {
   AnimatePresence,
   LayoutGroup,
@@ -50,7 +51,9 @@ export function AnimatedModal({
   closeOnBackdrop = true,
 }) {
   const reduceMotion = useReducedMotion();
+  const modalRef = useRef(null);
   useBodyLock(open);
+  useFocusTrap(modalRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -75,6 +78,7 @@ export function AnimatedModal({
           }}
         >
           <motion.div
+            ref={modalRef}
             className={`cf-modal ${className}`}
             role="dialog"
             aria-modal="true"

@@ -42,7 +42,7 @@
 .cf-account-overline {
   display: block;
   color: #8b97ac;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 1.8px;
   line-height: 1.5;
@@ -249,7 +249,7 @@
 }
 
 .cf-account-cover-label {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 1.7px;
 }
@@ -339,7 +339,7 @@
   border-radius: 5px;
   background: #e7f8ef;
   color: #16834c;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: .7px;
 }
@@ -352,7 +352,7 @@
   overflow: hidden;
   margin: 5px 0 0;
   color: var(--cf-muted);
-  font-size: 11px;
+  font-size: 12px;
   text-overflow: ellipsis;
 }
 
@@ -370,7 +370,7 @@
   border: 0;
   background: transparent;
   color: var(--cf-blue);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   cursor: pointer;
 }
@@ -391,7 +391,7 @@
   align-items: center;
   gap: 6px;
   color: var(--cf-muted);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
 }
 
@@ -471,7 +471,7 @@
 .cf-account-stat-label {
   overflow: hidden;
   color: #7d8ba3;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 750;
   text-overflow: ellipsis;
 }
@@ -488,7 +488,7 @@
   display: block;
   margin-top: 5px;
   color: #9aa5b7;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.4;
 }
 
@@ -535,7 +535,7 @@
   max-width: 560px;
   margin: 0;
   color: #8a744b;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.65;
 }
 
@@ -557,7 +557,7 @@
 
 .cf-account-referral-credit span {
   color: #9d8354;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 750;
 }
 
@@ -578,7 +578,7 @@
   gap: 9px;
   overflow: hidden;
   color: #7b5c20;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 750;
 }
 
@@ -610,7 +610,7 @@
   border-radius: 10px;
   background: white;
   color: var(--cf-navy);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 850;
   cursor: pointer;
   transition: .2s ease;
@@ -644,7 +644,7 @@
 
 .cf-account-section-note {
   color: #a0aabd;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 1.2px;
 }
@@ -721,7 +721,7 @@
   display: block;
   margin-top: 4px;
   color: #909cb0;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.5;
 }
 
@@ -746,7 +746,7 @@
   align-items: center;
   gap: 10px;
   color: #9aa5b7;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 750;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -768,7 +768,7 @@
   border-radius: 10px;
   background: white;
   color: #b53e3e;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   cursor: pointer;
   transition: .2s ease;
@@ -797,7 +797,7 @@
   border-radius: 10px;
   background: #f0faf4;
   color: #20804d;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -975,7 +975,7 @@
   overflow: hidden;
   margin: 6px 0 0;
   color: #929eb1;
-  font-size: 10px;
+  font-size: 11px;
   text-align: center;
   text-overflow: ellipsis;
 }
@@ -988,7 +988,7 @@
   overflow: hidden;
   margin-top: 9px;
   color: var(--cf-blue);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 750;
   text-overflow: ellipsis;
 }
@@ -1012,7 +1012,7 @@
   border-radius: 9px;
   background: #f5f8ff;
   color: var(--cf-blue);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   cursor: pointer;
   transition: .2s ease;
@@ -1037,7 +1037,7 @@
 .cf-settings-image-note {
   margin-top: 12px;
   color: #a0aabd;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .cf-settings-sidebar-note {
@@ -1063,14 +1063,14 @@
 .cf-settings-sidebar-note strong {
   display: block;
   margin-top: 2px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 850;
 }
 
 .cf-settings-sidebar-note p {
   margin: 5px 0 0;
   color: #8391a9;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.6;
 }
 
@@ -1117,7 +1117,7 @@
 .cf-settings-form-heading p {
   margin: 0;
   color: #929eb1;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
 }
 
@@ -1140,7 +1140,7 @@
   align-items: center;
   gap: 7px;
   color: #263653;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 850;
 }
 
@@ -1151,7 +1151,7 @@
 .cf-settings-input-group > span i {
   margin-left: auto;
   color: #9ca8ba;
-  font-size: 8px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
 }
@@ -1166,7 +1166,7 @@
   border-radius: 10px;
   background: #fbfcfe;
   color: var(--cf-navy);
-  font-size: 11px;
+  font-size: 12px;
   transition: border-color .2s, box-shadow .2s, background .2s;
 }
 
@@ -1188,7 +1188,7 @@
 
 .cf-settings-input-group > small {
   color: #9aa5b7;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 
@@ -1206,7 +1206,7 @@
   align-items: center;
   gap: 6px;
   color: #8997ac;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 
@@ -1226,7 +1226,7 @@
   border-radius: 11px;
   background: linear-gradient(110deg, #2865e6, #174bbd);
   color: white;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 850;
   cursor: pointer;
   box-shadow: 0 6px 15px rgba(37,99,235,.2);
@@ -1341,7 +1341,7 @@
   }
 
   .cf-account-overline {
-    font-size: 8px;
+    font-size: 11px;
     letter-spacing: 1.35px;
   }
 
@@ -1368,7 +1368,7 @@
 
   .cf-account-welcome p {
     max-width: 280px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .cf-account-welcome-decoration {
@@ -1415,7 +1415,7 @@
 
   .cf-account-email,
   .cf-account-business {
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-account-edit-link {
@@ -1433,7 +1433,7 @@
   }
 
   .cf-account-member-strip > span {
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-account-stats-panel {
@@ -1462,7 +1462,7 @@
   }
 
   .cf-account-stat-label {
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .cf-account-stat > strong {
@@ -1470,7 +1470,7 @@
   }
 
   .cf-account-stat > small {
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .cf-account-referral {
@@ -1501,7 +1501,7 @@
   }
 
   .cf-account-referral-main p {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .cf-account-referral-credit {
@@ -1523,7 +1523,7 @@
   }
 
   .cf-account-referral-link {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .cf-account-referral-actions {
@@ -1534,7 +1534,7 @@
   .cf-account-copy,
   .cf-account-share {
     padding: 0 8px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-account-actions-grid {
@@ -1555,11 +1555,11 @@
   }
 
   .cf-account-action-copy strong {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .cf-account-action-copy small {
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-account-footer {
@@ -1568,7 +1568,7 @@
 
   .cf-account-footer button {
     padding: 9px 11px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   /* Settings mobile */
@@ -1595,7 +1595,7 @@
 
   .cf-settings-intro p {
     max-width: 270px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .cf-settings-intro-art {
@@ -1641,7 +1641,7 @@
 
   .cf-settings-form-heading p {
     max-width: 250px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .cf-settings-fields {

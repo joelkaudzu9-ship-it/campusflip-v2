@@ -2,6 +2,7 @@ const SUPABASE_URL = "https://pfomxbhofdoorqfdekfd.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_EuvfaKH4mhw4qOk9APGYnA_Aw4H_RvR";
 const CLOUDINARY_CLOUD = "vr7rj2dt";
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CRAWLER_RE = /(whatsapp|facebookexternalhit|twitterbot|linkedinbot|telegrambot|slackbot|discordbot|skypeuripreview)/i;
 
 export async function onRequest(context) {
@@ -15,10 +16,15 @@ export async function onRequest(context) {
     return context.next();
   }
 
+  // Only real listing ids reach the database query (blocks "&other=filter" injection).
+  if (!UUID_RE.test(listingId)) {
+    return context.next();
+  }
+
   let listing = null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/listings?select=id,title,description,price,listing_photos(image_url,display_order)&id=eq.${listingId}&status=eq.active`,
+      `${SUPABASE_URL}/rest/v1/listings?select=id,title,description,price,listing_photos(image_url,display_order)&id=eq.${encodeURIComponent(listingId)}&status=eq.active`,
       { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
     );
     const rows = await res.json();

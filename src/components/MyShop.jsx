@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { cfImage } from '../lib/cloudinary';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -218,7 +219,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           ...row,
           categoryName: relation(row.categories)?.name || 'Other',
           spotName: relation(row.meeting_spots)?.name || 'Campus',
-          image: photos[0]?.image_url || null,
+          image: cfImage(photos[0]?.image_url, 480) || null,
           photoCount: photos.length,
         };
       }));
@@ -660,7 +661,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                   width: 20, height: 20,
                   display: 'inline-grid', placeItems: 'center',
                   borderRadius: '50%', background: '#2563EB', color: '#fff',
-                  fontSize: 11, fontWeight: 900,
+                  fontSize: 12, fontWeight: 900,
                   border: '2px solid white',
                   boxShadow: '0 2px 6px rgba(37,99,235,.35)'
                 }}
@@ -719,7 +720,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
               <div style={{ fontSize: 18, fontWeight: 850, color: '#101C3A', letterSpacing: -0.3 }}>
                 {s.value}
               </div>
-              <div style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 2 }}>
                 {s.label}
               </div>
             </motion.div>
@@ -810,7 +811,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                       <div style={{
                         position: 'absolute', top: 6, right: 6,
                         background: '#F5A623', borderRadius: 6,
-                        padding: '3px 7px', fontSize: 9, fontWeight: 900,
+                        padding: '3px 7px', fontSize: 11, fontWeight: 900,
                         display: 'flex', alignItems: 'center', gap: 2,
                         color: '#101C3A'
                       }}>
@@ -829,7 +830,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         {listing.title}
                       </h3>
                       <span style={{
-                        padding: '4px 8px', borderRadius: 6, fontSize: 10,
+                        padding: '4px 8px', borderRadius: 6, fontSize: 11,
                         fontWeight: 800, whiteSpace: 'nowrap',
                         background: listing.status === 'active' ? '#DCFCE7'
                           : listing.status === 'pending_payment' ? '#FFF7D2' : '#EEF2F8',
@@ -839,7 +840,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         {statusLabels[listing.status]}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, fontSize: 11, color: '#94A3B8', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, fontSize: 12, color: '#94A3B8', flexWrap: 'wrap' }}>
                       <span>{listing.categoryName}</span>
                       <span>·</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -852,7 +853,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                       alignItems: 'center',
                       gap: 10,
                       marginTop: 8,
-                      fontSize: 10,
+                      fontSize: 11,
                       color: '#94A3B8',
                     }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
@@ -1027,7 +1028,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
         {activeModal?.type === 'more' && (
           <>
             <div style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.3, color: '#94A3B8', marginBottom: 4 }}>
+              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#94A3B8', marginBottom: 4 }}>
                 ACTIONS FOR
               </div>
               <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, lineHeight: 1.3 }}>
@@ -1104,7 +1105,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.3, color: '#2563EB', marginBottom: 4 }}>
+                <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#2563EB', marginBottom: 4 }}>
                   EDIT LISTING
                 </div>
                 <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, lineHeight: 1.2 }}>
@@ -1369,7 +1370,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             }}>
               <Zap size={29} fill="currentColor" />
             </div>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color: '#946000', marginBottom: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 1.5, color: '#946000', marginBottom: 8 }}>
               BOOST LISTING
             </div>
             <h2 style={{ fontSize: 22, lineHeight: 1.25, margin: '0 0 10px', letterSpacing: '-.5px' }}>
@@ -1380,7 +1381,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             {activeModal.listing.kind === 'sale' && (
               <span style={{
                 display: 'inline-block', background: '#DCFCE7', color: '#15803D',
-                padding: '4px 10px', borderRadius: 20, fontSize: 11,
+                padding: '4px 10px', borderRadius: 20, fontSize: 12,
                 fontWeight: 800, marginBottom: 12
               }}>
                 LOYAL SELLER DISCOUNT APPLIED
@@ -1488,7 +1489,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
             }}>
               <Flame size={27} />
             </div>
-            <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.3, color: '#15803D', marginBottom: 7 }}>
+            <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 1.3, color: '#15803D', marginBottom: 7 }}>
               CREATE FLASH DEAL
             </div>
             <h2 style={{ margin: '0 0 6px', fontSize: 22 }}>{activeModal.listing.title}</h2>
@@ -1692,7 +1693,7 @@ function MenuAction({ icon, label, sublabel, onClick, danger }) {
       </span>
       <span style={{ flex: 1, minWidth: 0 }}>
         <strong style={{ display: 'block', fontSize: 14 }}>{label}</strong>
-        <small style={{ display: 'block', fontSize: 11, color: danger ? '#B42318' : '#94A3B8', marginTop: 2, opacity: 0.85 }}>
+        <small style={{ display: 'block', fontSize: 12, color: danger ? '#B42318' : '#94A3B8', marginTop: 2, opacity: 0.85 }}>
           {sublabel}
         </small>
       </span>

@@ -569,10 +569,22 @@ export default function PostListingModal({
               </div>
             ) : (
               <form className="cf-post-form" onSubmit={submit}>
+                {/* Fee shown up front, before the seller fills anything in */}
+                <div className={kind === 'sale' ? 'cf-fee-banner' : 'cf-fee-banner cf-fee-banner-free'} role="note">
+                  {kind === 'sale' ? (
+                    <>
+                      <strong>MK 200</strong> to publish · live for 14 days · free with referral credits
+                    </>
+                  ) : (
+                    <>
+                      <strong>Free</strong> to post · no listing fee for Wanted, Free and Lost &amp; Found
+                    </>
+                  )}
+                </div>
                 {/* Live preview card */}
                 <div style={{ marginBottom: 18 }}>
                   <div style={{
-                    fontSize: 10,
+                    fontSize: 11,
                     fontWeight: 800,
                     letterSpacing: 1,
                     color: '#94A3B8',
@@ -619,7 +631,7 @@ export default function PostListingModal({
                       </h4>
                       <div style={{
                         marginTop: 'auto',
-                        fontSize: 11,
+                        fontSize: 12,
                         color: '#94A3B8',
                         display: 'flex',
                         alignItems: 'center',

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { cfImage } from '../lib/cloudinary';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -254,7 +255,7 @@ export default function ListingDetails({
     if (!authData?.session) {
       onRequireAuth?.({
         title: details.title,
-        image: details.photos?.[0]?.image_url || null,
+        image: cfImage(details.photos?.[0]?.image_url, 480) || null,
         seller,
         spotName: details.spotName
       });
@@ -355,7 +356,7 @@ export default function ListingDetails({
   if (!listing) return null;
 
   const photos = details?.photos || [];
-  const currentPhoto = photos[photoIndex]?.image_url;
+  const currentPhoto = cfImage(photos[photoIndex]?.image_url, 900);
 
   const kindLabels = {
     sale: details?.price != null ? money(details.price) : '',
@@ -600,7 +601,7 @@ export default function ListingDetails({
                       borderRadius: 20,
                       background: '#F5A623',
                       color: '#101C3A',
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: 900,
                       letterSpacing: 0.3,
                       display: 'flex',
@@ -638,7 +639,7 @@ export default function ListingDetails({
                         background: 'rgba(255,255,255,.9)',
                         backdropFilter: 'blur(10px)',
                         WebkitBackdropFilter: 'blur(10px)',
-                        fontSize: 10,
+                        fontSize: 11,
                         fontWeight: 800,
                         letterSpacing: 0.8,
                         color: '#2563EB',
@@ -692,7 +693,7 @@ export default function ListingDetails({
                           background: 'rgba(16,28,58,.55)',
                           backdropFilter: 'blur(10px)',
                           color: 'white',
-                          fontSize: 10,
+                          fontSize: 11,
                           fontWeight: 700,
                         }}
                       >
@@ -707,7 +708,7 @@ export default function ListingDetails({
                           background: 'rgba(16,28,58,.55)',
                           backdropFilter: 'blur(10px)',
                           color: 'white',
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: 700,
                         }}
                       >
@@ -864,7 +865,7 @@ export default function ListingDetails({
                             alignItems: 'center',
                             gap: 3,
                             color: '#2563EB',
-                            fontSize: 10,
+                            fontSize: 11,
                             fontWeight: 800,
                             background: '#fff',
                             padding: '2px 6px',
@@ -878,7 +879,7 @@ export default function ListingDetails({
                     <div
                       style={{
                         marginTop: 3,
-                        fontSize: 11,
+                        fontSize: 12,
                         color: '#94A3B8',
                         display: 'flex',
                         alignItems: 'center',
@@ -911,7 +912,7 @@ export default function ListingDetails({
                 >
                   <div
                     style={{
-                      fontSize: 10,
+                      fontSize: 11,
                       fontWeight: 800,
                       letterSpacing: 1,
                       color: '#94A3B8',
@@ -998,7 +999,7 @@ export default function ListingDetails({
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{
-                      fontSize: 10,
+                      fontSize: 11,
                       fontWeight: 800,
                       letterSpacing: 1,
                       color: '#94A3B8',
@@ -1019,7 +1020,7 @@ export default function ListingDetails({
                   >
                     {details.spotName}
                   </b>
-                  <span style={{ fontSize: 11, color: '#94A3B8' }}>
+                  <span style={{ fontSize: 12, color: '#94A3B8' }}>
                     Tap for directions
                   </span>
                 </div>
@@ -1067,7 +1068,7 @@ export default function ListingDetails({
                     border: 0,
                     background: 'transparent',
                     color: '#94A3B8',
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: 700,
                     cursor: 'pointer',
                   }}
@@ -1321,7 +1322,7 @@ export default function ListingDetails({
                     <div>
                       <div
                         style={{
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: 900,
                           letterSpacing: 1.3,
                           color: '#B42318',

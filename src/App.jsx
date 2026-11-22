@@ -1,25 +1,15 @@
 import AuthPanel from './components/AuthPanel';
 import { AnimatedModal, AnimatedTabs, MotionButton } from './components/MotionUI';
 import ToastViewport from './components/ToastViewport';
-import PostListingModal from './components/PostListingModal';
 import NotificationCenter from './components/NotificationCenter';
-import MyShop from './components/MyShop';
-import ListingDetails from './components/ListingDetails';
-import AccountSettings from './components/AccountSettings';
-import AdminDashboard from './components/AdminDashboard';
-import SavedItemsPage from './components/SavedItemsPage';
-import AccountPage from './components/AccountPage';
 import EmptyState from './components/EmptyState';
 import PageTransition from './components/PageTransition';
 import Onboarding from './components/Onboarding';
 import ContactSellerModal from './components/ContactSellerModal';
 import InvitePage from './components/InvitePage';
-import NotificationPreferences from './components/NotificationPreferences';
-import PrivacySecurity from './components/PrivacySecurity';
-import SearchPage from './components/SearchPage';
 import ResetPasswordPage from './components/ResetPasswordPage';
 import InstallPrompt from './components/InstallPrompt';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Search, SlidersHorizontal, ChevronDown,
@@ -30,10 +20,48 @@ import {
 } from 'lucide-react';
 
 import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { safeStorage } from './lib/safeStorage';
+import { cfImage } from './lib/cloudinary';
+import { clearPrivateCaches } from './lib/privateCaches';
 import { useBackButton } from './lib/useBackButton';
 import './premium.css';
+import './audit-fixes.css';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Rarely-used screens load on demand so the home feed ships less JavaScript.
+const AccountSettings = lazy(() => import('./components/AccountSettings'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const SavedItemsPage = lazy(() => import('./components/SavedItemsPage'));
+const AccountPage = lazy(() => import('./components/AccountPage'));
+const NotificationPreferences = lazy(() => import('./components/NotificationPreferences'));
+const PrivacySecurity = lazy(() => import('./components/PrivacySecurity'));
+const SearchPage = lazy(() => import('./components/SearchPage'));
+const MyShop = lazy(() => import('./components/MyShop'));
+const PostListingModal = lazy(() => import('./components/PostListingModal'));
+const ListingDetails = lazy(() => import('./components/ListingDetails'));
 
 const PAGE_SIZE = 30;
+
+// True from the first time `flag` is true onward, so a lazy overlay mounts on
+// first use but keeps its exit animation afterwards.
+function useEverTrue(flag) {
+  const [ever, setEver] = useState(Boolean(flag));
+  useEffect(() => { if (flag) setEver(true); }, [flag]);
+  return ever || Boolean(flag);
+}
+
+// Wraps a lazy-loaded overlay: shows a spinner while its code loads and a
+// small "Something went wrong" card (with Close) if it crashes.
+function Guard({ onClose, children, silent = false }) {
+  return (
+    <ErrorBoundary inline onClose={onClose}>
+      <Suspense fallback={silent ? null : <div className="cf-lazy-fallback" role="status" aria-label="Loading"><LoaderCircle className="cf-spin" size={26} /></div>}>
+        {children}
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+
 
 const cats = [
   ['All', ShoppingBasket],
@@ -73,7 +101,7 @@ function mapListing(row, seller) {
     kind: row.kind,
     category: category?.name || 'Other',
     location: spot?.name || 'Campus',
-    image: photos[0]?.image_url || null,
+    image: cfImage(photos[0]?.image_url, 480) || null,
     badge: row.is_boosted ? 'Boosted' : '',
     isBoosted: row.is_boosted,
     sellerId: row.seller_id,
@@ -94,6 +122,21 @@ const SORT_LABELS = {
   price_desc: 'Price ↓'
 };
 
+/* ── Countdown: owns its 1-second timer so the whole app doesn't re-render ── */
+function DealCountdown({ endsAt }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const left = Math.max(0, new Date(endsAt).getTime() - now);
+  return [
+    Math.floor(left / 3600000),
+    Math.floor((left % 3600000) / 60000),
+    Math.floor((left % 60000) / 1000),
+  ].map(v => String(v).padStart(2, '0')).join(':');
+}
+
 /* ── Product card ── */
 function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }) {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -105,6 +148,13 @@ function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }) {
       className="card cf-product-card"
       whileTap={{ scale: 0.97 }}
       onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      aria-label={`${item.title}, ${money(displayPrice)}`}
+      onKeyDown={e => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.(); }
+      }}
       style={{ cursor: 'pointer' }}
     >
       <div className="photo cf-product-image">
@@ -212,7 +262,7 @@ function ProductCard({ item, isSaved, onSave, onOpen, flashDeal }) {
                 borderRadius: '50%',
                 background: '#2563EB',
                 color: '#fff',
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 900,
                 flexShrink: 0,
               }}
@@ -247,7 +297,6 @@ export default function App() {
   const [saved, setSaved] = useState([]);
   const [deal, setDeal] = useState(0);
   const [flashDeals, setFlashDeals] = useState([]);
-  const [dealNow, setDealNow] = useState(Date.now());
   const [dealHovered, setDealHovered] = useState(false);
   const [dealFocused, setDealFocused] = useState(false);
   const [dealCycleKey, setDealCycleKey] = useState(0);
@@ -265,6 +314,9 @@ export default function App() {
   const [showAccountPage, setShowAccountPage] = useState(false);
   const [showSearchPage, setShowSearchPage] = useState(false);
   const [refreshListings, setRefreshListings] = useState(0);
+  const [dealsRefresh, setDealsRefresh] = useState(0);
+  const [pendingUpdates, setPendingUpdates] = useState(0);
+  const [totalActive, setTotalActive] = useState(null);
   const [selectedListing, setSelectedListing] = useState(null);
   const [showAdmin, setShowAdmin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -322,7 +374,7 @@ export default function App() {
 
   const [showOnboarding, setShowOnboarding] = useState(() => {
     if (typeof window === 'undefined') return false;
-    return !localStorage.getItem('campusflip_onboarded');
+    return !safeStorage.get('campusflip_onboarded');
   });
 
   const [contactIntent, setContactIntent] = useState(null);
@@ -336,9 +388,11 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showSplash, setShowSplash] = useState(true);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  const refreshDebounceRef = useRef(null);
+  const refreshDebounceRef = useRef({});
+  const itemsRef = useRef([]);
+  const postMounted = useEverTrue(showPost);
+  const listingMounted = useEverTrue(Boolean(selectedListing));
 
   const accountBack = useBackButton(showAccountPage, () => { setShowAccountPage(false); setNav('Home'); });
   const settingsBack = useBackButton(showSettings, () => { setShowSettings(false); });
@@ -350,15 +404,20 @@ export default function App() {
   const adminBack = useBackButton(showAdmin, () => { setShowAdmin(false); setNav('Home'); });
   const listingBack = useBackButton(Boolean(selectedListing), () => setSelectedListing(null));
 
+  // Make an open listing shareable/refreshable: reflect it in the address bar.
+  // (replaceState, so the Back-button history is not affected.)
+  const selectedListingId = selectedListing?.id;
+  useEffect(() => {
+    if (!selectedListingId || typeof window === 'undefined') return;
+    try {
+      window.history.replaceState(window.history.state, '', `/?listing=${encodeURIComponent(selectedListingId)}`);
+    } catch { /* ignore */ }
+  }, [selectedListingId]);
+
   useEffect(() => {
     const path = window.location.pathname;
     const match = path.match(/^\/invite\/([a-zA-Z0-9]+)/);
-    if (match) localStorage.setItem('campusflip_invite_code', match[1]);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => setDealNow(Date.now()), 1000);
-    return () => clearInterval(timer);
+    if (match) safeStorage.set('campusflip_invite_code', match[1]);
   }, []);
 
   useEffect(() => {
@@ -371,43 +430,21 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [flashDeals.length, deal, dealHovered, dealFocused, dealCycleKey]);
 
+  // Show the app as soon as the first listings arrive (images fill in as they load).
   useEffect(() => {
-    if (loading || items.length === 0) {
-      if (!loading) setImagesLoaded(true);
-      return;
-    }
-    const imageUrls = items.map(item => item.image).filter(Boolean);
-    if (imageUrls.length === 0) { setImagesLoaded(true); return; }
-
-    let loadedCount = 0;
-    let cancelled = false;
-    const target = Math.min(imageUrls.length, 8);
-    const checkDone = () => {
-      loadedCount++;
-      if (loadedCount >= target && !cancelled) setImagesLoaded(true);
-    };
-    const timeout = setTimeout(() => { if (!cancelled) setImagesLoaded(true); }, 2500);
-
-    imageUrls.slice(0, 8).forEach(url => {
-      const img = new Image();
-      img.src = url;
-      img.onload = checkDone;
-      img.onerror = checkDone;
-    });
-
-    return () => { cancelled = true; clearTimeout(timeout); };
-  }, [loading, items]);
-
-  useEffect(() => {
-    if (!loading && imagesLoaded) {
-      const timer = setTimeout(() => setShowSplash(false), 600);
+    if (!loading) {
+      const timer = setTimeout(() => setShowSplash(false), 250);
       return () => clearTimeout(timer);
     }
-  }, [loading, imagesLoaded]);
+    // Never hold the splash longer than 2.5 s, even on a very slow connection.
+    const cap = setTimeout(() => setShowSplash(false), 2500);
+    return () => clearTimeout(cap);
+  }, [loading]);
 
   useEffect(() => {
     if (!supabase) return;
 
+    clearPrivateCaches();
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -416,6 +453,7 @@ export default function App() {
         setShowResetPassword(true);
         return;
       }
+      if (event === 'SIGNED_OUT') clearPrivateCaches();
       setSession(newSession);
     });
 
@@ -425,6 +463,9 @@ export default function App() {
   useEffect(() => {
     async function checkAdmin() {
       if (!session?.user?.id || !supabase) { setIsAdmin(false); return; }
+      // is_admin is a private column: ask the server-side is_admin() function instead.
+      const rpc = await supabase.rpc('is_admin');
+      if (!rpc.error) { setIsAdmin(rpc.data === true); return; }
       const { data } = await supabase.from('profiles').select('is_admin').eq('id', session.user.id).maybeSingle();
       setIsAdmin(data?.is_admin === true);
     }
@@ -436,7 +477,7 @@ export default function App() {
     async function loadProfileAvatar() {
       if (!session?.user?.id || !supabase) { setProfileAvatar(''); return; }
       const { data } = await supabase.from('profiles').select('avatar_url').eq('id', session.user.id).maybeSingle();
-      if (mounted) setProfileAvatar(data?.avatar_url || '');
+      if (mounted) setProfileAvatar(cfImage(data?.avatar_url, 128) || '');
     }
     loadProfileAvatar();
     return () => { mounted = false; };
@@ -453,18 +494,36 @@ export default function App() {
     return () => { mounted = false; };
   }, [session?.user?.id]);
 
-  const fetchListingsPage = useCallback(async (offset, currentTab) => {
+  const fetchListingsPage = useCallback(async (offset, currentTab, currentCat, currentSort) => {
+    const filterByCategory = currentTab === 'Marketplace' && currentCat !== 'All';
+    // !inner makes the category filter remove listings, not just blank the join.
+    const categorySelect = filterByCategory ? 'categories!inner(name, slug)' : 'categories(name, slug)';
+
     let request = supabase
       .from('listings')
-      .select(`id, seller_id, title, price, kind, status, is_boosted, created_at, categories(name, slug), meeting_spots(name), listing_photos(image_url, display_order)`)
-      .eq('status', 'active')
-      .order('is_boosted', { ascending: false })
-      .order('created_at', { ascending: false })
-      .range(offset, offset + PAGE_SIZE - 1);
+      .select(`id, seller_id, title, price, kind, status, is_boosted, created_at, ${categorySelect}, meeting_spots(name), listing_photos(image_url, display_order)`)
+      .eq('status', 'active');
+
+    if (currentSort === 'price_asc') {
+      request = request.order('price', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false });
+    } else if (currentSort === 'price_desc') {
+      request = request.order('price', { ascending: false, nullsFirst: false }).order('created_at', { ascending: false });
+    } else {
+      request = request.order('is_boosted', { ascending: false }).order('created_at', { ascending: false });
+    }
+
+    request = request.range(offset, offset + PAGE_SIZE - 1);
 
     request = currentTab === 'Marketplace'
       ? request.eq('kind', 'sale')
       : request.in('kind', ['wanted', 'free', 'lost_found']);
+
+    if (filterByCategory) {
+      const names = categoryMatches[currentCat] || [];
+      // ilike without wildcards = case-insensitive exact match, run on the server.
+      const conditions = names.map(name => `name.ilike."${name.replace(/"/g, '')}"`).join(',');
+      if (conditions) request = request.or(conditions, { referencedTable: 'categories' });
+    }
 
     const { data, error } = await request;
     if (error) throw error;
@@ -497,10 +556,11 @@ export default function App() {
       setError('');
 
       try {
-        const mapped = await fetchListingsPage(0, tab);
+        const mapped = await fetchListingsPage(0, tab, cat, sort);
         if (cancelled) return;
         setItems(mapped);
         setHasMore(mapped.length === PAGE_SIZE);
+        setPendingUpdates(0);
       } catch (err) {
         if (!cancelled) {
           setError(err.message || 'Could not load listings.');
@@ -513,14 +573,32 @@ export default function App() {
 
     loadListings();
     return () => { cancelled = true; };
-  }, [tab, refreshListings, fetchListingsPage]);
+  }, [tab, cat, sort, refreshListings, fetchListingsPage]);
+
+  // Real total of active listings (the loaded page is capped at PAGE_SIZE).
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return;
+    let cancelled = false;
+    supabase
+      .from('listings')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'active')
+      .eq('kind', 'sale')
+      .then(({ count, error: countError }) => {
+        if (!cancelled && !countError && typeof count === 'number') setTotalActive(count);
+      });
+    return () => { cancelled = true; };
+  }, [refreshListings]);
 
   async function loadMore() {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
     try {
-      const mapped = await fetchListingsPage(items.length, tab);
-      setItems(prev => [...prev, ...mapped]);
+      const mapped = await fetchListingsPage(items.length, tab, cat, sort);
+      setItems(prev => {
+        const seen = new Set(prev.map(item => item.id));
+        return [...prev, ...mapped.filter(item => !seen.has(item.id))];
+      });
       setHasMore(mapped.length === PAGE_SIZE);
     } catch (err) {
       console.error('Load more failed:', err);
@@ -606,23 +684,27 @@ export default function App() {
 
     loadFlashDeals();
     return () => { cancelled = true; };
-  }, [refreshListings]);
+  }, [refreshListings, dealsRefresh]);
 
+  // Refresh deals right after the next one expires.
   useEffect(() => {
     if (!flashDeals.length) return;
     const nextExpiry = Math.min(...flashDeals.map(item => new Date(item.endsAt).getTime()));
-    const delay = nextExpiry - dealNow;
-    if (delay <= 0) { setRefreshListings(v => v + 1); return; }
-    const timer = setTimeout(() => setRefreshListings(v => v + 1), delay + 1000);
+    const delay = Math.max(nextExpiry - Date.now(), 0) + 1000;
+    const timer = setTimeout(() => setDealsRefresh(v => v + 1), delay);
     return () => clearTimeout(timer);
-  }, [flashDeals, dealNow]);
+  }, [flashDeals]);
 
-  const scheduleRefresh = useCallback(() => {
-    if (refreshDebounceRef.current) clearTimeout(refreshDebounceRef.current);
-    refreshDebounceRef.current = setTimeout(() => {
-      setRefreshListings(v => v + 1);
-      refreshDebounceRef.current = null;
-    }, 400);
+  // Live updates: deals refresh quietly; feed changes show a "new activity"
+  // pill instead of reloading the list under the user's thumb.
+  const scheduleRefresh = useCallback((kind) => {
+    const timers = refreshDebounceRef.current;
+    if (timers[kind]) clearTimeout(timers[kind]);
+    timers[kind] = setTimeout(() => {
+      if (kind === 'deals') setDealsRefresh(v => v + 1);
+      else setPendingUpdates(v => v + 1);
+      timers[kind] = null;
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -630,16 +712,22 @@ export default function App() {
 
     const channel = supabase
       .channel('public:marketplace-live')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, () => scheduleRefresh())
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'flash_deals' }, () => scheduleRefresh())
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, (payload) => {
-        if (payload.new?.is_verified !== payload.old?.is_verified) scheduleRefresh();
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, (payload) => {
+        // The database bumps listings.views_count on every view, which fires an UPDATE
+        // event for each one. Only react to changes that alter what the feed shows:
+        // a listing we don't have becoming active, or one we have leaving 'active'.
+        const row = payload.new || {};
+        const id = row.id || payload.old?.id;
+        const known = itemsRef.current.some(item => item.id === id);
+        if (payload.eventType === 'DELETE') { if (known) scheduleRefresh('listings'); return; }
+        if ((row.status === 'active' && !known) || (row.status !== 'active' && known)) scheduleRefresh('listings');
       })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'flash_deals' }, () => scheduleRefresh('deals'))
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
-      if (refreshDebounceRef.current) clearTimeout(refreshDebounceRef.current);
+      Object.values(refreshDebounceRef.current).forEach(t => t && clearTimeout(t));
     };
   }, [scheduleRefresh]);
 
@@ -647,7 +735,7 @@ export default function App() {
   function dismissToast() { setToast(null); }
 
   function completeOnboarding() {
-    localStorage.setItem('campusflip_onboarded', 'true');
+    safeStorage.set('campusflip_onboarded', 'true');
     setShowOnboarding(false);
   }
 
@@ -721,49 +809,30 @@ export default function App() {
     setSelectedListing(mapListing(data, seller));
   }
 
-  const shown = useMemo(() => {
-    const filtered = items.filter(item => {
-      const matchesCategory =
-        cat === 'All' ||
-        (cat === 'More'
-          ? categoryMatches.More?.includes(item.category.toLowerCase())
-          : categoryMatches[cat]?.includes(item.category.toLowerCase()));
+  // Category and sort run on the server. "Verified only" needs seller data that is
+  // fetched separately, so it filters the loaded rows (and auto-loads more pages below).
+  const shown = useMemo(
+    () => (verifiedOnly ? items.filter(item => item.isVerified === true) : items),
+    [items, verifiedOnly]
+  );
 
-      const matchesVerified = !verifiedOnly || item.isVerified === true;
-      return matchesCategory && matchesVerified;
-    });
+  const totalListings = totalActive ?? items.length;
+  useEffect(() => { itemsRef.current = items; }, [items]);
 
-    if (sort === 'price_asc') {
-      return [...filtered].sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
-    }
-    if (sort === 'price_desc') {
-      return [...filtered].sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
-    }
-    return filtered;
-  }, [items, cat, verifiedOnly, sort]);
-
-  // Live seller count — unique sellers in current item set
-  const sellerCount = useMemo(() => {
-    const seen = new Set();
-    for (const item of items) {
-      if (item.sellerId) seen.add(item.sellerId);
-    }
-    return seen.size;
-  }, [items]);
-
-  const totalListings = items.length;
+  // Keep fetching pages while "Verified only" would otherwise show an almost-empty list.
+  const verifiedAutoPages = useRef(0);
+  useEffect(() => { verifiedAutoPages.current = 0; }, [verifiedOnly, tab, cat, sort]);
+  useEffect(() => {
+    if (!verifiedOnly || loading || loadingMore || !hasMore) return;
+    if (shown.length >= 12 || verifiedAutoPages.current >= 5) return;
+    verifiedAutoPages.current += 1;
+    loadMore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [verifiedOnly, loading, loadingMore, hasMore, shown.length]);
 
   const activeDeal = flashDeals.length ? flashDeals[deal % flashDeals.length] : null;
 
-  const dealTimeLeft = activeDeal
-    ? Math.max(0, new Date(activeDeal.endsAt).getTime() - dealNow)
-    : 0;
-
-  const dealCountdown = [
-    Math.floor(dealTimeLeft / 3600000),
-    Math.floor((dealTimeLeft % 3600000) / 60000),
-    Math.floor((dealTimeLeft % 60000) / 1000)
-  ].map(v => String(v).padStart(2, '0')).join(':');
+  const dealActive = activeDeal ? new Date(activeDeal.endsAt).getTime() > Date.now() : false;
 
   const chipStyle = (active) => ({
     border: '1px solid',
@@ -771,8 +840,9 @@ export default function App() {
     background: active ? '#2563EB' : '#fff',
     color: active ? '#fff' : '#4B5563',
     borderRadius: 20,
-    padding: '6px 12px',
-    fontSize: 11,
+    padding: '10px 14px',
+    minHeight: 40,
+    fontSize: 12,
     fontWeight: 700,
     cursor: 'pointer',
     display: 'flex',
@@ -858,31 +928,39 @@ export default function App() {
               session={session}
               onOpenListing={handleOpenListingFromNotification}
             />
+            {session && (
             <motion.button
               whileTap={{ scale: 0.92 }}
               className="avatar"
               onClick={() => session ? setShowAccountPage(true) : setShowAuth(true)}
-              aria-label="Open account"
+              aria-label={session ? 'Open account' : 'Sign in'}
               style={{ padding: 0, overflow: 'hidden', display: 'grid', placeItems: 'center' }}
             >
               {profileAvatar ? (
                 <img src={profileAvatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
               ) : (
-                session?.user?.email?.[0]?.toUpperCase() || 'J'
+                session?.user?.email?.[0]?.toUpperCase() || <UserRound size={18} aria-hidden="true" />
               )}
             </motion.button>
-            <ChevronDown size={16} />
+            )}
+            {!session && (
+              <button type="button" className="cf-signin-btn" onClick={() => setShowAuth(true)}>
+                Sign in
+              </button>
+            )}
           </div>
         </header>
 
         <div style={{ paddingTop: '80px' }}>
           <AnimatedModal open={showSettings && Boolean(session)} onClose={settingsBack.close} className="cf-account-modal">
+            <Guard onClose={settingsBack.close}>
             <AccountSettings
               session={session}
               onClose={() => { setShowSettings(false); setProfileRefresh(v => v + 1); }}
               onBack={settingsBack.close}
               onToast={ping}
             />
+            </Guard>
           </AnimatedModal>
 
           {/* HERO — bold marketplace message with a visual campus product collage */}
@@ -921,8 +999,7 @@ export default function App() {
               <div className="cf-hero-stats">
                 <span className="cf-live-dot" />
                 <span>
-                  {totalListings} active listing{totalListings === 1 ? '' : 's'}
-                  {sellerCount > 0 && ` · ${sellerCount} seller${sellerCount === 1 ? '' : 's'}`}
+                  {totalListings} active listing{totalListings === 1 ? '' : 's'} on campus
                 </span>
               </div>
             </div>
@@ -947,7 +1024,7 @@ export default function App() {
               </div>
               <div className="cf-hero-art-caption">
                 <span className="cf-hero-caption-icon"><Users size={15} /></span>
-                <span>{totalListings} items from your campus community</span>
+                <span>{totalListings} item{totalListings === 1 ? '' : 's'} from your campus community</span>
               </div>
             </div>
           </motion.section>
@@ -1043,6 +1120,7 @@ export default function App() {
             </motion.button>
           </div>
 
+          {(flashDeals.length > 0 || showAllDeals) && (
           <motion.section
             layout
             className="cf-flash-section"
@@ -1129,7 +1207,7 @@ export default function App() {
                               position: 'absolute', top: 8, left: 8,
                               background: '#FFF0E5', color: '#D65B16',
                               padding: '3px 8px', borderRadius: 6,
-                              fontSize: 10, fontWeight: 900,
+                              fontSize: 11, fontWeight: 900,
                             }}>
                               🔥 {fd.discountPercent}% OFF
                             </span>
@@ -1140,7 +1218,7 @@ export default function App() {
                             </div>
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                               <b style={{ color: '#2563EB', fontSize: 15 }}>{money(fd.dealPrice)}</b>
-                              <span style={{ fontSize: 11, color: '#8995A8', textDecoration: 'line-through' }}>
+                              <span style={{ fontSize: 12, color: '#8995A8', textDecoration: 'line-through' }}>
                                 {money(fd.originalPrice)}
                               </span>
                             </div>
@@ -1172,7 +1250,7 @@ export default function App() {
                     </motion.button>
                   </div>
 
-                  {activeDeal && dealTimeLeft > 0 ? (
+                  {activeDeal && dealActive ? (
                     <>
                       <AnimatePresence mode="wait">
                         <motion.div
@@ -1199,7 +1277,7 @@ export default function App() {
                               <span>{money(activeDeal.originalPrice)}</span>
                             </div>
                             <span className="cf-deal-countdown">
-                              <Clock3 size={14} /> Ends in {dealCountdown}
+                              <Clock3 size={14} /> Ends in <DealCountdown endsAt={activeDeal.endsAt} />
                             </span>
                             <motion.button
                               whileTap={{ scale: 0.95 }}
@@ -1270,6 +1348,7 @@ export default function App() {
               )}
             </AnimatePresence>
           </motion.section>
+          )}
 
           <AnimatedTabs
             className="tabs cf-market-tabs cf-motion-tabs"
@@ -1280,6 +1359,16 @@ export default function App() {
               { label: <><Users size={17} /> Wanted &amp; Free</>, value: 'Wanted & Free' }
             ]}
           />
+
+          {pendingUpdates > 0 && !loading && (
+            <button
+              type="button"
+              className="cf-new-activity"
+              onClick={() => { setRefreshListings(v => v + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            >
+              <LoaderCircle size={14} aria-hidden="true" /> New listings available · Tap to refresh
+            </button>
+          )}
 
           <div className="subhead">
             <h2>{tab === 'Marketplace' ? 'Discover on campus' : 'Wanted & Free'}</h2>
@@ -1422,6 +1511,8 @@ export default function App() {
             <Plus /><span>Post</span>
           </motion.button>
 
+          {postMounted && (
+          <Guard silent onClose={() => setShowPost(false)}>
           <PostListingModal
             open={showPost}
             onClose={() => setShowPost(false)}
@@ -1431,6 +1522,8 @@ export default function App() {
               ping(listing.status === 'pending_payment' ? 'Post created. Complete payment to publish it.' : 'Your post is now live!');
             }}
           />
+          </Guard>
+          )}
 
           <nav className="bottom cf-bottom-nav">
             {[['Home', Home], ['Saved', Bookmark], ['My Shop', Store], ['Profile', UserRound]].map(([name, Icon]) => (
@@ -1469,7 +1562,7 @@ export default function App() {
               onAuthenticated={async () => {
                 setShowAuth(false);
 
-                const code = localStorage.getItem('campusflip_invite_code');
+                const code = safeStorage.get('campusflip_invite_code');
                 if (code) {
                   const { data, error } = await supabase.rpc('claim_referral', { p_code: code });
                   if (!error && data?.success) {
@@ -1477,7 +1570,7 @@ export default function App() {
                   } else {
                     ping('Welcome to CampusFlip!');
                   }
-                  localStorage.removeItem('campusflip_invite_code');
+                  safeStorage.remove('campusflip_invite_code');
                 } else {
                   ping('Welcome to CampusFlip!');
                 }
@@ -1497,6 +1590,7 @@ export default function App() {
           <AnimatePresence>
             {showAccountPage && Boolean(session) && (
               <PageTransition key="account-page" onBack={accountBack.close}>
+<Guard onClose={accountBack.close}>
                 <AccountPage
                   session={session}
                   onBack={accountBack.close}
@@ -1507,6 +1601,7 @@ export default function App() {
                   onOpenAdmin={() => setShowAdmin(true)}
                   isAdmin={isAdmin}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1514,11 +1609,13 @@ export default function App() {
           <AnimatePresence>
             {showNotificationPrefs && Boolean(session) && (
               <PageTransition key="notif-prefs" onBack={notifPrefsBack.close}>
+<Guard onClose={notifPrefsBack.close}>
                 <NotificationPreferences
                   session={session}
                   onBack={notifPrefsBack.close}
                   onToast={ping}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1526,6 +1623,7 @@ export default function App() {
           <AnimatePresence>
             {showPrivacy && Boolean(session) && (
               <PageTransition key="privacy" onBack={privacyBack.close}>
+<Guard onClose={privacyBack.close}>
                 <PrivacySecurity
                   session={session}
                   onBack={privacyBack.close}
@@ -1536,6 +1634,7 @@ export default function App() {
                   }}
                   onToast={ping}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1543,6 +1642,7 @@ export default function App() {
           <AnimatePresence>
             {showSavedPage && (
               <PageTransition key="saved-page" onBack={savedBack.close}>
+<Guard onClose={savedBack.close}>
                 <SavedItemsPage
                   session={session}
                   onBack={savedBack.close}
@@ -1552,6 +1652,7 @@ export default function App() {
                   }}
                   onToast={ping}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1559,6 +1660,7 @@ export default function App() {
           <AnimatePresence>
             {showMyShop && (
               <PageTransition key="my-shop" onBack={shopBack.close}>
+<Guard onClose={shopBack.close}>
                 <MyShop
                   session={session}
                   onBack={shopBack.close}
@@ -1568,6 +1670,7 @@ export default function App() {
                   }}
                   onToast={ping}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1575,7 +1678,9 @@ export default function App() {
           <AnimatePresence>
             {showAdmin && (
               <PageTransition key="admin-dashboard" onBack={adminBack.close}>
+<Guard onClose={adminBack.close}>
                 <AdminDashboard session={session} onBack={adminBack.close} />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
@@ -1583,6 +1688,7 @@ export default function App() {
           <AnimatePresence>
             {showSearchPage && (
               <PageTransition key="search-page" onBack={searchBack.close}>
+<Guard onClose={searchBack.close}>
                 <SearchPage
                   items={items}
                   saved={saved}
@@ -1593,10 +1699,13 @@ export default function App() {
                   }}
                   onBack={searchBack.close}
                 />
+</Guard>
               </PageTransition>
             )}
           </AnimatePresence>
 
+          {listingMounted && (
+          <Guard silent onClose={listingBack.close}>
           <ListingDetails
             listing={selectedListing}
             onClose={listingBack.close}
@@ -1605,6 +1714,8 @@ export default function App() {
             replayToken={contactReplayToken}
             replyId={contactReplyId}
           />
+          </Guard>
+          )}
 
           <AnimatePresence>
             {contactIntent && (

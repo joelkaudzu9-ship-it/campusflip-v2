@@ -1,4 +1,7 @@
 node_modules/
 .env
 .env.local
-dist/
+dist/.mockdist
+.env
+.env.*
+!.env.example
