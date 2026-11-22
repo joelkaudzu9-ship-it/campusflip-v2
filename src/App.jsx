@@ -264,12 +264,14 @@ export default function App() {
         <AppHeader
           session={session}
           avatar={avatar}
+          current={currentNav}
+          onSelectNav={selectNav}
           onOpenAccount={() => (session ? go(PATHS.account) : setShowAuth(true))}
           onSignIn={() => setShowAuth(true)}
           onOpenListing={id => id && go(PATHS.listing(id))}
         />
 
-        <main className="cf-app-main" style={{ paddingTop: '80px' }}>
+        <main className="cf-app-main">
           <Hero totalListings={totalListings} />
           <SearchBar onOpen={() => go(PATHS.search)} />
           <FilterBar

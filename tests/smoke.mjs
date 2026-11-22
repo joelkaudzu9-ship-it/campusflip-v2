@@ -1,51 +1,25 @@
 // Smoke test: builds the app against a MOCK Supabase, opens it at phone width and
 // checks the things that have broken before. Run:  npm run build:mock && npm run test:smoke
 import { chromium } from 'playwright';
-import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { LISTINGS, installMock, startPreview, wait, waitForServer } from './mock.mjs';
 
 const PORT = 4173;
-if (!existsSync('.mockdist')) { console.error('Run "npm run build:mock" first.'); process.exit(2); }
-
-const server = spawn('npx', ['vite', 'preview', '--outDir', '.mockdist', '--port', String(PORT), '--strictPort'], { stdio: 'ignore' });
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const server = startPreview(PORT);
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok }); console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? '  — ' + detail : ''}`); };
 
-const mk = (i, title, price, category, kind = 'sale', boosted = false) => ({
-  id: `00000000-0000-0000-0000-00000000000${i}`, seller_id: `s${i % 3}`, title, price, kind, status: 'active',
-  is_boosted: boosted, created_at: new Date().toISOString(), categories: { name: category, slug: category },
-  meeting_spots: { name: 'Main Gate' }, listing_photos: [],
-});
-const LISTINGS = [mk(1, "Gray's Anatomy 40th ed", 45000, 'Books', 'sale', true), mk(2, 'HP Laptop i5', 350000, 'Electronics'),
-  mk(3, 'Rice 10kg', 18000, 'Food'), mk(4, 'Navy hoodie', 12000, 'Clothing & Fashion')];
-
 let failed = false;
 try {
-  for (let i = 0; i < 40; i++) { try { if ((await fetch(`http://localhost:${PORT}/`)).ok) break; } catch { /* retry */ } await wait(250); }
+  await waitForServer(PORT);
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, serviceWorkers: 'block' });
   const page = await ctx.newPage();
   const errors = [];
-  const urls = [];
-  let adminRpc = false;
+  const state = { urls: [], adminRpc: false };
+  const urls = state.urls;
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR|WebSocket/.test(m.text())) errors.push(m.text()); });
-  await ctx.route('**/*', route => {
-    const u = route.request().url();
-    if (u.includes('mock.supabase.co')) {
-      urls.push(decodeURIComponent(u));
-      let body = '[]';
-      if (u.includes('/rest/v1/rpc/is_admin')) return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: String(adminRpc) });
-      const byId = u.match(/[?&]id=eq\.([0-9a-f-]{36})/);
-      if (u.includes('/rest/v1/listings') && byId) body = JSON.stringify(LISTINGS.filter(l => l.id === byId[1]));
-      else if (u.includes('/rest/v1/listings')) body = JSON.stringify(route.request().method() === 'HEAD' ? [] : LISTINGS);
-      else if (u.includes('/rest/v1/profiles')) body = JSON.stringify([{ id: 's0', display_name: 'Chikondi', is_verified: true }, { id: 's1', display_name: 'Tadala', is_verified: false }, { id: 's2', display_name: 'M-Tech', is_verified: true }]);
-      return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*', 'access-control-expose-headers': 'content-range', 'content-range': '0-3/42' }, body });
-    }
-    if (/unsplash|cloudinary|fonts\.g/.test(u)) return route.abort();
-    return route.continue();
-  });
+  await installMock(ctx, state);
 
   await page.goto(`http://localhost:${PORT}/`);
   await wait(5500);
@@ -149,17 +123,37 @@ try {
 
   await page.goto(`${origin}/admin`); await wait(2500);
   check('signed-in non-admin is kept out of /admin', path() === '/', path());
-  adminRpc = true;
+  state.adminRpc = true;
   await page.goto(`${origin}/admin`); await wait(3000);
   check('admin can open /admin directly', path() === '/admin' && /Admin Console/.test(await bodyText()), path());
   for (const t of ['Reports', 'Users']) { await page.getByRole('button', { name: new RegExp(`^${t}`) }).first().click(); await wait(700); }
   check('admin tabs switch without crashing', /Admin Console/.test(await bodyText()));
-  adminRpc = false;
+  state.adminRpc = false;
 
   await page.goto(`${origin}/post`); await wait(2500);
   check('signed in: /post opens the post screen', path() === '/post', path());
   await page.keyboard.press('Escape'); await wait(900);
   check('closing /post directly-opened goes home (no exit from the site)', path() === '/', path());
+
+  // ── Desktop layout ──
+  for (const [label, width] of [['tablet 820px', 820], ['laptop 1366px', 1366], ['wide 1920px', 1920]]) {
+    const dctx = await browser.newContext({ viewport: { width, height: 900 }, serviceWorkers: 'block' });
+    const dpage = await dctx.newPage();
+    await installMock(dctx, { urls: [], adminRpc: false });
+    await dpage.addInitScript(() => { try { localStorage.setItem('campusflip_onboarded', 'true'); } catch { /* ignore */ } });
+    await dpage.goto(`${origin}/`); await wait(4500);
+    const m = await dpage.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      topNav: getComputedStyle(document.querySelector('.cf-top-nav')).display,
+      bottomNav: getComputedStyle(document.querySelector('.cf-bottom-nav')).display,
+      mainWidth: Math.round(document.querySelector('.cf-app-main').getBoundingClientRect().width),
+      cols: new Set([...document.querySelectorAll('.cf-product-card')].map(c => Math.round(c.getBoundingClientRect().left))).size,
+    }));
+    check(`${label}: no horizontal scroll`, m.overflow <= 0, `overflow=${m.overflow}px`);
+    check(`${label}: header links replace the bottom bar`, m.topNav !== 'none' && m.bottomNav === 'none');
+    check(`${label}: content uses the width (${m.mainWidth}px) and the grid has ${m.cols} columns`, m.mainWidth > width * 0.6 && m.cols >= 3, `main=${m.mainWidth}px cols=${m.cols}`);
+    await dctx.close();
+  }
 
   await browser.close();
 } catch (e) { console.error(e); failed = true; }

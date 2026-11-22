@@ -57,7 +57,7 @@ export default function FilterBar({ cat, onCat, verifiedOnly, onVerified, sort, 
           style={{
             display: 'flex',
             gap: 6,
-            padding: '10px 20px 0',
+            padding: '10px 0 0',
             alignItems: 'center',
             overflowX: 'auto',
             WebkitOverflowScrolling: 'touch',

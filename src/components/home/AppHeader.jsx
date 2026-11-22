@@ -2,14 +2,28 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { UserRound } from 'lucide-react';
 import NotificationCenter from '../NotificationCenter';
+import { NAV_ITEMS } from './BottomNav';
 
-export default function AppHeader({ session, avatar, onOpenAccount, onSignIn, onOpenListing }) {
+export default function AppHeader({ session, avatar, current, onSelectNav, onOpenAccount, onSignIn, onOpenListing }) {
   return (
     <header className="top cf-header">
       <Link className="brand cf-brand" to="/" aria-label="CampusFlip home">
         <span className="mark">CF</span>
         <span><b>Campus<span>Flip</span></b><small>Buy. Sell. <em>Meet.</em></small></span>
       </Link>
+      <nav className="cf-top-nav" aria-label="Main">
+        {NAV_ITEMS.map(([name, Icon]) => (
+          <button
+            key={name}
+            type="button"
+            className={current === name ? 'current' : ''}
+            aria-current={current === name ? 'page' : undefined}
+            onClick={() => onSelectNav(name)}
+          >
+            <Icon size={17} /> {name}
+          </button>
+        ))}
+      </nav>
       <div className="actions">
         <NotificationCenter
           session={session}

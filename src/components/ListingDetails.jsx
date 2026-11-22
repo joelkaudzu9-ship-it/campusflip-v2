@@ -419,7 +419,7 @@ export default function ListingDetails({
           onClick={event => event.stopPropagation()}
           style={{
             width: '100%',
-            maxWidth: 680,
+            maxWidth: 'var(--cf-sheet-w, 680px)',
             maxHeight: '92dvh',
             overflowY: 'auto',
             overscrollBehavior: 'contain',

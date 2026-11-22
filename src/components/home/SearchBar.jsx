@@ -3,7 +3,7 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 
 export default function SearchBar({ onOpen }) {
   return (
-      <div className="cf-search-area" style={{ margin: '12px 20px 0' }}>
+      <div className="cf-search-area">
         <motion.button
           type="button"
           whileTap={{ scale: 0.98 }}

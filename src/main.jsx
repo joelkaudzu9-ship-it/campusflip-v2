@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import './styles.css';
+import './desktop.css'; // last, so its desktop rules win over the phone styles
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
