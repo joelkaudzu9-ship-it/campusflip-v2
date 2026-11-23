@@ -42,8 +42,8 @@ if [ "${1:-}" = "--db-phase" ]; then db_phase; exit 0; fi
 if [ "$(id -u)" = "0" ]; then
   chmod -R a+rX "$ROOT/supabase" 2>/dev/null || true
   touch "$RESULTS"; chmod a+rw "$RESULTS"
-  su nobody -s /bin/bash -c "RESULTS_FILE='$RESULTS' PATH='$PATH' '$HERE/run.sh' --db-phase"
+  su nobody -s /bin/bash -c "RESULTS_FILE='$RESULTS' PATH='$PATH' bash '$HERE/run.sh' --db-phase"
 else
-  RESULTS_FILE="$RESULTS" "$HERE/run.sh" --db-phase
+  RESULTS_FILE="$RESULTS" bash "$HERE/run.sh" --db-phase
 fi
 python3 "$HERE/assert_results.py" "$RESULTS" "$@"
