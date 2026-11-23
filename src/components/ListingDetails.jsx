@@ -262,6 +262,11 @@ export default function ListingDetails({
       return;
     }
 
+    if (authData.session.user?.id === details.seller_id) {
+      onToast?.('This is your own listing. Buyers will contact you on WhatsApp.', 'error');
+      return;
+    }
+
     const newTab = window.open('about:blank', '_blank');
     if (newTab) newTab.opener = null;
     setContacting(true);
@@ -271,7 +276,11 @@ export default function ListingDetails({
       if (sessionError || !sessionData?.session) throw new Error('Please sign in before contacting a seller.');
 
       const { data, error: rpcError } = await supabase.rpc('get_listing_seller_whatsapp', { p_listing_id: details.id });
-      if (rpcError) throw rpcError;
+      if (rpcError) {
+        throw new Error(/unavailable/i.test(rpcError.message || '')
+          ? 'This seller has not added a WhatsApp number yet, or the listing is no longer active.'
+          : rpcError.message);
+      }
 
       const phone = whatsappNumber(data);
       if (!phone || phone.length < 10) throw new Error('The seller has not provided a valid WhatsApp number.');
