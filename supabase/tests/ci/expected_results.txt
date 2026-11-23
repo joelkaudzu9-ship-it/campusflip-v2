@@ -25,6 +25,14 @@ L14 user files a normal report | ALLOWED
 N1 user clears own notification | ALLOWED
 N2 user clears someone else notification | NO
 N3 anon clears notifications | NO
+W1 gmail signup is rejected | BLOCKED
+W2 look-alike domain signup is rejected | BLOCKED
+W3 KUHeS signup is accepted | ALLOWED
+W4 verified student claims welcome bonus | ALLOWED
+W5 bonus really added 2 credits | ALLOWED
+W6 second claim is refused (already_claimed) | ALLOWED
+W7 unverified email is refused (unverified) | ALLOWED
+W8 anon cannot claim bonus | BLOCKED
 L16 user calls request_account_deletion | ALLOWED
 X1 user get_my_profile() | OK
 X2 anon get_my_profile() | BLOCKED

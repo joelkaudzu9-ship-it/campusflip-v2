@@ -48,5 +48,14 @@ insert into public.notifications(id,user_id,type,title,message) values
 select pg_temp.try('N1 user clears own notification', $$delete from public.notifications where id='aaaaaaaa-0000-0000-0000-000000000001'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
 select pg_temp.try('N2 user clears someone else notification', $$delete from public.notifications where id='aaaaaaaa-0000-0000-0000-000000000002'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
 select pg_temp.try('N3 anon clears notifications', $$delete from public.notifications$$, 'anon', null);
+update auth.users set email_confirmed_at = now() where id = '00000000-0000-0000-0000-0000000000a1';
+select pg_temp.try('W1 gmail signup is rejected', $$insert into auth.users(id,email) values ('00000000-0000-0000-0000-0000000000f1','someone@gmail.com')$$, 'postgres', null);
+select pg_temp.try('W2 look-alike domain signup is rejected', $$insert into auth.users(id,email) values ('00000000-0000-0000-0000-0000000000f2','x@kuhes.ac.mw.evil.com')$$, 'postgres', null);
+select pg_temp.try('W3 KUHeS signup is accepted', $$insert into auth.users(id,email) values ('00000000-0000-0000-0000-0000000000f3','new@kuhes.ac.mw')$$, 'postgres', null);
+select pg_temp.try('W4 verified student claims welcome bonus', $$select public.claim_welcome_bonus()$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('W5 bonus really added 2 credits', $$with x as (select 1 from public.profiles where id='00000000-0000-0000-0000-0000000000a1' and referral_credits=2 and welcome_bonus_at is not null) select * from x$$, 'postgres', null);
+select pg_temp.try('W6 second claim is refused (already_claimed)', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'reason'='already_claimed'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('W7 unverified email is refused (unverified)', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'reason'='unverified'$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('W8 anon cannot claim bonus', $$select public.claim_welcome_bonus()$$, 'anon', null);
 select pg_temp.try('L16 user calls request_account_deletion', $$select public.request_account_deletion()$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 rollback;

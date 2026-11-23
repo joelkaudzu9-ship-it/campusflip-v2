@@ -199,6 +199,18 @@ export default function App() {
     ping('You have signed out.');
   }
 
+  // One-time welcome bonus for verified KUHeS emails. Runs for any signed-in session,
+  // so it also fires when the student returns after clicking the email-verification link.
+  const bonusTried = useRef('');
+  const bonusUserId = session?.user?.id;
+  useEffect(() => {
+    if (!bonusUserId || bonusTried.current === bonusUserId) return;
+    bonusTried.current = bonusUserId;
+    supabase.rpc('claim_welcome_bonus').then(({ data, error }) => {
+      if (!error && data?.success) ping(`Welcome to CampusFlip! ${data.bonus} free listings (MK ${data.bonus * 200}) have been added to your account.`);
+    });
+  }, [bonusUserId, ping]);
+
   async function handleAuthenticated() {
     setShowAuth(false);
 
