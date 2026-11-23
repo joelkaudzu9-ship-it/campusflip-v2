@@ -690,7 +690,7 @@ export default function ListingDetails({
                           gap: 4,
                           padding: '4px 9px',
                           borderRadius: 10,
-                          background: 'rgba(16,28,58,.55)',
+                          background: 'rgba(16,28,58,.82)',
                           backdropFilter: 'blur(10px)',
                           color: 'white',
                           fontSize: 11,
@@ -829,7 +829,7 @@ export default function ListingDetails({
                       display: 'grid',
                       placeItems: 'center',
                       background: '#E1EBFF',
-                      color: 'var(--cf-blue)',
+                      color: 'var(--cf-blue-dark)',
                       fontSize: 16,
                       fontWeight: 800,
                     }}
@@ -1138,7 +1138,7 @@ export default function ListingDetails({
                     border: 'none',
                     borderRadius: 16,
                     background: contacting ? '#8EDDA9' : '#25D366',
-                    color: '#fff',
+                    color: 'var(--cf-navy)', // white on WhatsApp green is only 2:1
                     fontSize: 15,
                     fontWeight: 800,
                     display: 'flex',

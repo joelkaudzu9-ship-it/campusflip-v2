@@ -430,7 +430,7 @@ export default function PrivacySecurity({ session, onBack, onSignOut, onToast })
             <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--cf-danger)' }}>
               Delete account
             </div>
-            <div style={{ fontSize: 12, color: 'var(--cf-danger)', opacity: 0.7, marginTop: 2 }}>
+            <div style={{ fontSize: 12, color: 'var(--cf-danger)', marginTop: 2 }}>
               Permanently delete your profile, listings, and data.
             </div>
           </div>

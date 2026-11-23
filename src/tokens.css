@@ -10,16 +10,18 @@
   --cf-navy: #101C3A;
   --cf-royal: #10265C;
   --cf-blue: #2563EB;
+  --cf-blue-dark: #1745B5;
   --cf-electric: #3B82F6;
   --cf-sky: #64B5F6;
   --cf-amber: #F5A623;
+  --cf-amber-ink: #9A5B00; /* amber as TEXT on light surfaces (the bright amber fails contrast) */
   --cf-white: #FFFFFF;
 
   /* Text */
   --cf-text: #152B5B;     /* headings and primary text on light surfaces */
   --cf-body: #4B5563;     /* paragraphs */
-  --cf-muted: #7788A9;    /* secondary text */
-  --cf-subtle: #94A3B8;   /* placeholders, hints, disabled */
+  --cf-muted: #586A86;    /* secondary text (AA on every surface) */
+  --cf-subtle: #5B6B82;   /* hints, labels, placeholders (AA on every surface) */
 
   /* Surfaces and lines */
   --cf-bg: #F5F8FF;

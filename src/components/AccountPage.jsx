@@ -326,7 +326,7 @@ export default function AccountPage({
         >
           <div className="cf-account-profile-cover">
             <span className="cf-account-cover-label">YOUR CAMPUSFLIP ID</span>
-            <span className="cf-account-cover-mark">CF.</span>
+            <span className="cf-account-cover-mark" aria-hidden="true">CF.</span>
           </div>
 
           <div className="cf-account-profile-body">
@@ -524,7 +524,7 @@ export default function AccountPage({
 
       <footer className="cf-account-footer">
         <div>
-          <span className="cf-account-footer-mark">CF.</span>
+          <span className="cf-account-footer-mark" aria-hidden="true">CF.</span>
           <span>Buy. Sell. Meet.</span>
         </div>
         <button type="button" onClick={onSignOut}>

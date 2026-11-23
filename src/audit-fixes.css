@@ -105,3 +105,9 @@
 
 /* Header avatar: 40 px visual, 44+ px hit area */
 .avatar { min-width: 40px; min-height: 40px; }
+
+/* Contrast: bright amber is only for fills; as text on light surfaces it uses amber-ink. */
+.cf-brand small em { color: var(--cf-amber-ink); }
+
+/* Contrast: supporting text on the blue join banner */
+.join div span { color: rgba(255, 255, 255, 0.94); }

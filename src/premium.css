@@ -2009,7 +2009,7 @@ p { line-height: 1.65; }
 
   font-size: 12px;
 
-  opacity: .5;
+  
 
 }
 
@@ -2263,7 +2263,7 @@ p { line-height: 1.65; }
 
 .cf-post-types button b { font-size: 12px; color: #18356f; }
 
-.cf-post-types button small { font-size: 11px; line-height: 1.35; color: #8793a8; }
+.cf-post-types button small { font-size: 11px; line-height: 1.35; color: var(--cf-subtle); }
 
 .cf-post-types button.selected {
 
@@ -2385,7 +2385,7 @@ p { line-height: 1.65; }
 
 .cf-upload-placeholder b { font-size: 12px; color: #203968; }
 
-.cf-upload-placeholder small { font-size: 12px; color: #7c8ba4; }
+.cf-upload-placeholder small { font-size: 12px; color: var(--cf-subtle); }
 
 
 
@@ -2733,7 +2733,7 @@ p { line-height: 1.65; }
 
 
 
-.cf-notification-copy > span { color: #9aa5b7; font-size: 11px; }
+.cf-notification-copy > span { color: var(--cf-subtle); font-size: 11px; }
 
 
 
@@ -2991,7 +2991,7 @@ p { line-height: 1.65; }
 
 
 
-.cf-shop-plan-heading h3 { margin: 9px 0; font-size: 21px; font-weight: 800; }
+.cf-shop-plan-heading h3 { margin: 9px 0; font-size: 21px; font-weight: 800; color: var(--cf-white); }
 
 
 
@@ -3909,7 +3909,7 @@ p { line-height: 1.65; }
   align-items: center;
   gap: 8px;
   margin-top: 20px;
-  color: rgba(230,239,255,.78);
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
 }
