@@ -1,4 +1,5 @@
 import React from 'react';
+import { reportError } from '../lib/monitoring';
 
 /**
  * Catches render errors so one broken screen never blanks the whole app.
@@ -17,6 +18,7 @@ export default class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     console.error('CampusFlip render error:', error, info?.componentStack);
+    reportError(error, { componentStack: info?.componentStack?.slice(0, 1500) });
     this.props.onError?.(error, info);
   }
 

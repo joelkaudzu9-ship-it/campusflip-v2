@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 
 import { supabase } from './lib/supabase';
 import { disablePush } from './lib/push';
+import { setMonitoringUser } from './lib/monitoring';
 import { safeStorage } from './lib/safeStorage';
 import { PATHS, navItemFor, parseRoute } from './lib/routes';
 import { fetchListingById } from './lib/listings';
@@ -212,6 +213,8 @@ export default function App() {
       if (!error && data?.success) ping(`Welcome to CampusFlip! ${data.bonus} free listings (MK ${data.bonus * 200}) have been added to your account.`);
     });
   }, [bonusUserId, ping]);
+
+  useEffect(() => { setMonitoringUser(bonusUserId || null); }, [bonusUserId]);
 
   async function handleAuthenticated() {
     setShowAuth(false);
