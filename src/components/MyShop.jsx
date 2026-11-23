@@ -1,3 +1,4 @@
+import WhatsAppPrompt from './WhatsAppPrompt';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { cfImage } from '../lib/cloudinary';
 import { createPortal } from 'react-dom';
@@ -771,6 +772,8 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           </motion.button>
         ))}
       </div>
+
+      <WhatsAppPrompt session={session} />
 
       {/* Listings */}
       {loading ? (

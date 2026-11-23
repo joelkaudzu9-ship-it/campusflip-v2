@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { resizeImage } from '../lib/imageTools';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+import { normaliseMalawiPhone } from '../lib/phone';
 import {
   ArrowLeft, UserRound, Store, Phone, Mail, Save, Camera,
   Trash2, LoaderCircle, ShieldCheck, ImagePlus, CheckCircle2,
@@ -212,6 +213,13 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
       return;
     }
 
+    const trimmed = whatsapp.trim();
+    const cleanPhone = trimmed ? normaliseMalawiPhone(trimmed) : '';
+    if (trimmed && !cleanPhone) {
+      onToast?.('Enter a valid Malawi mobile number, for example 0991234567 or +265 991 234 567.', 'error');
+      return;
+    }
+
     setSaving(true);
     const userId = session.user.id;
 
@@ -226,26 +234,13 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
 
       if (profileError) throw profileError;
 
-      const cleanPhone = whatsapp.replace(/\s+/g, '');
-      let contactError = null;
-
-      if (cleanPhone) {
-        const { error } = await supabase
-          .from('seller_contacts')
-          .upsert(
-            { user_id: userId, whatsapp_number: cleanPhone },
-            { onConflict: 'user_id' }
-          );
-
-        contactError = error;
-      } else {
-        const { error } = await supabase
-          .from('seller_contacts')
-          .delete()
-          .eq('user_id', userId);
-
-        contactError = error;
-      }
+      // An empty field clears the number (set to null: sellers can update but not delete this row).
+      const { error: contactError } = await supabase
+        .from('seller_contacts')
+        .upsert(
+          { user_id: userId, whatsapp_number: cleanPhone || null },
+          { onConflict: 'user_id' }
+        );
 
       if (contactError) {
         throw new Error(

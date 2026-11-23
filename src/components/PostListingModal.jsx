@@ -8,6 +8,7 @@ import {
 import { supabase } from '../lib/supabase';
 import { usePaymentStatus } from '../lib/usePaymentStatus';
 import ListingImageUploader from './ListingImageUploader';
+import WhatsAppPrompt from './WhatsAppPrompt';
 
 const TYPES = [
   { value: 'sale', label: 'For sale', short: 'Sell', description: 'I want to sell an item' },
@@ -778,6 +779,8 @@ export default function PostListingModal({
                     <small>You can add photos after creating your post, or skip them completely.</small>
                   </div>
                 </div>
+
+                <WhatsAppPrompt session={session} />
 
                 {error && <p className="cf-post-error" role="alert">{error}</p>}
 
