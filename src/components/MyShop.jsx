@@ -1,4 +1,5 @@
 import WhatsAppPrompt from './WhatsAppPrompt';
+import PushNudge from './PushNudge';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { cfImage } from '../lib/cloudinary';
 import { createPortal } from 'react-dom';
@@ -773,6 +774,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
         ))}
       </div>
 
+      <PushNudge session={session} onToast={onToast} />
       <WhatsAppPrompt session={session} />
 
       {/* Listings */}

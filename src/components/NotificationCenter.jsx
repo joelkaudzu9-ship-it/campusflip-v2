@@ -1,3 +1,4 @@
+import PushNudge from './PushNudge';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, Check, CheckCheck, X, Sparkles, Target, Trash2 } from 'lucide-react';
@@ -206,6 +207,8 @@ export default function NotificationCenter({ session, onOpenListing }) {
                   <X size={18} />
                 </button>
               </div>
+
+              <div style={{ padding: '0 14px' }}><PushNudge session={session} /></div>
 
               {notifications.length > 0 && (
                 <div className="cf-notification-actions">

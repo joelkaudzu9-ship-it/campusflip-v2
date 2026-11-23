@@ -10,7 +10,7 @@ returns trigger language plpgsql security definer set search_path = public, exte
 begin
   perform net.http_post(
     url := 'https://pfomxbhofdoorqfdekfd.supabase.co/functions/v1/send-push',
-    headers := jsonb_build_object('Content-Type', 'application/json', 'x-webhook-secret', 'joelkaudzu2026.k'),
+    headers := jsonb_build_object('Content-Type', 'application/json', 'x-webhook-secret', 'REPLACE_WITH_SECRET'),
     body := jsonb_build_object('record', to_jsonb(new)),
     timeout_milliseconds := 3000
   );
