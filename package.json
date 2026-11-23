@@ -8,7 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:smoke": "node tests/smoke.mjs",
-    "build:mock": "VITE_SUPABASE_URL=https://mock.supabase.co VITE_SUPABASE_ANON_KEY=mock vite build --outDir .mockdist"
+    "build:mock": "VITE_SUPABASE_URL=https://mock.supabase.co VITE_SUPABASE_ANON_KEY=mock vite build --outDir .mockdist",
+    "lint": "eslint . --max-warnings 0",
+    "test:contrast": "CONTRAST_STRICT=1 node tests/contrast.mjs",
+    "test:db": "bash supabase/tests/ci/run.sh",
+    "test": "npm run lint && npm run build:mock && npm run test:smoke && npm run test:contrast"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

@@ -3,27 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, LoaderCircle } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-const spring = { type: 'spring', stiffness: 320, damping: 30 };
-const slide = { type: 'spring', stiffness: 280, damping: 30 };
-
-const variants = {
-  login: {
-    initial: { x: -30, opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-    exit: { x: 30, opacity: 0 }
-  },
-  signup: {
-    initial: { x: 30, opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-    exit: { x: -30, opacity: 0 }
-  },
-  reset: {
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0 }
-  }
-};
-
 export default function AuthPanel({ onAuthenticated, onToast }) {
   const [mode, setMode] = useState('login');
   const [name, setName] = useState('');

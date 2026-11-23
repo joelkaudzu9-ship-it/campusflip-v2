@@ -1,6 +1,3 @@
-grant all on all tables in schema public to anon, authenticated, service_role;
-grant execute on all functions in schema public to public, anon, authenticated, service_role;
-alter default privileges in schema public grant execute on functions to public;
 insert into auth.users(id,email) values
  ('00000000-0000-0000-0000-0000000000a1','seller@kuhes.ac.mw'),
  ('00000000-0000-0000-0000-0000000000a2','buyer@kuhes.ac.mw'),

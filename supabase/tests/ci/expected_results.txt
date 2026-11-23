@@ -1,0 +1,36 @@
+1 anon reads all emails/phones from profiles | BLOCKED
+2 user makes THEMSELVES admin | BLOCKED
+3 user gives themselves 999 referral credits | BLOCKED
+4 seller activates pending listing w/o paying | BLOCKED
+5 seller boosts own listing for free | BLOCKED
+6 seller inserts sale listing already active | BLOCKED
+7 seller creates flash deal w/o paying | BLOCKED
+8 anon calls finalize_campusflip_payment(own charge) | BLOCKED
+9 user reports listing as already resolved | BLOCKED
+L15 user saves a listing | ALLOWED
+L1 seller edits own title/price | ALLOWED
+L2 seller marks listing sold | ALLOWED
+L3 seller creates sale listing pending_payment | ALLOWED
+L4 seller creates wanted post (active, no fee) | ALLOWED
+L5 user edits own display_name | ALLOWED
+L6 anon reads public profile columns | ALLOWED
+L7 anon reads active listings | ALLOWED
+L8 anon increments listing views (RPC) | ALLOWED
+L9 service_role finalizes listing payment | ALLOWED
+L10 service_role finalizes boost payment | ALLOWED
+L11 admin is_admin() RPC | ALLOWED
+L12 admin dashboard stats RPC | ALLOWED
+L13 admin removes a listing | ALLOWED
+L14 user files a normal report | ALLOWED
+L16 user calls request_account_deletion | ALLOWED
+X1 user get_my_profile() | OK
+X2 anon get_my_profile() | BLOCKED
+X3 non-admin admin_list_profiles() | BLOCKED
+X4 admin admin_list_profiles() count | OK
+X5 non-admin admin_set_verified() | BLOCKED
+X6 admin admin_set_verified() | OK
+X7 user get_referral_stats() | OK
+X8 boost finalize 1st call | OK
+X9 boost finalize 2nd call (idempotent?) | OK
+X10 anon get_listing_seller_whatsapp() | BLOCKED
+credit payment 2 | BLOCKED

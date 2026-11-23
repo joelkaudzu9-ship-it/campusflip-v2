@@ -60,7 +60,6 @@ export default function PostListingModal({
   const [paymentError, setPaymentError] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('idle');
   const [chargeId, setChargeId] = useState('');
-  const [paymentStartedAt, setPaymentStartedAt] = useState(null);
   const [paidWithCredit, setPaidWithCredit] = useState(false);
 
   const listingPaymentKey = useRef(null);
@@ -104,7 +103,7 @@ export default function PostListingModal({
   useEffect(() => {
     if (!open) {
       setError(''); setBusy(false); setPaymentError('');
-      setPaymentBusy(false); setPaymentStartedAt(null);
+      setPaymentBusy(false);
     }
   }, [open]);
 
@@ -163,7 +162,7 @@ export default function PostListingModal({
     setPhotosUploaded(false);
     setError('');
     setTitle(''); setDescription(''); setPrice(''); setKind('sale');
-    setChargeId(''); setPaymentStartedAt(null);
+    setChargeId('');
     setPaymentStatus('idle'); setPaymentError('');
     setPaymentBusy(false); setPaidWithCredit(false);
     listingPaymentKey.current = null;
@@ -206,7 +205,7 @@ export default function PostListingModal({
     if (insertError) { setError(insertError.message); return; }
 
     setCreatedListing(data);
-    setPaymentStatus('idle'); setChargeId(''); setPaymentStartedAt(null);
+    setPaymentStatus('idle'); setChargeId('');
     setPaymentError(''); setPaidWithCredit(false);
     listingPaymentKey.current = null;
     onCreated?.(data);
@@ -238,7 +237,7 @@ export default function PostListingModal({
   function cancelPayment() {
     clearFallbackTimer();
     setPaymentStatus('idle'); setChargeId(''); setPaymentError('');
-    setPaymentBusy(false); setPaymentStartedAt(null); setPaidWithCredit(false);
+    setPaymentBusy(false); setPaidWithCredit(false);
     listingPaymentKey.current = null;
   }
 
@@ -279,7 +278,7 @@ export default function PostListingModal({
         setCreatedListing(activeListing); onCreated?.(activeListing);
         return;
       }
-      setChargeId(data.charge_id); setPaymentStartedAt(Date.now()); setPaymentStatus('pending');
+      setChargeId(data.charge_id); setPaymentStatus('pending');
 
       const capturedChargeId = data.charge_id;
       fallbackTimerRef.current = window.setTimeout(async () => {

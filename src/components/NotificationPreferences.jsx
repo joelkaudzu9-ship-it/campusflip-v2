@@ -98,7 +98,7 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
 
     load();
     return () => { mounted = false; };
-  }, [session?.user?.id]);
+  }, [session?.user?.id, onToast]);
 
   async function toggle(key) {
     if (!prefs || saving === key) return;

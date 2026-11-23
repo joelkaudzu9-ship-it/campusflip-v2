@@ -27,6 +27,10 @@ export default [
     },
   },
   {
+    files: ['functions/**/*.js'],
+    languageOptions: { ecmaVersion: 2023, sourceType: 'module', globals: { ...globals.serviceworker } },
+  },
+  {
     files: ['tests/**/*.mjs', 'vite.config.js', 'eslint.config.js'],
     languageOptions: { ecmaVersion: 2023, sourceType: 'module', globals: { ...globals.node, ...globals.browser } },
   },
