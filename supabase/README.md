@@ -54,3 +54,10 @@ and call the payment-finalising function directly. Details are at the top of the
 applies the migration and replays `security_checks.sql`, `rpc_checks.sql` and `payment_checks.sql`.
 The results are compared with `tests/ci/expected_results.txt`; any attack that stops being BLOCKED,
 or any legitimate flow that stops working, fails CI. It never touches a real project.
+
+## Web push notifications
+
+1. Generate keys: `npx web-push generate-vapid-keys`. The public key goes in the Cloudflare build variable `VITE_VAPID_PUBLIC_KEY`; the private key is only ever a Supabase secret.
+2. Secrets: `supabase secrets set VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:you@example.com PUSH_WEBHOOK_SECRET=<long random string> SITE_URL=https://your-site`
+3. Run `migrations/20261125_web_push.sql`, deploy `functions/send-push` (turn **off** "Verify JWT" for it: the database trigger authenticates with `x-webhook-secret`), then run `migrations/20261125_web_push_trigger.sql` after replacing `REPLACE_WITH_SECRET`.
+4. Redeploy the site. Students switch it on under Account → Notifications. On iPhone, push only works once the site is added to the home screen.

@@ -27,6 +27,7 @@ db_phase() {
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261122_security_hardening.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261123_notifications_delete.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261124_kuhes_welcome.sql" >/dev/null
+  psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261125_web_push.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/tests/seed.sql" >/dev/null
   : > "$RESULTS"
   for f in security_checks rpc_checks payment_checks; do

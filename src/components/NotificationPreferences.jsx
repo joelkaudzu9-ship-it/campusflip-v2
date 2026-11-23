@@ -5,6 +5,7 @@ import {
   Sparkles, Volume2, Vibrate, LoaderCircle, Check,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { pushState, enablePush, disablePush } from '../lib/push';
 
 const spring = { type: 'spring', stiffness: 300, damping: 28 };
 
@@ -62,6 +63,23 @@ const FEEDBACK = [
 ];
 
 export default function NotificationPreferences({ session, onBack, onToast }) {
+  const [push, setPush] = useState('unsupported');
+  const [pushBusy, setPushBusy] = useState(false);
+  const [pushError, setPushError] = useState('');
+
+  useEffect(() => { pushState().then(setPush); }, []);
+
+  async function togglePush() {
+    setPushBusy(true);
+    setPushError('');
+    try {
+      if (push === 'on') await disablePush(); else await enablePush();
+    } catch (err) {
+      setPushError(err.message);
+    }
+    setPush(await pushState());
+    setPushBusy(false);
+  }
   const [prefs, setPrefs] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(null);
@@ -200,6 +218,26 @@ export default function NotificationPreferences({ session, onBack, onToast }) {
           </p>
         </div>
       </div>
+
+      {push !== 'unsupported' && (
+        <div style={{ background: '#fff', borderRadius: 20, border: '1px solid var(--cf-line)', overflow: 'hidden', marginBottom: 20 }}>
+          <PrefRow
+            pref={{
+              key: 'push',
+              icon: Bell,
+              title: 'Push notifications on this phone',
+              description: push === 'denied'
+                ? 'Blocked in your browser settings. Allow notifications for CampusFlip, then come back.'
+                : 'Get alerts even when CampusFlip is closed.',
+            }}
+            value={push === 'on'}
+            saving={pushBusy}
+            onToggle={push === 'denied' ? () => {} : togglePush}
+            isLast
+          />
+          {pushError && <p role="alert" style={{ margin: 0, padding: '0 16px 14px', fontSize: 12, color: 'var(--cf-danger)' }}>{pushError}</p>}
+        </div>
+      )}
 
       {/* Content prefs */}
       <motion.div

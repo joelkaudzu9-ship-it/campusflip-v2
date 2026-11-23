@@ -33,6 +33,15 @@ W5 bonus really added 2 credits | ALLOWED
 W6 second claim is refused (already_claimed) | ALLOWED
 W7 unverified email is refused (unverified) | ALLOWED
 W8 anon cannot claim bonus | BLOCKED
+P1 user registers own device for push | ALLOWED
+P2 anon registers a device | BLOCKED
+P3 http (non-https) endpoint rejected | BLOCKED
+P4 user inserts push row directly for someone else | BLOCKED
+P5 other user sees my device | NO
+P6 other user deletes my device | NO
+P7 shared phone: next user takes over the device | ALLOWED
+P8 previous user no longer owns it | NO
+P9 owner removes own device | ALLOWED
 L16 user calls request_account_deletion | ALLOWED
 X1 user get_my_profile() | OK
 X2 anon get_my_profile() | BLOCKED

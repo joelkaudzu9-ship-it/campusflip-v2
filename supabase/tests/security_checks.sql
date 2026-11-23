@@ -57,5 +57,14 @@ select pg_temp.try('W5 bonus really added 2 credits', $$with x as (select 1 from
 select pg_temp.try('W6 second claim is refused (already_claimed)', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'reason'='already_claimed'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
 select pg_temp.try('W7 unverified email is refused (unverified)', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'reason'='unverified'$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('W8 anon cannot claim bonus', $$select public.claim_welcome_bonus()$$, 'anon', null);
+select pg_temp.try('P1 user registers own device for push', $$select public.register_push_subscription('https://push.example/abc','key','auth','ua')$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('P2 anon registers a device', $$select public.register_push_subscription('https://push.example/zzz','key','auth','ua')$$, 'anon', null);
+select pg_temp.try('P3 http (non-https) endpoint rejected', $$select public.register_push_subscription('http://evil.example/x','key','auth','ua')$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('P4 user inserts push row directly for someone else', $$insert into public.push_subscriptions(user_id,endpoint,p256dh,auth) values ('00000000-0000-0000-0000-0000000000a2','https://push.example/v','k','a')$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('P5 other user sees my device', $$with x as (select 1 from public.push_subscriptions) select * from x$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('P6 other user deletes my device', $$delete from public.push_subscriptions where endpoint='https://push.example/abc'$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('P7 shared phone: next user takes over the device', $$select public.register_push_subscription('https://push.example/abc','key2','auth2','ua')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('P8 previous user no longer owns it', $$delete from public.push_subscriptions where endpoint='https://push.example/abc'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('P9 owner removes own device', $$delete from public.push_subscriptions where endpoint='https://push.example/abc'$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('L16 user calls request_account_deletion', $$select public.request_account_deletion()$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 rollback;

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
 
 import { supabase } from './lib/supabase';
+import { disablePush } from './lib/push';
 import { safeStorage } from './lib/safeStorage';
 import { PATHS, navItemFor, parseRoute } from './lib/routes';
 import { fetchListingById } from './lib/listings';
@@ -194,6 +195,7 @@ export default function App() {
 
   async function handleSignOut() {
     go(PATHS.home, { replace: true });
+    await disablePush();
     const { error } = await supabase.auth.signOut();
     if (error) { ping(error.message, 'error'); return; }
     ping('You have signed out.');
