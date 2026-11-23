@@ -47,3 +47,10 @@ and call the payment-finalising function directly. Details are at the top of the
   Needs `SUPABASE_SERVICE_ROLE_KEY` (the finalizer is no longer callable by clients).
 - `campusflip-paychangu-webhook` / `campusflip-payment-status` need no changes; keep your originals here.
   Deploy the webhook with `verify_jwt = false`.
+
+## Automated checks
+
+`supabase/tests/ci/run.sh` builds a scratch Postgres, loads the public schema from `schema.sql`,
+applies the migration and replays `security_checks.sql`, `rpc_checks.sql` and `payment_checks.sql`.
+The results are compared with `tests/ci/expected_results.txt`; any attack that stops being BLOCKED,
+or any legitimate flow that stops working, fails CI. It never touches a real project.
