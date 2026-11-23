@@ -302,37 +302,12 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
           <ArrowLeft size={19} />
         </motion.button>
 
-        <div>
-          <span className="cf-account-overline">CAMPUSFLIP / PROFILE</span>
-          <h1>Personal details</h1>
-        </div>
-
-        <span className="cf-settings-secure-label">
-          <ShieldCheck size={15} /> Account
-        </span>
+        <h1>Personal details</h1>
       </header>
-
-      <section className="cf-settings-intro">
-        <div>
-          <span className="cf-account-overline">YOUR IDENTITY, YOUR WAY</span>
-          <h2>Make it <em>yours.</em></h2>
-          <p>
-            Keep your profile current so people on CampusFlip know who they're
-            buying from and how to reach you.
-          </p>
-        </div>
-
-        <div className="cf-settings-intro-art" aria-hidden="true">
-          <UserRound size={42} strokeWidth={1.2} />
-          <span><CheckCircle2 size={17} /></span>
-        </div>
-      </section>
 
       <div className="cf-settings-layout">
         <aside className="cf-settings-sidebar">
           <div className="cf-settings-avatar-card">
-            <span className="cf-account-overline">PROFILE PREVIEW</span>
-
             <div className="cf-settings-avatar-wrap">
               <motion.div
                 className="cf-settings-avatar"
@@ -370,15 +345,6 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
               </motion.button>
             </div>
 
-            <h3>{displayName || 'Your name'}</h3>
-            <p>{session?.user?.email || 'Your email address'}</p>
-
-            {businessName && (
-              <span className="cf-settings-business-preview">
-                <Store size={13} /> {businessName}
-              </span>
-            )}
-
             <div className="cf-settings-avatar-actions">
               <button
                 type="button"
@@ -409,30 +375,12 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
               disabled={avatarUploading}
             />
 
-            <span className="cf-settings-image-note">
-              JPG, PNG or WebP · Photos are resized automatically
-            </span>
-          </div>
-
-          <div className="cf-settings-sidebar-note">
-            <span><ShieldCheck size={17} /></span>
-            <div>
-              <strong>Your account stays yours.</strong>
-              <p>Your email address is displayed for reference and cannot be changed here.</p>
-            </div>
           </div>
         </aside>
 
         <section className="cf-settings-main">
           <form onSubmit={handleSave} className="cf-settings-form">
-            <div className="cf-settings-form-heading">
-              <div>
-                <span className="cf-account-overline">01 — PERSONAL INFORMATION</span>
-                <h3>Profile information</h3>
-                <p>These details help identify you across the marketplace.</p>
-              </div>
-              <UserRound size={22} />
-            </div>
+            <h3 className="cf-settings-plain-heading">Profile</h3>
 
             <div className="cf-settings-fields">
               <label className="cf-settings-input-group">
@@ -444,7 +392,6 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
                   required
                   maxLength={80}
                 />
-                <small>Your name as it appears to other CampusFlip members.</small>
               </label>
 
               <label className="cf-settings-input-group">
@@ -455,7 +402,6 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
                   placeholder="Your shop or business name"
                   maxLength={100}
                 />
-                <small>Give your shop a recognisable identity.</small>
               </label>
 
               <label className="cf-settings-input-group">
@@ -465,7 +411,6 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
                   readOnly
                   className="cf-settings-readonly"
                 />
-                <small>Your sign-in email address cannot be edited here.</small>
               </label>
 
               <label className="cf-settings-input-group">
@@ -483,10 +428,6 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
             </div>
 
             <div className="cf-settings-form-bottom">
-              <span className="cf-settings-save-hint">
-                <ShieldCheck size={15} /> Your changes are saved securely.
-              </span>
-
               <motion.button
                 type="submit"
                 whileHover={{ y: -2 }}
@@ -508,14 +449,7 @@ export default function AccountSettings({ session, onClose, onBack, onToast }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...spring, delay: 0.12 }}
           >
-            <div className="cf-settings-form-heading">
-              <div>
-                <span className="cf-account-overline">02 — SELLER TOOLS</span>
-                <h3>Your shop plan</h3>
-                <p>Manage your seller verification and shop plan.</p>
-              </div>
-              <Store size={22} />
-            </div>
+            <h3 className="cf-settings-plain-heading">Shop plan</h3>
 
             <ShopPlanUpgrade
               initialPhone={whatsapp}

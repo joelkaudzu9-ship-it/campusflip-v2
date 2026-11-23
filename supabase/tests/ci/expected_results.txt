@@ -22,6 +22,9 @@ L11 admin is_admin() RPC | ALLOWED
 L12 admin dashboard stats RPC | ALLOWED
 L13 admin removes a listing | ALLOWED
 L14 user files a normal report | ALLOWED
+N1 user clears own notification | ALLOWED
+N2 user clears someone else notification | NO
+N3 anon clears notifications | NO
 L16 user calls request_account_deletion | ALLOWED
 X1 user get_my_profile() | OK
 X2 anon get_my_profile() | BLOCKED

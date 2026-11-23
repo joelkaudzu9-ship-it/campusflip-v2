@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, Check, CheckCheck, X, Sparkles, Target } from 'lucide-react';
+import { Bell, Check, CheckCheck, X, Sparkles, Target, Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useNotificationFeedback } from '../lib/useNotificationFeedback';
 
@@ -18,6 +18,8 @@ export default function NotificationCenter({ session, onOpenListing }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pulse, setPulse] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
+  const [clearError, setClearError] = useState('');
   const rootRef = useRef(null);
   const { notify } = useNotificationFeedback();
 
@@ -111,6 +113,37 @@ export default function NotificationCenter({ session, onOpenListing }) {
     }
   }
 
+  // Deletes are verified by asking for the deleted rows back: if the database
+  // policy is missing, Supabase reports success but removes nothing.
+  async function clearOne(id) {
+    setClearError('');
+    const { data, error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', session.user.id)
+      .select('id');
+    if (error || !data?.length) {
+      setClearError('Could not clear that notification. Please try again.');
+      return;
+    }
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  }
+
+  async function clearAll() {
+    setClearError('');
+    setConfirmClear(false);
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('user_id', session.user.id);
+    if (error) {
+      setClearError('Could not clear notifications. Please try again.');
+      return;
+    }
+    await fetchNotifications();
+  }
+
   if (!session) return null;
 
   return (
@@ -174,16 +207,29 @@ export default function NotificationCenter({ session, onOpenListing }) {
                 </button>
               </div>
 
-              {unreadCount > 0 && (
-                <button
-                  type="button"
-                  className="cf-mark-all"
-                  onClick={markAllAsRead}
-                >
-                  <CheckCheck size={14} />
-                  Mark all as read
-                </button>
+              {notifications.length > 0 && (
+                <div className="cf-notification-actions">
+                  {unreadCount > 0 && (
+                    <button type="button" className="cf-mark-all" onClick={markAllAsRead}>
+                      <CheckCheck size={14} />
+                      Mark all as read
+                    </button>
+                  )}
+                  {confirmClear ? (
+                    <span className="cf-clear-confirm">
+                      Clear all?
+                      <button type="button" className="cf-clear-yes" onClick={clearAll}>Yes, clear</button>
+                      <button type="button" onClick={() => setConfirmClear(false)}>Cancel</button>
+                    </span>
+                  ) : (
+                    <button type="button" className="cf-clear-all" onClick={() => setConfirmClear(true)}>
+                      <Trash2 size={14} />
+                      Clear all
+                    </button>
+                  )}
+                </div>
               )}
+              {clearError && <p className="cf-notification-error" role="alert">{clearError}</p>}
 
               <div className="cf-notification-list">
                 {loading && notifications.length === 0 ? (
@@ -231,16 +277,26 @@ export default function NotificationCenter({ session, onOpenListing }) {
                         <p>{n.message}</p>
                         <span>{timeAgo(n.created_at)}</span>
                       </div>
-                      {!n.read_at && (
+                      <div className="cf-notification-item-actions">
+                        {!n.read_at && (
+                          <button
+                            type="button"
+                            className="cf-notification-read"
+                            onClick={() => markAsRead(n.id)}
+                            aria-label="Mark as read"
+                          >
+                            <Check size={13} />
+                          </button>
+                        )}
                         <button
                           type="button"
-                          className="cf-notification-read"
-                          onClick={() => markAsRead(n.id)}
-                          aria-label="Mark as read"
+                          className="cf-notification-clear"
+                          onClick={() => clearOne(n.id)}
+                          aria-label="Clear notification"
                         >
-                          <Check size={13} />
+                          <X size={13} />
                         </button>
-                      )}
+                      </div>
                     </motion.div>
                   ))
                 )}

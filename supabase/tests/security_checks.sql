@@ -42,5 +42,11 @@ select pg_temp.try('L11 admin is_admin() RPC', $$select public.is_admin()$$, 'au
 select pg_temp.try('L12 admin dashboard stats RPC', $$select public.admin_dashboard_stats()$$, 'authenticated','00000000-0000-0000-0000-0000000000ad');
 select pg_temp.try('L13 admin removes a listing', $$update public.listings set status='removed' where id='11111111-1111-1111-1111-111111111111'$$, 'authenticated','00000000-0000-0000-0000-0000000000ad');
 select pg_temp.try('L14 user files a normal report', $$insert into public.reports(listing_id,reporter_id,reason) values ('22222222-2222-2222-2222-222222222222','00000000-0000-0000-0000-0000000000a2','spam')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+insert into public.notifications(id,user_id,type,title,message) values
+ ('aaaaaaaa-0000-0000-0000-000000000001','00000000-0000-0000-0000-0000000000a1','system','mine','m'),
+ ('aaaaaaaa-0000-0000-0000-000000000002','00000000-0000-0000-0000-0000000000a2','system','theirs','m');
+select pg_temp.try('N1 user clears own notification', $$delete from public.notifications where id='aaaaaaaa-0000-0000-0000-000000000001'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('N2 user clears someone else notification', $$delete from public.notifications where id='aaaaaaaa-0000-0000-0000-000000000002'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('N3 anon clears notifications', $$delete from public.notifications$$, 'anon', null);
 select pg_temp.try('L16 user calls request_account_deletion', $$select public.request_account_deletion()$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 rollback;

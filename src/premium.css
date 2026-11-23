@@ -4477,3 +4477,42 @@ p { line-height: 1.65; }
   object-position: center;
   transform: scale(1.02);
 }
+
+/* Notification clearing */
+.cf-notification-actions {
+  display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap;
+  gap: 6px; padding: 10px 17px 4px;
+}
+.cf-notification-actions .cf-mark-all { margin: 0; align-self: auto; }
+.cf-clear-all, .cf-clear-confirm button {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 10px; border: 0; border-radius: 9px;
+  background: var(--cf-surface-2); color: var(--cf-body);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.cf-clear-all:hover, .cf-clear-confirm button:hover { background: var(--cf-line); }
+.cf-clear-confirm { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--cf-body); }
+.cf-clear-confirm .cf-clear-yes { background: var(--cf-danger); color: var(--cf-white); }
+.cf-notification-error { margin: 6px 17px 0; font-size: 12px; color: var(--cf-danger); }
+.cf-notification-item-actions { display: flex; flex-direction: column; gap: 5px; flex: 0 0 auto; }
+.cf-notification-clear {
+  flex: 0 0 27px; width: 27px; height: 27px; display: grid; place-items: center;
+  border: 0; border-radius: 9px; background: var(--cf-surface-2); color: var(--cf-muted); cursor: pointer;
+}
+.cf-notification-clear:hover { background: var(--cf-line); color: var(--cf-text); }
+
+/* My Shop: boost / flash status */
+.cf-shop-promos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.cf-shop-promo {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800;
+}
+.cf-shop-promo em { font-style: normal; font-weight: 700; opacity: .85; margin-left: 2px; }
+.cf-shop-promo em::before { content: "· "; }
+.cf-shop-promo.is-boost { background: var(--cf-amber); color: var(--cf-navy); }
+.cf-shop-promo.is-flash { background: var(--cf-success); color: var(--cf-white); }
+.cf-shop-action-live {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 10px 8px; border-radius: 10px; border: 1px dashed var(--cf-success);
+  background: transparent; color: var(--cf-success); font-size: 12px; font-weight: 800; cursor: default;
+}

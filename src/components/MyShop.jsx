@@ -32,6 +32,16 @@ const statusLabels = {
 
 function relation(v) { return Array.isArray(v) ? v[0] : v; }
 
+function timeLeft(iso) {
+  const ms = new Date(iso).getTime() - Date.now();
+  if (!Number.isFinite(ms) || ms <= 0) return 'ending';
+  const mins = Math.floor(ms / 60000);
+  if (mins < 60) return `${Math.max(1, mins)}m left`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 48) return `${hrs}h left`;
+  return `${Math.floor(hrs / 24)}d left`;
+}
+
 function timeAgo(iso) {
   if (!iso) return '';
   const diff = Date.now() - new Date(iso).getTime();
@@ -199,7 +209,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
     const { data, error: qErr } = await supabase
       .from('listings')
       .select(`
-        id, title, description, price, kind, status, is_boosted, created_at,
+        id, title, description, price, kind, status, is_boosted, boost_expires_at, created_at,
         category_id, meeting_spot_id, expires_at, views_count,
         categories(name), meeting_spots(name),
         listing_photos(image_url, display_order)
@@ -213,6 +223,18 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       onToast?.('Could not load your shop. Please try again.', 'error');
       setListings([]);
     } else {
+      // Active flash deals for these listings (sellers can read their own deals).
+      const ids = (data || []).map(r => r.id);
+      const dealByListing = {};
+      if (ids.length) {
+        const { data: deals } = await supabase
+          .from('flash_deals')
+          .select('listing_id, deal_price, ends_at')
+          .in('listing_id', ids)
+          .eq('is_active', true)
+          .gt('ends_at', new Date().toISOString());
+        (deals || []).forEach(d => { dealByListing[d.listing_id] = d; });
+      }
       setListings((data || []).map(row => {
         const photos = [...(row.listing_photos || [])].sort((a, b) => a.display_order - b.display_order);
         return {
@@ -221,6 +243,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
           spotName: relation(row.meeting_spots)?.name || 'Campus',
           image: cfImage(photos[0]?.image_url, 480) || null,
           photoCount: photos.length,
+          flashDeal: dealByListing[row.id] || null,
         };
       }));
     }
@@ -807,17 +830,6 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         <ImageIcon size={26} color="#9AACC8" />
                       </div>
                     )}
-                    {listing.is_boosted && (
-                      <div style={{
-                        position: 'absolute', top: 6, right: 6,
-                        background: 'var(--cf-amber)', borderRadius: 6,
-                        padding: '3px 7px', fontSize: 11, fontWeight: 900,
-                        display: 'flex', alignItems: 'center', gap: 2,
-                        color: 'var(--cf-navy)'
-                      }}>
-                        <Zap size={10} fill="currentColor" /> Boosted
-                      </div>
-                    )}
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
@@ -847,6 +859,22 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                         <MapPin size={10} /> {listing.spotName}
                       </span>
                     </div>
+                    {(listing.status === 'active' && (listing.is_boosted || listing.flashDeal)) && (
+                      <div className="cf-shop-promos">
+                        {listing.is_boosted && (
+                          <span className="cf-shop-promo is-boost">
+                            <Zap size={11} fill="currentColor" /> Boosted
+                            {listing.boost_expires_at && <em>{timeLeft(listing.boost_expires_at)}</em>}
+                          </span>
+                        )}
+                        {listing.flashDeal && (
+                          <span className="cf-shop-promo is-flash">
+                            <Flame size={11} /> Flash deal {money(listing.flashDeal.deal_price)}
+                            <em>{timeLeft(listing.flashDeal.ends_at)}</em>
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {/* Performance row */}
                     <div style={{
                       display: 'flex',
@@ -883,7 +911,17 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                 }}>
                   {listing.status === 'active' && (
                     <>
-                      {listing.kind === 'sale' && (
+                      {listing.kind === 'sale' && listing.flashDeal && (
+                        <button
+                          type="button"
+                          disabled
+                          className="cf-shop-action-live"
+                          title="A flash deal is already running on this listing"
+                        >
+                          <Flame size={14} /> Flash live
+                        </button>
+                      )}
+                      {listing.kind === 'sale' && !listing.flashDeal && (
                         <motion.button
                           whileTap={{ scale: 0.96 }}
                           onClick={() => openFlashModal(listing)}
@@ -912,7 +950,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
                           justifyContent: 'center', gap: 5
                         }}
                       >
-                        <Zap size={14} fill="currentColor" /> Boost
+                        <Zap size={14} fill="currentColor" /> {listing.is_boosted ? 'Extend boost' : 'Boost'}
                       </motion.button>
                       <motion.button
                         whileTap={{ scale: 0.96 }}

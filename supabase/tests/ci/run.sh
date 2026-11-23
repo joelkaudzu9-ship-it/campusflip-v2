@@ -25,6 +25,7 @@ db_phase() {
   psql -q -f "$WORK/public.sql" >/dev/null 2>"$WORK/load.err" || true
   psql -q -v ON_ERROR_STOP=1 -f "$HERE/pre_migration_grants.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261122_security_hardening.sql" >/dev/null
+  psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261123_notifications_delete.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/tests/seed.sql" >/dev/null
   : > "$RESULTS"
   for f in security_checks rpc_checks payment_checks; do

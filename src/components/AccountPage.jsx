@@ -1,92 +1,24 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { cfImage } from '../lib/cloudinary';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft, ShieldCheck, LogOut, UserRound, Bell, Lock, Shield,
-  Gift, Copy, Share2, Check, Calendar, Store, TrendingUp,
-  ChevronRight, Sparkles, ExternalLink, Package, ArrowUpRight,
+  Gift, Copy, Share2, Check, ChevronRight,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import './account-pages.css';
+import './account-clean.css';
 
-const spring = { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 };
-
-function CountUp({ value = 0 }) {
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, v => Math.round(v).toLocaleString());
-  const [display, setDisplay] = useState('0');
-
-  useEffect(() => {
-    const controls = animate(count, Number(value) || 0, {
-      duration: 1,
-      ease: 'easeOut',
-    });
-    const unsubscribe = rounded.on('change', setDisplay);
-    return () => {
-      controls.stop();
-      unsubscribe();
-    };
-  }, [value, count, rounded]);
-
-  return <>{display}</>;
-}
-
-function VerifiedMark() {
+function SettingsRow({ icon: Icon, title, description, onClick }) {
   return (
-    <motion.span
-      initial={{ scale: 0, rotate: -25 }}
-      animate={{ scale: 1, rotate: 0 }}
-      transition={spring}
-      className="cf-account-verified"
-      title="Verified seller"
-    >
-      <ShieldCheck size={15} />
-    </motion.span>
-  );
-}
-
-function StatCard({ icon: Icon, label, value, note, accent = 'blue' }) {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 18 },
-        show: { opacity: 1, y: 0, transition: spring },
-      }}
-      className={`cf-account-stat cf-stat-${accent}`}
-    >
-      <div className="cf-account-stat-top">
-        <span className="cf-account-stat-icon"><Icon size={18} /></span>
-        <span className="cf-account-stat-label">{label}</span>
-      </div>
-      <strong>{value}</strong>
-      {note && <small>{note}</small>}
-    </motion.div>
-  );
-}
-
-function AccountAction({ icon: Icon, title, description, onClick, tone = 'blue', delay = 0 }) {
-  return (
-    <motion.button
-      type="button"
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ ...spring, delay }}
-      whileHover={{ y: -3 }}
-      whileTap={{ scale: 0.985 }}
-      onClick={onClick}
-      className="cf-account-action"
-    >
-      <span className={`cf-account-action-icon cf-action-${tone}`}>
-        <Icon size={20} />
-      </span>
-      <span className="cf-account-action-copy">
+    <button type="button" className="cf-acct-row" onClick={onClick}>
+      <span className="cf-acct-row-icon"><Icon size={18} /></span>
+      <span className="cf-acct-row-copy">
         <strong>{title}</strong>
         <small>{description}</small>
       </span>
-      <span className="cf-account-action-arrow">
-        <ChevronRight size={18} />
-      </span>
-    </motion.button>
+      <ChevronRight size={18} className="cf-acct-row-arrow" />
+    </button>
   );
 }
 
@@ -268,269 +200,74 @@ export default function AccountPage({
     );
   }
 
+
+  const verified = shopPlanActive;
+  const credits = refStats?.credits || 0;
+  const referrals = refStats?.referrals || 0;
+
   return (
-    <motion.main
-      className="cf-account-page"
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={spring}
-    >
-      <header className="cf-account-topbar">
-        <motion.button
-          type="button"
-          whileHover={{ x: -3 }}
-          whileTap={{ scale: 0.92 }}
-          onClick={onBack}
-          className="cf-account-back"
-          aria-label="Go back"
-        >
+    <main className="cf-account-page cf-acct">
+      <header className="cf-acct-top">
+        <button type="button" className="cf-acct-back" onClick={onBack} aria-label="Go back">
           <ArrowLeft size={19} />
-        </motion.button>
-
-        <div>
-          <span className="cf-account-overline">CAMPUSFLIP / PERSONAL SPACE</span>
-          <h1>Your account</h1>
-        </div>
-
-        <button
-          type="button"
-          className="cf-account-top-action"
-          onClick={onOpenSettings}
-        >
-          <UserRound size={16} />
-          <span>Edit profile</span>
         </button>
+        <h1>Account</h1>
       </header>
 
-      <section className="cf-account-welcome">
-        <div className="cf-account-welcome-copy">
-          <span className="cf-account-overline">GOOD TO SEE YOU</span>
-          <h2>Your corner of <em>CampusFlip.</em></h2>
-          <p>Manage your identity, your shop and the way you connect with campus.</p>
+      <section className="cf-acct-card cf-acct-profile">
+        <div className="cf-acct-avatar">
+          {profile?.avatar_url
+            ? <img src={cfImage(profile.avatar_url, 240)} alt={`${displayName}'s profile`} />
+            : <span>{initials}</span>}
         </div>
-
-        <div className="cf-account-welcome-decoration" aria-hidden="true">
-          <span className="cf-decoration-orbit cf-orbit-one" />
-          <span className="cf-decoration-orbit cf-orbit-two" />
-          <span className="cf-decoration-core">CF</span>
-          <span className="cf-decoration-spark"><Sparkles size={18} /></span>
+        <div className="cf-acct-id">
+          <h2>
+            {displayName}
+            {verified && <ShieldCheck size={16} className="cf-acct-verified" aria-label="Verified seller" />}
+          </h2>
+          <p>{businessName || session?.user?.email}</p>
+          <small>Member since {memberSince || '—'}</small>
         </div>
+        <button type="button" className="cf-acct-edit" onClick={onOpenSettings}>Edit</button>
       </section>
 
-      <section className="cf-account-profile-layout">
-        <motion.div
-          className="cf-account-profile-card"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...spring, delay: 0.08 }}
-        >
-          <div className="cf-account-profile-cover">
-            <span className="cf-account-cover-label">YOUR CAMPUSFLIP ID</span>
-            <span className="cf-account-cover-mark" aria-hidden="true">CF.</span>
+      <section className="cf-acct-stats" aria-label="Your activity">
+        <div><strong>{listingCount}</strong><span>Live listings</span></div>
+        <div><strong>{referrals}</strong><span>Friends invited</span></div>
+        <div><strong>{credits}</strong><span>Free listings</span></div>
+      </section>
+
+      {refStats && referralCode && (
+        <section className="cf-acct-card cf-acct-invite">
+          <span className="cf-acct-invite-icon"><Gift size={20} /></span>
+          <div className="cf-acct-invite-copy">
+            <strong>Invite friends, earn free listings</strong>
+            <small>campusflip.app/invite/{referralCode}</small>
           </div>
-
-          <div className="cf-account-profile-body">
-            <div className="cf-account-avatar-wrap">
-              <div className="cf-account-avatar">
-                {profile?.avatar_url
-                  ? <img src={cfImage(profile.avatar_url, 240)} alt={`${displayName}'s profile`} />
-                  : <span>{initials}</span>}
-              </div>
-              {shopPlanActive && <VerifiedMark />}
-            </div>
-
-            <div className="cf-account-identity">
-              <div className="cf-account-name-line">
-                <h2>{displayName}</h2>
-                {shopPlanActive && <span className="cf-account-verified-text">VERIFIED</span>}
-              </div>
-
-              {businessName && (
-                <p className="cf-account-business">
-                  <Store size={14} /> {businessName}
-                </p>
-              )}
-
-              <p className="cf-account-email">{session?.user?.email}</p>
-            </div>
-
-            <button
-              type="button"
-              onClick={onOpenSettings}
-              className="cf-account-edit-link"
-            >
-              Edit details <ArrowUpRight size={15} />
+          <div className="cf-acct-invite-actions">
+            <button type="button" onClick={copyInviteLink} className={copied ? 'is-copied' : ''}>
+              {copied ? <Check size={15} /> : <Copy size={15} />}
+              {copied ? 'Copied' : 'Copy'}
+            </button>
+            <button type="button" onClick={shareInvite} aria-label="Share invitation">
+              <Share2 size={15} /> Share
             </button>
           </div>
+        </section>
+      )}
 
-          <div className="cf-account-member-strip">
-            <span><Calendar size={14} /> Member since {memberSince || '—'}</span>
-            {shopPlanActive && (
-              <span className="cf-account-member-verified">
-                <ShieldCheck size={14} /> Verified seller
-              </span>
-            )}
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="cf-account-stats-panel"
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.08, delayChildren: 0.12 } },
-          }}
-        >
-          <div className="cf-account-section-heading">
-            <div>
-              <span className="cf-account-overline">AT A GLANCE</span>
-              <h3>Your activity</h3>
-            </div>
-            <TrendingUp size={19} />
-          </div>
-
-          <div className="cf-account-stats-grid">
-            <StatCard
-              icon={Package}
-              label="Listings"
-              value={<CountUp value={listingCount} />}
-              note="Currently active"
-              accent="blue"
-            />
-            <StatCard
-              icon={Gift}
-              label="Referrals"
-              value={<CountUp value={refStats?.referrals || 0} />}
-              note="Friends invited"
-              accent="amber"
-            />
-            <StatCard
-              icon={Sparkles}
-              label="Credits"
-              value={<CountUp value={refStats?.credits || 0} />}
-              note="Free listings earned"
-              accent="violet"
-            />
-          </div>
-        </motion.div>
-      </section>
-
-      <AnimatePresence>
-        {refStats && referralCode && (
-          <motion.section
-            className="cf-account-referral"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={spring}
-          >
-            <div className="cf-account-referral-main">
-              <span className="cf-account-referral-icon"><Gift size={24} /></span>
-              <div>
-                <span className="cf-account-overline">PASS IT ON</span>
-                <h3>Good things are better shared.</h3>
-                <p>
-                  Invite friends to CampusFlip and earn free listing credits.
-                  {refStats.referrals > 0
-                    ? ` You've already invited ${refStats.referrals} ${refStats.referrals === 1 ? 'friend' : 'friends'}.`
-                    : ' Your first invitation is just a link away.'}
-                </p>
-              </div>
-            </div>
-
-            <div className="cf-account-referral-credit">
-              <strong><CountUp value={refStats.credits || 0} /></strong>
-              <span>{refStats.credits === 1 ? 'free listing' : 'free listings'}</span>
-            </div>
-
-            <div className="cf-account-referral-bottom">
-              <div className="cf-account-referral-link">
-                <Sparkles size={15} />
-                <span>campusflip.app/invite/{referralCode}</span>
-              </div>
-
-              <div className="cf-account-referral-actions">
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.96 }}
-                  onClick={copyInviteLink}
-                  className={`cf-account-copy ${copied ? 'is-copied' : ''}`}
-                >
-                  {copied ? <Check size={16} /> : <Copy size={16} />}
-                  {copied ? 'Copied' : 'Copy invite link'}
-                </motion.button>
-
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.96 }}
-                  onClick={shareInvite}
-                  className="cf-account-share"
-                >
-                  <Share2 size={16} /> Share invitation
-                </motion.button>
-              </div>
-            </div>
-          </motion.section>
+      <section className="cf-acct-card cf-acct-list" aria-label="Settings">
+        <SettingsRow icon={UserRound} title="Personal details" description="Name, photo and shop contact" onClick={onOpenSettings} />
+        <SettingsRow icon={Bell} title="Notifications" description="Choose which updates you get" onClick={onOpenNotifications} />
+        <SettingsRow icon={Lock} title="Privacy & security" description="Password and account protection" onClick={onOpenPrivacy} />
+        {isAdmin && (
+          <SettingsRow icon={Shield} title="Admin dashboard" description="Reports, users and platform activity" onClick={onOpenAdmin} />
         )}
-      </AnimatePresence>
-
-      <section className="cf-account-management">
-        <div className="cf-account-section-heading">
-          <div>
-            <span className="cf-account-overline">ACCOUNT MANAGEMENT</span>
-            <h3>Make yourself at home.</h3>
-          </div>
-          <span className="cf-account-section-note">YOUR SETTINGS</span>
-        </div>
-
-        <div className="cf-account-actions-grid">
-          <AccountAction
-            icon={UserRound}
-            title="Personal details"
-            description="Your name, profile picture and shop contact."
-            onClick={onOpenSettings}
-            tone="blue"
-            delay={0.04}
-          />
-          <AccountAction
-            icon={Bell}
-            title="Notifications"
-            description="Choose the updates you want to receive."
-            onClick={onOpenNotifications}
-            tone="amber"
-            delay={0.09}
-          />
-          <AccountAction
-            icon={Lock}
-            title="Privacy & security"
-            description="Password, sessions and account protection."
-            onClick={onOpenPrivacy}
-            tone="violet"
-            delay={0.14}
-          />
-          {isAdmin && (
-            <AccountAction
-              icon={Shield}
-              title="Admin dashboard"
-              description="Manage reports, users and platform activity."
-              onClick={onOpenAdmin}
-              tone="rose"
-              delay={0.19}
-            />
-          )}
-        </div>
       </section>
 
-      <footer className="cf-account-footer">
-        <div>
-          <span className="cf-account-footer-mark" aria-hidden="true">CF.</span>
-          <span>Buy. Sell. Meet.</span>
-        </div>
-        <button type="button" onClick={onSignOut}>
-          <LogOut size={16} /> Sign out
-        </button>
-      </footer>
-    </motion.main>
+      <button type="button" className="cf-acct-signout" onClick={onSignOut}>
+        <LogOut size={16} /> Sign out
+      </button>
+    </main>
   );
 }

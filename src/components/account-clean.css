@@ -1,0 +1,75 @@
+/* Account page: one calm column, three small blocks. */
+.cf-account-page.cf-acct { display: flex; flex-direction: column; gap: 14px; max-width: 640px; margin: 0 auto; padding: 14px 16px 120px; }
+.cf-acct-top { display: flex; align-items: center; gap: 12px; padding: 4px 0 2px; }
+.cf-acct-top h1 { margin: 0; font-size: 22px; letter-spacing: -.02em; color: var(--cf-text); }
+.cf-acct-back {
+  width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 auto;
+  border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-white); color: var(--cf-navy); cursor: pointer;
+}
+.cf-acct-card { background: var(--cf-white); border: 1px solid var(--cf-line); border-radius: 18px; }
+
+.cf-acct-profile { display: flex; align-items: center; gap: 14px; padding: 16px; }
+.cf-acct-avatar {
+  width: 60px; height: 60px; flex: 0 0 auto; border-radius: 18px; overflow: hidden;
+  display: grid; place-items: center; background: var(--cf-surface-2); color: var(--cf-blue-dark); font-weight: 800; font-size: 20px;
+}
+.cf-acct-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cf-acct-id { flex: 1; min-width: 0; }
+.cf-acct-id h2 { margin: 0; font-size: 17px; color: var(--cf-text); display: flex; align-items: center; gap: 6px; }
+.cf-acct-id p, .cf-acct-id small { display: block; margin: 2px 0 0; color: var(--cf-muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cf-acct-id small { font-size: 12px; }
+.cf-acct-verified { color: var(--cf-success); flex: 0 0 auto; }
+.cf-acct-edit {
+  padding: 9px 16px; border: 0; border-radius: 10px; cursor: pointer;
+  background: var(--cf-blue-dark); color: var(--cf-white); font-size: 13px; font-weight: 700;
+}
+
+.cf-acct-stats { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--cf-white); border: 1px solid var(--cf-line); border-radius: 18px; }
+.cf-acct-stats > div { padding: 14px 8px; text-align: center; }
+.cf-acct-stats > div + div { border-left: 1px solid var(--cf-line); }
+.cf-acct-stats strong { display: block; font-size: 22px; color: var(--cf-text); }
+.cf-acct-stats span { display: block; margin-top: 2px; font-size: 12px; color: var(--cf-muted); }
+
+.cf-acct-invite { display: flex; align-items: center; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
+.cf-acct-invite-icon { width: 38px; height: 38px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 12px; background: var(--cf-surface-2); color: var(--cf-amber-ink); }
+.cf-acct-invite-copy { flex: 1; min-width: 160px; }
+.cf-acct-invite-copy strong { display: block; font-size: 14px; color: var(--cf-text); }
+.cf-acct-invite-copy small { display: block; margin-top: 2px; font-size: 12px; color: var(--cf-muted); word-break: break-all; }
+.cf-acct-invite-actions { display: flex; gap: 8px; }
+.cf-acct-invite-actions button {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--cf-line);
+  border-radius: 10px; background: var(--cf-white); color: var(--cf-navy); font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.cf-acct-invite-actions button.is-copied { color: var(--cf-success); border-color: var(--cf-success); }
+
+.cf-acct-list { overflow: hidden; }
+.cf-acct-row {
+  width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border: 0; background: transparent; text-align: left; cursor: pointer; color: var(--cf-text);
+}
+.cf-acct-row + .cf-acct-row { border-top: 1px solid var(--cf-line); }
+.cf-acct-row:hover { background: var(--cf-surface); }
+.cf-acct-row-icon { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 11px; background: var(--cf-surface-2); color: var(--cf-blue-dark); }
+.cf-acct-row-copy { flex: 1; min-width: 0; }
+.cf-acct-row-copy strong { display: block; font-size: 15px; }
+.cf-acct-row-copy small { display: block; margin-top: 1px; font-size: 12.5px; color: var(--cf-muted); }
+.cf-acct-row-arrow { color: var(--cf-muted); flex: 0 0 auto; }
+
+.cf-acct-signout {
+  align-self: center; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; padding: 10px 18px;
+  border: 0; border-radius: 12px; background: transparent; color: var(--cf-danger); font-size: 14px; font-weight: 700; cursor: pointer;
+}
+
+/* Personal details: plain headings, no banners */
+.cf-settings-plain-heading { margin: 0 0 12px; font-size: 16px; color: var(--cf-text); }
+.cf-settings-form-bottom { justify-content: flex-end; }
+
+/* Personal details: plain headings, no banners */
+.cf-settings-plain-heading { margin: 0 0 12px; font-size: 16px; color: var(--cf-text); }
+.cf-settings-form-bottom { justify-content: flex-end; }
+
+/* Personal details always one column (it opens in a narrow panel on desktop) */
+.cf-settings-page .cf-settings-layout { grid-template-columns: 1fr; }
+.cf-settings-page .cf-settings-sidebar { display: block; }
+.cf-settings-page .cf-settings-avatar-card { padding-block: 18px; }
+.cf-settings-page .cf-settings-fields { grid-template-columns: 1fr; }
