@@ -66,5 +66,21 @@ select pg_temp.try('P6 other user deletes my device', $$delete from public.push_
 select pg_temp.try('P7 shared phone: next user takes over the device', $$select public.register_push_subscription('https://push.example/abc','key2','auth2','ua')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('P8 previous user no longer owns it', $$delete from public.push_subscriptions where endpoint='https://push.example/abc'$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
 select pg_temp.try('P9 owner removes own device', $$delete from public.push_subscriptions where endpoint='https://push.example/abc'$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+insert into public.seller_contacts(user_id,whatsapp_number) values ('00000000-0000-0000-0000-0000000000a1','265991234567') on conflict (user_id) do update set whatsapp_number=excluded.whatsapp_number;
+select pg_temp.try('R1 seller posts within the hourly limit', $t$do $b$ begin for i in 1..5 loop insert into public.listings(seller_id,title,price,kind,status) values ('00000000-0000-0000-0000-0000000000a1','r'||i,1,'sale','draft'); end loop; end $b$$t$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('R2 seller posting 9 more is stopped (limit 10/hour)', $t$do $b$ begin for i in 1..9 loop insert into public.listings(seller_id,title,price,kind,status) values ('00000000-0000-0000-0000-0000000000a1','q'||i,1,'sale','draft'); end loop; end $b$$t$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('R3 other seller is not affected', $$insert into public.listings(seller_id,title,price,kind,status) values ('00000000-0000-0000-0000-0000000000a2','mine',1,'sale','draft')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('R4 duplicate report on same listing is refused', $$insert into public.reports(listing_id,reporter_id,reason) values ('22222222-2222-2222-2222-222222222222','00000000-0000-0000-0000-0000000000a2','spam')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select set_config('request.jwt.claim.sub','',true);
+set local session_replication_role = replica;
+insert into public.listings(id,seller_id,title,price,kind,status)
+  values ('33333333-3333-3333-3333-333333333333','00000000-0000-0000-0000-0000000000a1','Contact test',1,'sale','active');
+insert into public.listings(id,seller_id,title,price,kind,status)
+  select gen_random_uuid(),'00000000-0000-0000-0000-0000000000ad','x'||g,1,'sale','active' from generate_series(1,12) g;
+set local session_replication_role = origin;
+select pg_temp.try('R5 student sending 12 reports in a day is stopped (limit 10)', $t$do $b$ declare r record; begin for r in select id from public.listings where seller_id='00000000-0000-0000-0000-0000000000ad' loop insert into public.reports(listing_id,reporter_id,reason) values (r.id,'00000000-0000-0000-0000-0000000000a2','spam'); end loop; end $b$$t$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('R6 buyer looks up a seller contact', $$select public.get_listing_seller_whatsapp('33333333-3333-3333-3333-333333333333')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('R7 31 contact lookups in an hour are stopped (limit 30)', $t$do $b$ begin for i in 1..31 loop perform public.get_listing_seller_whatsapp('33333333-3333-3333-3333-333333333333'); end loop; end $b$$t$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select pg_temp.try('R8 contact_lookups log is not readable by users', $$select * from public.contact_lookups$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('L16 user calls request_account_deletion', $$select public.request_account_deletion()$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 rollback;

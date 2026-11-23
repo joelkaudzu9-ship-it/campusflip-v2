@@ -42,6 +42,14 @@ P6 other user deletes my device | NO
 P7 shared phone: next user takes over the device | ALLOWED
 P8 previous user no longer owns it | NO
 P9 owner removes own device | ALLOWED
+R1 seller posts within the hourly limit | NO
+R2 seller posting 9 more is stopped (limit 10/hour) | BLOCKED
+R3 other seller is not affected | ALLOWED
+R4 duplicate report on same listing is refused | BLOCKED
+R5 student sending 12 reports in a day is stopped (limit 1 | BLOCKED
+R6 buyer looks up a seller contact | ALLOWED
+R7 31 contact lookups in an hour are stopped (limit 30) | BLOCKED
+R8 contact_lookups log is not readable by users | BLOCKED
 L16 user calls request_account_deletion | ALLOWED
 X1 user get_my_profile() | OK
 X2 anon get_my_profile() | BLOCKED

@@ -18,7 +18,7 @@ try {
     const user = { id: 'u1', email: 'tester@example.com', aud: 'authenticated', role: 'authenticated', app_metadata: {}, user_metadata: {}, created_at: new Date().toISOString() };
     await page.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch { /* ignore */ } },
       ['sb-mock-auth-token', JSON.stringify({ access_token: jwt, refresh_token: 'r', token_type: 'bearer', expires_in: 86400, expires_at: exp, user })]);
-    for (const route of ['account', 'account/settings', 'account/privacy', 'account/notifications', 'shop']) {
+    for (const route of ['account', 'account/settings', 'account/privacy', 'account/notifications', 'shop', 'download', 'help', 'privacy-policy', 'terms']) {
       await page.goto(`http://localhost:${PORT}/${route}`);
       await wait(3500);
       for (const label of [/skip/i, /get started/i]) { const b = page.getByRole('button', { name: label }).first(); if (await b.count()) { await b.click().catch(() => {}); await wait(600); } }

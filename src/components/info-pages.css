@@ -1,0 +1,23 @@
+.cf-info { min-height: 100%; background: var(--cf-bg); color: var(--cf-body); padding-bottom: 80px; }
+.cf-info-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--cf-white); border-bottom: 1px solid var(--cf-line); font-weight: 800; color: var(--cf-text); }
+.cf-info-top button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-white); color: var(--cf-navy); cursor: pointer; }
+.cf-info-body { max-width: 680px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.cf-info-hero { text-align: center; padding: 28px 18px; border-radius: 22px; background: var(--cf-navy); color: var(--cf-white); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.cf-info-hero.small { padding: 22px 18px; }
+.cf-info-hero img { border-radius: 18px; }
+.cf-info-hero h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; color: var(--cf-white); }
+.cf-info-hero p { margin: 0; color: var(--cf-white); opacity: .9; }
+.cf-info-hero small { color: var(--cf-white); opacity: .85; font-size: 12.5px; }
+.cf-info-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; padding: 13px 22px; border: 0; border-radius: 14px; background: var(--cf-white); color: var(--cf-navy); font-weight: 800; font-size: 15px; text-decoration: none; cursor: pointer; }
+.cf-info-section { background: var(--cf-white); border: 1px solid var(--cf-line); border-radius: 18px; padding: 18px; }
+.cf-info-section h2 { margin: 0 0 10px; font-size: 17px; color: var(--cf-text); }
+.cf-info-section h3 { margin: 14px 0 6px; font-size: 14px; color: var(--cf-text); }
+.cf-info-section p { margin: 8px 0; line-height: 1.6; }
+.cf-info-section a, .cf-info-list button { color: var(--cf-blue-dark); font-weight: 700; }
+.cf-info-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; }
+.cf-info-list button { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; text-decoration: underline; }
+.cf-info-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 9px; line-height: 1.55; }
+.cf-info-note { padding: 10px 12px; border-radius: 12px; background: var(--cf-surface-2); font-size: 13.5px; }
+.cf-info-link { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 0; color: var(--cf-blue-dark); font-weight: 800; cursor: pointer; font-size: 15px; }
+.cf-info-footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; padding: 8px 0 0; }
+.cf-info-footer button { border: 0; background: none; color: var(--cf-body); font-size: 13px; text-decoration: underline; cursor: pointer; padding: 6px; }

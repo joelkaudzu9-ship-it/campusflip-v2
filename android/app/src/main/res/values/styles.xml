@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.CampusFlip" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/navy</item>
+        <item name="android:navigationBarColor">@color/navy</item>
+    </style>
+</resources>

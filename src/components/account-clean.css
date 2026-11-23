@@ -73,3 +73,6 @@
 .cf-settings-page .cf-settings-sidebar { display: block; }
 .cf-settings-page .cf-settings-avatar-card { padding-block: 18px; }
 .cf-settings-page .cf-settings-fields { grid-template-columns: 1fr; }
+
+.cf-acct-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; }
+.cf-acct-links button { border: 0; background: none; padding: 6px; color: var(--cf-body); font-size: 13px; text-decoration: underline; cursor: pointer; }

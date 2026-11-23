@@ -13,6 +13,10 @@ export const PATHS = {
   privacy: '/account/privacy',
   admin: '/admin',
   resetPassword: '/reset-password',
+  download: '/download',
+  help: '/help',
+  privacyPolicy: '/privacy-policy',
+  terms: '/terms',
   listing: id => `/listing/${encodeURIComponent(id)}`,
   invite: code => `/invite/${encodeURIComponent(code)}`,
 };
@@ -32,6 +36,10 @@ const TABLE = [
   ['privacy', '/account/privacy'],
   ['admin', '/admin'],
   ['resetPassword', '/reset-password'],
+  ['download', '/download'],
+  ['help', '/help'],
+  ['privacyPolicy', '/privacy-policy'],
+  ['terms', '/terms'],
   ['listing', '/listing/:id'],
   ['invite', '/invite/:code'],
 ];

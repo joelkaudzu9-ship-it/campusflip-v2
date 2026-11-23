@@ -28,6 +28,7 @@ export default function AccountPage({
   onOpenSettings,
   onSignOut,
   onOpenAdmin,
+  onOpenInfo,
   isAdmin,
   onOpenNotifications,
   onOpenPrivacy,
@@ -264,6 +265,13 @@ export default function AccountPage({
           <SettingsRow icon={Shield} title="Admin dashboard" description="Reports, users and platform activity" onClick={onOpenAdmin} />
         )}
       </section>
+
+      <nav className="cf-acct-links" aria-label="About CampusFlip">
+        <button type="button" onClick={() => onOpenInfo?.('/help')}>Help</button>
+        <button type="button" onClick={() => onOpenInfo?.('/download')}>Get the app</button>
+        <button type="button" onClick={() => onOpenInfo?.('/privacy-policy')}>Privacy Policy</button>
+        <button type="button" onClick={() => onOpenInfo?.('/terms')}>Terms</button>
+      </nav>
 
       <button type="button" className="cf-acct-signout" onClick={onSignOut}>
         <LogOut size={16} /> Sign out

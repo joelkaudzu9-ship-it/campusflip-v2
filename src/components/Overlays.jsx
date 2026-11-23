@@ -17,6 +17,8 @@ const SearchPage = lazy(() => import('./SearchPage'));
 const MyShop = lazy(() => import('./MyShop'));
 const PostListingModal = lazy(() => import('./PostListingModal'));
 const ListingDetails = lazy(() => import('./ListingDetails'));
+const InfoPages = lazy(() => import('./InfoPages'));
+const INFO_ROUTES = ['download', 'help', 'privacyPolicy', 'terms'];
 
 const ACCOUNT_ROUTES = ['account', 'settings', 'notifications', 'privacy'];
 
@@ -66,6 +68,7 @@ export default function Overlays({
                 onOpenPrivacy={() => go(PATHS.privacy)}
                 onSignOut={onSignOut}
                 onOpenAdmin={() => go(PATHS.admin)}
+                onOpenInfo={path => go(path)}
                 isAdmin={isAdmin}
               />
             </Guard>
@@ -133,6 +136,16 @@ export default function Overlays({
           <PageTransition key="admin-dashboard" onBack={() => goBack(PATHS.account)}>
             <Guard onClose={() => goBack(PATHS.account)}>
               <AdminDashboard onBack={() => goBack(PATHS.account)} onToast={onToast} />
+            </Guard>
+          </PageTransition>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {INFO_ROUTES.includes(name) && (
+          <PageTransition key="info-page" onBack={() => goBack()}>
+            <Guard onClose={() => goBack()}>
+              <InfoPages page={name} onBack={() => goBack()} onGo={path => go(path)} />
             </Guard>
           </PageTransition>
         )}

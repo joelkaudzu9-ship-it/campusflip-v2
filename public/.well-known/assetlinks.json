@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.campusflip.app",
+    "sha256_cert_fingerprints": ["2E:0E:F1:2C:20:14:2E:B0:07:81:80:CE:5C:6F:99:87:F7:42:2F:36:1A:75:E1:C1:EB:A6:C0:E4:21:D9:B8:9F"]
+  }
+}]

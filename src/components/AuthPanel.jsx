@@ -259,6 +259,13 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
             </>
           )}
         </motion.button>
+        {mode === 'signup' && (
+          <p style={{ margin: 0, fontSize: 12.5, color: 'var(--cf-muted)', textAlign: 'center', lineHeight: 1.5 }}>
+            By creating an account you agree to our{' '}
+            <a href="/terms" target="_blank" rel="noopener" style={{ color: 'var(--cf-blue-dark)', fontWeight: 700 }}>Terms</a> and{' '}
+            <a href="/privacy-policy" target="_blank" rel="noopener" style={{ color: 'var(--cf-blue-dark)', fontWeight: 700 }}>Privacy Policy</a>.
+          </p>
+        )}
       </form>
 
       {/* Mode switcher — animated */}

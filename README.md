@@ -74,3 +74,11 @@ link, a refresh) goes home instead of leaving the site.
   change the token instead. `test:contrast` fails the build if text drops below WCAG AA.
 - **Navigation** is React Router. `parseRoute()` in `src/lib/routes.js` maps the URL to a screen and
   `Overlays.jsx` renders it over the home feed, so the feed keeps its scroll position underneath.
+
+## Android app (APK)
+
+The app is a thin Android wrapper around the website (a Trusted Web Activity), so every site deploy updates it.
+- Source: `android/`. Build: GitHub → Actions → **Build Android app** → Run workflow. It needs two repository secrets: `ANDROID_KEYSTORE_B64` and `ANDROID_KEYSTORE_PASSWORD`.
+- The workflow commits the signed file to `public/downloads/campusflip.apk`, which the `/download` page links to.
+- `public/.well-known/assetlinks.json` holds the signing-key fingerprint that lets the app open the site full-screen. **Keep the keystore safe**: with a different key, existing installs cannot be updated.
+- If the site address changes, update it in `android/app/src/main/AndroidManifest.xml`, `res/values/strings.xml` and `assetlinks.json`.
