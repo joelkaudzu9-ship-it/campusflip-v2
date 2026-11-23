@@ -296,6 +296,9 @@ export default function ListingDetails({
         messageBody = `Hello! I found your listing "${details.title}" on CampusFlip. Is it still available?`;
       }
 
+      // The link tells the seller exactly which post this is about, and opens it directly.
+      messageBody += `\n${window.location.origin}/listing/${details.id}`;
+
       const message = encodeURIComponent(messageBody);
       const url = `https://wa.me/${phone}?text=${message}`;
 
