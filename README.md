@@ -1,4 +1,4 @@
-# CampusFlip
+# CampusFlip-v2
 
 Campus marketplace for KUHeS students: buy, sell and meet safely. React 18 + Vite PWA on
 Cloudflare Pages, with Supabase (Postgres, Auth, Realtime), Cloudinary for photos and
