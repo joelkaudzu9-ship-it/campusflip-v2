@@ -1,0 +1,56 @@
+name: Database backup
+
+# Every Sunday (and on demand) this saves an encrypted copy of the database as a
+# downloadable file on the run page. Setup steps are in supabase/README.md.
+on:
+  schedule:
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check secrets exist
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$DB_URL" ] || [ -z "$PASS" ]; then
+            echo "Add the SUPABASE_DB_URL and BACKUP_PASSPHRASE secrets first (see supabase/README.md)."; exit 1
+          fi
+
+      - name: Install the newest Postgres client
+        run: |
+          sudo apt-get install -y postgresql-common >/dev/null
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y >/dev/null
+          sudo apt-get install -y postgresql-client-17 >/dev/null
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Dump and encrypt
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          STAMP="$(date -u +%Y-%m-%d)"
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" --format=custom --no-owner --no-privileges \
+            --schema=public --schema=auth --file="campusflip-$STAMP.dump"
+          SIZE="$(stat -c %s "campusflip-$STAMP.dump")"
+          echo "Dump is $SIZE bytes"
+          if [ "$SIZE" -lt 20000 ]; then echo "Dump is suspiciously small, failing."; exit 1; fi
+          gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$PASS" \
+            --output "campusflip-$STAMP.dump.gpg" "campusflip-$STAMP.dump"
+          rm "campusflip-$STAMP.dump"
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+
+      - name: Keep the encrypted file
+        uses: actions/upload-artifact@v4
+        with:
+          name: campusflip-backup-${{ env.STAMP }}
+          path: campusflip-${{ env.STAMP }}.dump.gpg
+          retention-days: 60
+          if-no-files-found: error
