@@ -189,7 +189,7 @@ function PrivacyPage() {
         </ul>
       </Section>
       <Section title="How long we keep it">
-        <p>We keep your information while your account is open. When you delete your account, your listings are removed straight away and the rest of your information, including your payment records on CampusFlip, is permanently deleted after 30 days. Payment providers and mobile money networks keep their own records under their own rules. Photos are removed from our listings, and error reports are kept for a short period by our error-monitoring provider.</p>
+        <p>We keep your information while your account is open. When you delete your account, your listings are removed straight away and the rest of your information, including your payment records on CampusFlip, is permanently deleted after 30 days. Payment providers and mobile money networks keep their own records under their own rules. Your photos are also deleted from our photo storage. Listings that expired are removed with their photos 5 days after they expire. To stop the welcome bonus being claimed twice, we keep a one-way scrambled code of your email address, from which the address cannot be read. Error reports are kept for a short period by our error-monitoring provider.</p>
       </Section>
       <Section title="Your choices">
         <ul className="cf-info-list">

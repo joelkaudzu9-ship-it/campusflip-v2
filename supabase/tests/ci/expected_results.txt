@@ -50,6 +50,26 @@ R5 student sending 12 reports in a day is stopped (limit 1 | BLOCKED
 R6 buyer looks up a seller contact | ALLOWED
 R7 31 contact lookups in an hour are stopped (limit 30) | BLOCKED
 R8 contact_lookups log is not readable by users | BLOCKED
+M1 matching sale notifies the person who wanted it | ALLOWED
+M2 unrelated sale notifies nobody | NO
+M3 wanter who turned matches off is not notified | NO
+M4 seller is never notified about own listing | NO
+H1 account due for deletion is fully removed | ALLOWED
+H2 account requested only 5 days ago is kept | ALLOWED
+H3 login without a profile is NOT deleted | ALLOWED
+H4 normal users cannot run the purge | BLOCKED
+I1 deleting a Cloudinary photo queues it | ALLOWED
+I2 a photo that is not on Cloudinary is never queued | ALLOWED
+I3 listing expired more than 5 days ago is removed and its | ALLOWED
+I4 listing expired 2 days ago is left alone | ALLOWED
+I5 replacing an avatar queues the old one | ALLOWED
+I6 deleted account has its avatar and listing photos queue | ALLOWED
+I7 normal users cannot read the delete queue | BLOCKED
+I8 normal users cannot run the photo purge | BLOCKED
+B1 first claim for an email works | ALLOWED
+B2 same email after delete and re-signup is refused | ALLOWED
+B3 re-signup got no credits | ALLOWED
+B4 normal users cannot read the claims list | BLOCKED
 L16 user calls request_account_deletion | ALLOWED
 X1 user get_my_profile() | OK
 X2 anon get_my_profile() | BLOCKED

@@ -29,6 +29,9 @@ db_phase() {
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261124_kuhes_welcome.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261125_web_push.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261126_rate_limits.sql" >/dev/null
+  psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261127_safe_hard_delete.sql" >/dev/null
+  psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261128_image_cleanup.sql" >/dev/null
+  psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/migrations/20261129_bonus_once_per_email.sql" >/dev/null
   psql -q -v ON_ERROR_STOP=1 -f "$ROOT/supabase/tests/seed.sql" >/dev/null
   : > "$RESULTS"
   for f in security_checks rpc_checks payment_checks; do

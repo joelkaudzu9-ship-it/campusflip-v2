@@ -3,5 +3,5 @@ export const SITE = {
   supportEmail: 'campusflip2@gmail.com',
   university: 'Kamuzu University of Health Sciences (KUHeS)',
   apkPath: '/downloads/campusflip.apk',
-  updated: '23 November 2026',
+  updated: '24 November 2026',
 };

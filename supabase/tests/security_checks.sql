@@ -82,5 +82,78 @@ select pg_temp.try('R5 student sending 12 reports in a day is stopped (limit 10)
 select pg_temp.try('R6 buyer looks up a seller contact', $$select public.get_listing_seller_whatsapp('33333333-3333-3333-3333-333333333333')$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('R7 31 contact lookups in an hour are stopped (limit 30)', $t$do $b$ begin for i in 1..31 loop perform public.get_listing_seller_whatsapp('33333333-3333-3333-3333-333333333333'); end loop; end $b$$t$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 select pg_temp.try('R8 contact_lookups log is not readable by users', $$select * from public.contact_lookups$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
+select set_config('request.jwt.claim.sub','',true);
+insert into public.listings(id,seller_id,title,kind,status) values
+ ('44444444-4444-4444-4444-444444444444','00000000-0000-0000-0000-0000000000a2','iPhone 11 128GB','wanted','active'),
+ ('44444444-4444-4444-4444-444444444445','00000000-0000-0000-0000-0000000000ad','Samsung Galaxy A14','wanted','active');
+update public.notification_preferences set wanted_matches=false where user_id='00000000-0000-0000-0000-0000000000ad';
+insert into public.listings(id,seller_id,title,price,kind,status) values
+ ('55555555-5555-5555-5555-555555555555','00000000-0000-0000-0000-0000000000a1','iPhone 11 128GB blue',900000,'sale','draft'),
+ ('66666666-6666-6666-6666-666666666666','00000000-0000-0000-0000-0000000000a1','Mathematics textbook',5000,'sale','draft'),
+ ('77777777-7777-7777-7777-777777777777','00000000-0000-0000-0000-0000000000a1','Samsung Galaxy A14 64GB',150000,'sale','draft');
+update public.listings set status='active' where id in ('55555555-5555-5555-5555-555555555555','66666666-6666-6666-6666-666666666666','77777777-7777-7777-7777-777777777777');
+select pg_temp.try('M1 matching sale notifies the person who wanted it', $$with x as (select 1 from public.notifications where user_id='00000000-0000-0000-0000-0000000000a2' and type='wanted_match' and listing_id='55555555-5555-5555-5555-555555555555') select * from x$$, 'postgres', null);
+select pg_temp.try('M2 unrelated sale notifies nobody', $$with x as (select 1 from public.notifications where type='wanted_match' and listing_id='66666666-6666-6666-6666-666666666666') select * from x$$, 'postgres', null);
+select pg_temp.try('M3 wanter who turned matches off is not notified', $$with x as (select 1 from public.notifications where user_id='00000000-0000-0000-0000-0000000000ad' and type='wanted_match') select * from x$$, 'postgres', null);
+select pg_temp.try('M4 seller is never notified about own listing', $$with x as (select 1 from public.notifications where user_id='00000000-0000-0000-0000-0000000000a1' and type='wanted_match') select * from x$$, 'postgres', null);
+select set_config('request.jwt.claim.sub','',true);
+insert into auth.users(id,email) values ('00000000-0000-0000-0000-0000000000d1','old@kuhes.ac.mw'),('00000000-0000-0000-0000-0000000000d2','recent@kuhes.ac.mw'),('00000000-0000-0000-0000-0000000000d3','noprofile@kuhes.ac.mw') on conflict do nothing;
+insert into public.profiles(id,display_name,email,phone) values ('00000000-0000-0000-0000-0000000000d1','Old','old@kuhes.ac.mw','+2653'),('00000000-0000-0000-0000-0000000000d2','Recent','recent@kuhes.ac.mw','+2654') on conflict do nothing;
+update public.profiles set deletion_requested_at = now() - interval '31 days' where id='00000000-0000-0000-0000-0000000000d1';
+update public.profiles set deletion_requested_at = now() - interval '5 days' where id='00000000-0000-0000-0000-0000000000d2';
+insert into public.listings(id,seller_id,title,price,kind,status) values ('88888888-8888-8888-8888-888888888888','00000000-0000-0000-0000-0000000000d1','Old account listing',1,'sale','draft');
+select public.hard_delete_expired_accounts();
+select pg_temp.try('H1 account due for deletion is fully removed', $$with x as (select 1 where not exists (select 1 from public.profiles where id='00000000-0000-0000-0000-0000000000d1') and not exists (select 1 from auth.users where id='00000000-0000-0000-0000-0000000000d1') and not exists (select 1 from public.listings where seller_id='00000000-0000-0000-0000-0000000000d1')) select * from x$$, 'postgres', null);
+select pg_temp.try('H2 account requested only 5 days ago is kept', $$with x as (select 1 from public.profiles where id='00000000-0000-0000-0000-0000000000d2') select * from x$$, 'postgres', null);
+select pg_temp.try('H3 login without a profile is NOT deleted', $$with x as (select 1 from auth.users where id='00000000-0000-0000-0000-0000000000d3') select * from x$$, 'postgres', null);
+select pg_temp.try('H4 normal users cannot run the purge', $$select public.hard_delete_expired_accounts()$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+-- Image cleanup queue
+set local session_replication_role = replica;
+insert into public.listings(id,seller_id,title,price,kind,status,expires_at) values
+ ('99999999-0000-0000-0000-000000000001','00000000-0000-0000-0000-0000000000a1','Expired long ago',1,'sale','expired', now() - interval '6 days'),
+ ('99999999-0000-0000-0000-000000000002','00000000-0000-0000-0000-0000000000a1','Expired recently',1,'sale','expired', now() - interval '2 days');
+set local session_replication_role = origin;
+insert into public.listing_photos(listing_id,image_url) values
+ ('99999999-0000-0000-0000-000000000001','https://res.cloudinary.com/demo/image/upload/v1/cf/old.jpg'),
+ ('99999999-0000-0000-0000-000000000002','https://res.cloudinary.com/demo/image/upload/v1/cf/recent.jpg'),
+ ('99999999-0000-0000-0000-000000000002','https://example.com/not-cloudinary.jpg');
+delete from public.image_delete_queue;
+delete from public.listing_photos where image_url like '%not-cloudinary%';
+delete from public.listing_photos where image_url like '%recent.jpg';
+select pg_temp.try('I1 deleting a Cloudinary photo queues it', $$with x as (select 1 from public.image_delete_queue where image_url like '%recent.jpg') select * from x$$, 'postgres', null);
+insert into public.listing_photos(listing_id,image_url) values ('99999999-0000-0000-0000-000000000002','https://example.com/other.jpg');
+delete from public.listing_photos where image_url like '%other.jpg';
+select pg_temp.try('I2 a photo that is not on Cloudinary is never queued', $$with x as (select 1 where not exists (select 1 from public.image_delete_queue where image_url like '%example.com%')) select * from x$$, 'postgres', null);
+delete from public.image_delete_queue;
+select public.purge_expired_listing_photos();
+select pg_temp.try('I3 listing expired more than 5 days ago is removed and its photo queued', $$with x as (select 1 where exists (select 1 from public.listings where id='99999999-0000-0000-0000-000000000001' and status='removed') and not exists (select 1 from public.listing_photos where listing_id='99999999-0000-0000-0000-000000000001') and exists (select 1 from public.image_delete_queue where image_url like '%old.jpg')) select * from x$$, 'postgres', null);
+select pg_temp.try('I4 listing expired 2 days ago is left alone', $$with x as (select 1 from public.listings where id='99999999-0000-0000-0000-000000000002' and status='expired') select * from x$$, 'postgres', null);
+update public.profiles set avatar_url='https://res.cloudinary.com/demo/image/upload/v1/cf/av1.jpg' where id='00000000-0000-0000-0000-0000000000a2';
+delete from public.image_delete_queue;
+update public.profiles set avatar_url='https://res.cloudinary.com/demo/image/upload/v1/cf/av2.jpg' where id='00000000-0000-0000-0000-0000000000a2';
+select pg_temp.try('I5 replacing an avatar queues the old one', $$with x as (select 1 from public.image_delete_queue where image_url like '%av1.jpg') select * from x$$, 'postgres', null);
+insert into auth.users(id,email) values ('00000000-0000-0000-0000-0000000000d4','gone@kuhes.ac.mw') on conflict do nothing;
+insert into public.profiles(id,display_name,email,phone,avatar_url) values ('00000000-0000-0000-0000-0000000000d4','Gone','gone@kuhes.ac.mw','+2655','https://res.cloudinary.com/demo/image/upload/v1/cf/gone-av.jpg') on conflict do nothing;
+update public.profiles set deletion_requested_at = now() - interval '31 days' where id='00000000-0000-0000-0000-0000000000d4';
+set local session_replication_role = replica;
+insert into public.listings(id,seller_id,title,price,kind,status) values ('99999999-0000-0000-0000-000000000004','00000000-0000-0000-0000-0000000000d4','Gone listing',1,'sale','draft');
+set local session_replication_role = origin;
+insert into public.listing_photos(listing_id,image_url) values ('99999999-0000-0000-0000-000000000004','https://res.cloudinary.com/demo/image/upload/v1/cf/gone-photo.jpg');
+select public.hard_delete_expired_accounts();
+select pg_temp.try('I6 deleted account has its avatar and listing photos queued', $$with x as (select 1 where exists (select 1 from public.image_delete_queue where image_url like '%gone-av.jpg') and exists (select 1 from public.image_delete_queue where image_url like '%gone-photo.jpg')) select * from x$$, 'postgres', null);
+select pg_temp.try('I7 normal users cannot read the delete queue', $$select * from public.image_delete_queue$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+select pg_temp.try('I8 normal users cannot run the photo purge', $$select public.purge_expired_listing_photos()$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
+-- Welcome bonus is once per email, even after deleting the account
+insert into auth.users(id,email,email_confirmed_at) values ('00000000-0000-0000-0000-0000000000e1','again@kuhes.ac.mw', now()) on conflict do nothing;
+insert into public.profiles(id,display_name,email,phone) values ('00000000-0000-0000-0000-0000000000e1','Again','again@kuhes.ac.mw','+2656') on conflict do nothing;
+select pg_temp.try('B1 first claim for an email works', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'success'='true'$$, 'authenticated','00000000-0000-0000-0000-0000000000e1');
+select set_config('request.jwt.claim.sub','',true);
+delete from public.profiles where id='00000000-0000-0000-0000-0000000000e1';
+delete from auth.users where id='00000000-0000-0000-0000-0000000000e1';
+insert into auth.users(id,email,email_confirmed_at) values ('00000000-0000-0000-0000-0000000000e2','Again@kuhes.ac.mw', now());
+insert into public.profiles(id,display_name,email,phone) values ('00000000-0000-0000-0000-0000000000e2','Again2','Again@kuhes.ac.mw','+2657');
+select pg_temp.try('B2 same email after delete and re-signup is refused', $$with x as (select public.claim_welcome_bonus() r) select 1 from x where r->>'reason'='already_claimed'$$, 'authenticated','00000000-0000-0000-0000-0000000000e2');
+select pg_temp.try('B3 re-signup got no credits', $$with x as (select 1 from public.profiles where id='00000000-0000-0000-0000-0000000000e2' and referral_credits=0) select * from x$$, 'postgres', null);
+select pg_temp.try('B4 normal users cannot read the claims list', $$select * from public.welcome_bonus_claims$$, 'authenticated','00000000-0000-0000-0000-0000000000a1');
 select pg_temp.try('L16 user calls request_account_deletion', $$select public.request_account_deletion()$$, 'authenticated','00000000-0000-0000-0000-0000000000a2');
 rollback;

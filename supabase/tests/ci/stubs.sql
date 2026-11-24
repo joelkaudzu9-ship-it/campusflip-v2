@@ -25,3 +25,8 @@ grant select on auth.users to service_role;
 
 drop publication if exists supabase_realtime;
 create publication supabase_realtime;
+
+-- Needed by Wanted-post matching (listing_match_score, normalize_title)
+create extension if not exists unaccent with schema public;
+create extension if not exists pg_trgm with schema public;
+create extension if not exists fuzzystrmatch with schema public;

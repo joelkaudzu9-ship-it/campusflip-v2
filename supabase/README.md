@@ -61,3 +61,15 @@ or any legitimate flow that stops working, fails CI. It never touches a real pro
 2. Secrets: `supabase secrets set VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:you@example.com PUSH_WEBHOOK_SECRET=<long random string> SITE_URL=https://your-site`
 3. Run `migrations/20261125_web_push.sql`, deploy `functions/send-push` (turn **off** "Verify JWT" for it: the database trigger authenticates with `x-webhook-secret`), then run `migrations/20261125_web_push_trigger.sql` after replacing `REPLACE_WITH_SECRET`.
 4. Redeploy the site. Students switch it on under Account → Notifications. On iPhone, push only works once the site is added to the home screen.
+
+## Cleaning up Cloudinary photos
+
+Photos that are no longer used are deleted from Cloudinary automatically: removed or replaced listing photos, avatars that were changed, deleted accounts, and listings that expired more than 5 days ago.
+
+1. Run `migrations/20261128_image_cleanup.sql` (queues the images and schedules the daily expired-listing job).
+2. Add the secrets `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` and `IMAGE_CLEANUP_SECRET` (any long random value) under Edge Functions → Secrets. The first three may already exist for `cloudinary-sign`.
+3. Deploy `functions/purge-images` with "Verify JWT" **off** (it authenticates with `x-webhook-secret`).
+4. Run `migrations/20261128_image_cleanup_cron.sql` after replacing `REPLACE_WITH_SECRET` with the `IMAGE_CLEANUP_SECRET` value. It runs the function every 10 minutes.
+5. Check with `select count(*), max(attempts) from image_delete_queue;`. The count should fall to 0 within minutes; rows stuck at attempts 5 have a reason in `last_error`.
+
+`migrations/20261129_bonus_once_per_email.sql` stops the welcome bonus being claimed twice by deleting an account and signing up again.
