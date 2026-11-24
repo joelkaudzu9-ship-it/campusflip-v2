@@ -1,4 +1,5 @@
 import WhatsAppPrompt from './WhatsAppPrompt';
+import { friendlyError } from '../lib/errors';
 import PushNudge from './PushNudge';
 import ShopLinkCard from './ShopLinkCard';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -402,7 +403,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       onToast?.(`"${listing.title}" has been deleted from your shop.`, 'success');
     } catch (err) {
       console.error('Delete failed:', err);
-      onToast?.(err.message || 'Could not delete the listing.', 'error');
+      onToast?.(friendlyError(err, 'Could not delete the listing.'), 'error');
     } finally {
       setDeleting(false);
     }
@@ -451,7 +452,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       await loadListings(true);
     } catch (err) {
       console.error('Edit save failed:', err);
-      setEditError(err.message || 'Could not save changes.');
+      setEditError(friendlyError(err, 'Could not save changes.'));
     } finally {
       setEditSaving(false);
     }
@@ -502,7 +503,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       setBoostStatus('waiting');
       setBoostChargeId(data.charge_id);
     } catch (err) {
-      onToast?.(err.message || 'Could not initiate boost.', 'error');
+      onToast?.(friendlyError(err, 'Could not initiate boost.'), 'error');
       setBoosting(false);
       setBoostStatus('idle');
     }
@@ -541,7 +542,7 @@ export default function MyShop({ session, onBack, onPostAnother, onToast }) {
       setDealStatus('waiting');
       setDealChargeId(data.charge_id);
     } catch (err) {
-      onToast?.(err.message || 'Could not initiate Flash Deal.', 'error');
+      onToast?.(friendlyError(err, 'Could not initiate Flash Deal.'), 'error');
       setDealSubmitting(false);
       setDealStatus('idle');
     }

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { MAX_PICKED_BYTES, resizeImage, runPool } from '../lib/imageTools';
+import { friendlyError, withRetry } from '../lib/errors';
 
 const MAX_IMAGES = 5;
 const MAX_SIZE = MAX_PICKED_BYTES; // photos are resized before upload, so large originals are fine
@@ -143,14 +144,18 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         // Extra signed parameters (e.g. allowed_formats) must be sent exactly as signed.
         if (signedData.allowed_formats) formData.append('allowed_formats', signedData.allowed_formats);
 
-        const response = await fetch(
-          `https://api.cloudinary.com/v1_1/${signedData.cloud_name}/image/upload`,
-          { method: 'POST', body: formData }
-        );
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result.error?.message || 'Cloudinary upload failed.');
-        }
+        // A dropped connection is retried up to 3 times before this photo counts as failed.
+        const result = await withRetry(async () => {
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${signedData.cloud_name}/image/upload`,
+            { method: 'POST', body: formData }
+          );
+          const json = await response.json();
+          if (!response.ok) {
+            throw new Error(json.error?.message || 'Cloudinary upload failed.');
+          }
+          return json;
+        });
         done += 1;
         setProgress(Math.round((done / files.length) * 100));
         return result.secure_url;
@@ -193,7 +198,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
       setFiles([]);
     } catch (err) {
       console.error('Image upload error:', err);
-      setError(err.message || 'Something went wrong during upload.');
+      setError(friendlyError(err, 'Something went wrong during upload.'));
     } finally {
       setUploading(false);
     }

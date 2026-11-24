@@ -6,7 +6,7 @@ import ProductCard from './ProductCard';
 
 export default function Feed({
   tab, onTab, items: shown, loading, error, hasMore, loadingMore, pendingUpdates,
-  flashDeals, saved, onSave, onOpen, onLoadMore, onRefresh, onClearFilters,
+  flashDeals, saved, onSave, onOpen, onLoadMore, onRefresh, onClearFilters, offlineCopy, onRetry,
 }) {
   return (
     <>
@@ -35,12 +35,16 @@ export default function Feed({
           <span>{loading ? 'Searching...' : `${shown.length}${hasMore ? '+' : ''} items`}</span>
         </div>
   
+        {offlineCopy && (
+          <p className="cf-offline-copy" role="status">Showing the last items we saved on your phone. Connect to see what's new.</p>
+        )}
+
         {error && (
           <div className="empty">
             <X />
             <b>Couldn't load listings</b>
             <span>{error}</span>
-            <button onClick={() => window.location.reload()}>Try again</button>
+            <button onClick={() => (onRetry ? onRetry() : window.location.reload())}>Try again</button>
           </div>
         )}
   

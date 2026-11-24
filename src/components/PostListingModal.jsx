@@ -6,6 +6,7 @@ import {
   Smartphone, ShieldCheck, RefreshCw, ShoppingBag, Eye,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { friendlyError } from '../lib/errors';
 import { usePaymentStatus } from '../lib/usePaymentStatus';
 import ListingImageUploader from './ListingImageUploader';
 import WhatsAppPrompt from './WhatsAppPrompt';
@@ -203,7 +204,7 @@ export default function PostListingModal({
       .single();
 
     setBusy(false);
-    if (insertError) { setError(insertError.message); return; }
+    if (insertError) { setError(friendlyError(insertError, 'Could not publish your listing.')); return; }
 
     setCreatedListing(data);
     setPaymentStatus('idle'); setChargeId('');
@@ -231,7 +232,7 @@ export default function PostListingModal({
       }
     } catch (err) {
       console.error('Manual payment check failed:', err);
-      setPaymentError('Could not check payment right now. Please try again.');
+      setPaymentError(friendlyError(err, 'Could not check payment right now. Please try again.'));
     } finally { setPaymentBusy(false); }
   }
 
@@ -301,7 +302,7 @@ export default function PostListingModal({
       }, 2000);
     } catch (err) {
       console.error('CampusFlip payment initiation error:', err);
-      setPaymentError(err.message || 'Payment could not be initiated. Please try again.');
+      setPaymentError(friendlyError(err, 'Payment could not be initiated. Please try again.'));
     } finally { setPaymentBusy(false); }
   }
 

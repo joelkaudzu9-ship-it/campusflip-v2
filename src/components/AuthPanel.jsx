@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, LoaderCircle } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { friendlyError } from '../lib/errors';
 
 export default function AuthPanel({ onAuthenticated, onToast }) {
   const [mode, setMode] = useState('login');
@@ -65,7 +66,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
         setMode('login');
       }
     } catch (err) {
-      onToast?.(err.message || 'Something went wrong.', 'error');
+      onToast?.(friendlyError(err, 'Something went wrong.'), 'error');
     } finally {
       setLoading(false);
     }

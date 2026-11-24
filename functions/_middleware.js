@@ -67,7 +67,7 @@ function esc(s) {
 }
 
 function buildOgImage(rawImage, title) {
-  if (!rawImage) return "https://campusflip.pages.dev/og-image.png";
+  if (!rawImage) return "https://campusflip-v2.pages.dev/og-image.png";
   const m = rawImage.match(/\/upload\/(?:v\d+\/)?(.+)$/);
   if (!m) return rawImage;
   const publicId = m[1];

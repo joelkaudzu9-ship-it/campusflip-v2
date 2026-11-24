@@ -93,6 +93,20 @@ try {
   await page.goto(`${origin}/definitely-not-a-page`); await wait(2500);
   check('unknown URLs go home with a message', path() === '/' && /does not exist/i.test(await bodyText()), path());
 
+  // Offline handling
+  await page.goto(`${origin}/`); await wait(3000);
+  await page.evaluate(() => window.dispatchEvent(new Event('offline'))); await wait(500);
+  check('an offline notice appears when the connection drops', /You're offline/.test(await bodyText()));
+  await page.evaluate(() => window.dispatchEvent(new Event('online'))); await wait(500);
+  check('a "Back online" notice appears when it returns', /Back online/.test(await bodyText()));
+  await wait(3000);
+  check('the notice goes away by itself', !/Back online|You're offline/.test(await bodyText()));
+  await page.route('**/rest/v1/**', route => route.abort('failed'));
+  await page.reload(); await wait(12000);
+  const offlineText = await bodyText();
+  check('with no connection the last saved listings still show', /Showing the last items we saved/.test(offlineText) && /Rice 10kg/.test(offlineText), offlineText.slice(0, 80));
+  await page.unroute('**/rest/v1/**'); await wait(200);
+
   const SELLER = '11111111-2222-3333-4444-555555555555';
   await page.goto(`${origin}/seller/${SELLER}`); await wait(2500);
   const shopText = await bodyText();

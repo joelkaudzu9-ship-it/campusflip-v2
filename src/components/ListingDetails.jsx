@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { cfImage } from '../lib/cloudinary';
+import { friendlyError } from '../lib/errors';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -240,7 +241,7 @@ export default function ListingDetails({
 
         if (!cancelled) setSeller(profile || null);
       } catch (err) {
-        if (!cancelled) setError(err.message || 'Could not load this listing.');
+        if (!cancelled) setError(friendlyError(err, 'Could not load this listing.'));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -307,7 +308,7 @@ export default function ListingDetails({
       else window.location.href = url;
     } catch (err) {
       if (newTab) newTab.close();
-      onToast?.(err.message || 'Could not open WhatsApp. Please try again.', 'error');
+      onToast?.(friendlyError(err, 'Could not open WhatsApp. Please try again.'), 'error');
     } finally {
       setContacting(false);
     }
@@ -345,7 +346,7 @@ export default function ListingDetails({
       setReportReason('');
       setReportDetails('');
     } catch (err) {
-      setReportError(err.message || 'Your report could not be submitted.');
+      setReportError(friendlyError(err, 'Your report could not be submitted.'));
     } finally {
       setSubmittingReport(false);
     }

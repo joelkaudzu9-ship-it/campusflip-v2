@@ -22,6 +22,8 @@ import ContactSellerModal from './components/ContactSellerModal';
 import InvitePage from './components/InvitePage';
 import ResetPasswordPage from './components/ResetPasswordPage';
 import InstallPrompt from './components/InstallPrompt';
+import OfflineBanner from './components/OfflineBanner';
+import { useOnline } from './hooks/useOnline';
 import Overlays from './components/Overlays';
 import Splash from './components/home/Splash';
 import AppHeader from './components/home/AppHeader';
@@ -71,6 +73,14 @@ export default function App() {
 
   const feed = useFeed({ tab, cat, sort, onError: message => ping(message, 'error') });
   const { items, itemsRef, loading, reload } = feed;
+  const online = useOnline();
+  const wasOffline = useRef(false);
+
+  // When the connection returns, refresh the feed by itself (no page reload).
+  useEffect(() => {
+    if (!online) { wasOffline.current = true; return; }
+    if (wasOffline.current) { wasOffline.current = false; reload(); }
+  }, [online, reload]);
   const { deals, refresh: refreshDeals } = useFlashDeals();
   const { saved, toggle: toggleSave } = useSavedListings(userId, {
     onNeedAuth: () => setShowAuth(true),
@@ -279,6 +289,8 @@ export default function App() {
       </AnimatePresence>
       <Splash show={showSplash} />
 
+      <OfflineBanner online={online} />
+
       <div className="shell">
         <AppHeader
           session={session}
@@ -315,6 +327,8 @@ export default function App() {
             onLoadMore={feed.loadMore}
             onRefresh={refreshFeed}
             onClearFilters={() => { setCat('All'); setVerifiedOnly(false); }}
+            offlineCopy={feed.offlineCopy}
+            onRetry={reload}
           />
           {!session && <JoinBanner onSignUp={() => setShowAuth(true)} />}
         </main>
