@@ -3,15 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, X, Share } from 'lucide-react';
 
-export default function InstallPrompt() {
+export default function InstallPrompt({ onOpenDownload }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
 
   useEffect(() => {
     // Don't show if already installed
     if (window.matchMedia('(display-mode: standalone)').matches) return;
     if (window.navigator.standalone === true) return;
+    // Opened from the Android app itself (a Trusted Web Activity reports this referrer).
+    if (document.referrer.startsWith('android-app://')) return;
 
     // Don't show if dismissed recently
     const dismissed = safeStorage.get('cf_install_dismissed');
@@ -22,13 +25,20 @@ export default function InstallPrompt() {
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     setIsIOS(ios);
 
+    // Android: offer the real app (APK) from our download page, not the browser install.
+    if (/Android/i.test(navigator.userAgent)) {
+      setIsAndroid(true);
+      const timer = setTimeout(() => setShowPrompt(true), 3000);
+      return () => clearTimeout(timer);
+    }
+
     // iOS: show instruction banner after a short delay
     if (ios) {
       const timer = setTimeout(() => setShowPrompt(true), 3000);
       return () => clearTimeout(timer);
     }
 
-    // Android/Chrome: capture the install event
+    // Desktop Chrome: capture the browser install event
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -42,6 +52,11 @@ export default function InstallPrompt() {
   function dismiss() {
     setShowPrompt(false);
     safeStorage.set('cf_install_dismissed', String(Date.now()));
+  }
+
+  function openDownload() {
+    dismiss();
+    onOpenDownload?.();
   }
 
   async function handleInstall() {
@@ -99,9 +114,9 @@ export default function InstallPrompt() {
             CF
           </div>
           <div>
-            <div style={{ fontSize: 15, fontWeight: 800 }}>Install CampusFlip</div>
+            <div style={{ fontSize: 15, fontWeight: 800 }}>{isAndroid ? 'Get the CampusFlip app' : 'Install CampusFlip'}</div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,.6)' }}>
-              Faster access, works offline
+              {isAndroid ? 'Full screen, with alerts for new messages' : 'Faster access, works offline'}
             </div>
           </div>
         </div>
@@ -119,7 +134,7 @@ export default function InstallPrompt() {
         ) : (
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={handleInstall}
+            onClick={isAndroid ? openDownload : handleInstall}
             style={{
               width: '100%', padding: 13, border: 0, borderRadius: 12,
               background: 'var(--cf-blue)', color: 'white',
@@ -127,7 +142,7 @@ export default function InstallPrompt() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >
-            <Download size={16} /> Install App
+            <Download size={16} /> {isAndroid ? 'Get the app' : 'Install App'}
           </motion.button>
         )}
       </motion.div>

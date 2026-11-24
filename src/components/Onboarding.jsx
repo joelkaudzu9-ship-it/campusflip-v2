@@ -50,7 +50,9 @@ export default function Onboarding({ onComplete }) {
   }
 
   return (
-    <div
+    <motion.div
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -429,6 +431,6 @@ export default function Onboarding({ onComplete }) {
             : `Step ${index + 1} of ${SLIDES.length}`}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

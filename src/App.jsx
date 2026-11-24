@@ -274,7 +274,9 @@ export default function App() {
 
   return (
     <>
-      {showOnboarding && <Onboarding onComplete={completeOnboarding} />}
+      <AnimatePresence>
+        {showOnboarding && <Onboarding key="onboarding" onComplete={completeOnboarding} />}
+      </AnimatePresence>
       <Splash show={showSplash} />
 
       <div className="shell">
@@ -323,7 +325,7 @@ export default function App() {
 
         <BottomNav current={currentNav} onSelect={selectNav} />
         <ToastViewport toast={toast} onDismiss={() => setToast(null)} />
-        <InstallPrompt />
+        <InstallPrompt onOpenDownload={() => go(PATHS.download)} />
 
         <AuthModal
           open={showAuth}
