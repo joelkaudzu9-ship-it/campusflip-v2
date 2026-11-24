@@ -1,0 +1,24 @@
+.cf-seller { min-height: 100%; background: var(--cf-bg); color: var(--cf-body); padding: 0 16px 90px; max-width: 980px; margin: 0 auto; }
+.cf-seller-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 60vh; text-align: center; }
+.cf-seller-empty button { padding: 11px 20px; border: 0; border-radius: 12px; background: var(--cf-navy); color: var(--cf-white); font-weight: 800; cursor: pointer; }
+.cf-seller-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 12px 0; background: var(--cf-bg); }
+.cf-seller-top h1 { margin: 0; font-size: 20px; color: var(--cf-text); }
+.cf-seller-top button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-white); color: var(--cf-navy); cursor: pointer; }
+.cf-seller-head { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--cf-line); border-radius: 20px; background: var(--cf-white); }
+.cf-seller-avatar { width: 64px; height: 64px; flex-shrink: 0; border-radius: 20px; overflow: hidden; display: grid; place-items: center; background: var(--cf-surface-2); color: var(--cf-navy); font-size: 22px; font-weight: 800; }
+.cf-seller-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cf-seller-id { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.cf-seller-id h2 { margin: 0; font-size: 19px; color: var(--cf-text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; overflow-wrap: anywhere; }
+.cf-seller-id p { margin: 0; font-size: 13.5px; }
+.cf-seller-id small { color: var(--cf-body); font-size: 12.5px; }
+.cf-seller-verified { color: var(--cf-blue-dark); }
+.cf-seller-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; }
+.cf-seller-actions a, .cf-seller-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 1 1 160px; padding: 12px 14px; border-radius: 14px; font-weight: 800; font-size: 14px; text-decoration: none; cursor: pointer; border: 1px solid var(--cf-line); background: var(--cf-white); color: var(--cf-navy); }
+.cf-seller-actions .cf-seller-wa { background: var(--cf-navy); border-color: var(--cf-navy); color: var(--cf-white); }
+.cf-seller-empty-list { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px 16px; text-align: center; }
+.cf-shoplink { margin: 0 0 14px; padding: 14px; border: 1px solid var(--cf-line); border-radius: 18px; background: var(--cf-white); display: flex; flex-direction: column; gap: 4px; }
+.cf-shoplink strong { color: var(--cf-text); font-size: 15px; }
+.cf-shoplink small { color: var(--cf-body); font-size: 12.5px; line-height: 1.4; }
+.cf-shoplink .cf-seller-actions { margin: 8px 0 0; }
+.cf-seller-actions a, .cf-seller-actions button { white-space: nowrap; font-size: 13px; padding: 12px 10px; gap: 6px; }
+.cf-seller-grid { padding-left: 0; padding-right: 0; }

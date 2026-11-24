@@ -19,6 +19,7 @@ export const PATHS = {
   terms: '/terms',
   listing: id => `/listing/${encodeURIComponent(id)}`,
   invite: code => `/invite/${encodeURIComponent(code)}`,
+  seller: id => `/seller/${encodeURIComponent(id)}`,
 };
 
 // Screens that only make sense when signed in.
@@ -42,6 +43,7 @@ const TABLE = [
   ['terms', '/terms'],
   ['listing', '/listing/:id'],
   ['invite', '/invite/:code'],
+  ['seller', '/seller/:id'],
 ];
 
 /** Which screen a pathname is. `name` is 'notFound' for unknown paths. */

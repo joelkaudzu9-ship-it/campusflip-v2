@@ -93,6 +93,21 @@ try {
   await page.goto(`${origin}/definitely-not-a-page`); await wait(2500);
   check('unknown URLs go home with a message', path() === '/' && /does not exist/i.test(await bodyText()), path());
 
+  const SELLER = '11111111-2222-3333-4444-555555555555';
+  await page.goto(`${origin}/seller/${SELLER}`); await wait(2500);
+  const shopText = await bodyText();
+  check('a shared /seller/<id> link opens that seller\'s shop', path() === `/seller/${SELLER}` && /Chikondi Thrift/.test(shopText) && /Rice 10kg/.test(shopText), path());
+  check('the shop page has WhatsApp share and copy-link buttons', /Share on WhatsApp/.test(shopText) && /Copy link/.test(shopText));
+  const waHref = await page.locator('a.cf-seller-wa').getAttribute('href');
+  check('WhatsApp share link contains the shop URL', decodeURIComponent(waHref || '').includes(`/seller/${SELLER}`), waHref?.slice(0, 80));
+  const shopOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  check('shop page has no horizontal scroll', shopOverflow <= 0, `overflow=${shopOverflow}px`);
+  await page.locator('.cf-seller .cf-product-card').first().click(); await wait(900);
+  check('opening an item from the shop opens that listing', /\/listing\//.test(path()), path());
+
+  await page.goto(`${origin}/seller/not-a-real-id`); await wait(2500);
+  check('a bad shop link shows a friendly message, not a crash', /doesn't exist/i.test(await bodyText()));
+
   await page.goto(`${origin}/invite/abc123`); await wait(2500);
   check('invite link renders the invite page', path() === '/invite/abc123');
 

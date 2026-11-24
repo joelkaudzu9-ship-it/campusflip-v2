@@ -18,6 +18,7 @@ const MyShop = lazy(() => import('./MyShop'));
 const PostListingModal = lazy(() => import('./PostListingModal'));
 const ListingDetails = lazy(() => import('./ListingDetails'));
 const InfoPages = lazy(() => import('./InfoPages'));
+const SellerShopPage = lazy(() => import('./SellerShopPage'));
 const INFO_ROUTES = ['download', 'help', 'privacyPolicy', 'terms'];
 
 const ACCOUNT_ROUTES = ['account', 'settings', 'notifications', 'privacy'];
@@ -152,6 +153,23 @@ export default function Overlays({
       </AnimatePresence>
 
       <AnimatePresence>
+        {name === 'seller' && (
+          <PageTransition key={`seller-${route.params.id}`} onBack={() => goBack()}>
+            <Guard onClose={() => goBack()}>
+              <SellerShopPage
+                sellerId={route.params.id}
+                saved={saved}
+                onSave={onSave}
+                onOpenListing={openListing}
+                onBack={() => goBack()}
+                onToast={onToast}
+              />
+            </Guard>
+          </PageTransition>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {name === 'search' && (
           <PageTransition key="search-page" onBack={() => goBack()}>
             <Guard onClose={() => goBack()}>
@@ -184,6 +202,7 @@ export default function Overlays({
             listing={name === 'listing' ? selectedListing : null}
             onClose={() => goBack()}
             onToast={onToast}
+            onOpenSeller={id => go(PATHS.seller(id))}
             onRequireAuth={onRequireAuth}
             replayToken={contactReplayToken}
             replyId={contactReplyId}

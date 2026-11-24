@@ -34,6 +34,7 @@ export async function installMock(ctx, state) {
       const byId = u.match(/[?&]id=eq\.([0-9a-f-]{36})/);
       if (u.includes('/rest/v1/listings') && byId) body = JSON.stringify(LISTINGS.filter(l => l.id === byId[1]));
       else if (u.includes('/rest/v1/listings')) body = JSON.stringify(route.request().method() === 'HEAD' ? [] : LISTINGS);
+      else if (u.includes('/rest/v1/profiles') && byId) body = JSON.stringify({ id: byId[1], display_name: 'Chikondi Phiri', business_name: 'Chikondi Thrift', is_verified: true, created_at: '2026-01-10T00:00:00Z' });
       else if (u.includes('/rest/v1/profiles')) body = JSON.stringify([{ id: 's0', display_name: 'Chikondi', is_verified: true }, { id: 's1', display_name: 'Tadala', is_verified: false }, { id: 's2', display_name: 'M-Tech', is_verified: true }]);
       return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*', 'access-control-expose-headers': 'content-range', 'content-range': '0-3/42' }, body });
     }

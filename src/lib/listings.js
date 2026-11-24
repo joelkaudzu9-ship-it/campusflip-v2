@@ -180,3 +180,30 @@ export const dealToListing = deal => ({
   originalPrice: deal.originalPrice,
   isFlashDeal: true,
 });
+
+/** A seller's public shop: their profile and every active listing they have. Null if no such seller. */
+export async function fetchSellerShop(sellerId) {
+  if (!UUID_RE.test(String(sellerId || ''))) return null;
+  const [profileRes, listingsRes] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, display_name, business_name, avatar_url, is_verified, created_at')
+      .eq('id', sellerId)
+      .maybeSingle(),
+    supabase
+      .from('listings')
+      .select(`${LISTING_COLUMNS}, categories(name, slug), ${LISTING_RELATIONS}`)
+      .eq('seller_id', sellerId)
+      .eq('status', 'active')
+      .order('is_boosted', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(60),
+  ]);
+  if (profileRes.error || !profileRes.data) return null;
+  if (listingsRes.error) throw listingsRes.error;
+  const seller = profileRes.data;
+  return {
+    seller,
+    items: (listingsRes.data || []).map(row => mapListing(row, seller)),
+  };
+}

@@ -8,6 +8,8 @@ const CRAWLER_RE = /(whatsapp|facebookexternalhit|twitterbot|linkedinbot|telegra
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
+  const sellerMatch = url.pathname.match(/^\/seller\/([^/]+)\/?$/);
+  if (sellerMatch) return sellerPreview(context, decodeURIComponent(sellerMatch[1]));
   // Both /listing/<id> (current) and /?listing=<id> (older shared links) are previewed.
   const pathMatch = url.pathname.match(/^\/listing\/([^/]+)\/?$/);
   const listingId = pathMatch ? decodeURIComponent(pathMatch[1]) : url.searchParams.get("listing");
@@ -71,4 +73,42 @@ function buildOgImage(rawImage, title) {
   const publicId = m[1];
   const t = encodeURIComponent(encodeURIComponent(title.slice(0, 55)));
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/c_fill,w_1200,h_630,g_auto/l_text:Arial_52_bold:${t}/fl_layer_apply,g_south_west,x_60,y_80/${publicId}`;
+}
+
+// WhatsApp / Facebook link previews for /seller/<id>: shop name, item count and a product photo.
+async function sellerPreview(context, sellerId) {
+  const ua = context.request.headers.get("user-agent") || "";
+  if (!CRAWLER_RE.test(ua) || !UUID_RE.test(sellerId)) return context.next();
+  const headers = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` };
+  try {
+    const [profileRes, listingsRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/profiles?select=display_name,business_name&id=eq.${sellerId}`, { headers }),
+      fetch(`${SUPABASE_URL}/rest/v1/listings?select=id,listing_photos(image_url,display_order)&seller_id=eq.${sellerId}&status=eq.active&order=created_at.desc&limit=50`, { headers }),
+    ]);
+    const profile = (await profileRes.json())?.[0];
+    const listings = await listingsRes.json();
+    if (!profile || !Array.isArray(listings)) return context.next();
+    const name = profile.business_name || profile.display_name || "A CampusFlip seller";
+    const count = listings.length;
+    const firstPhoto = listings
+      .flatMap((l) => (l.listing_photos || []).sort((a, b) => a.display_order - b.display_order).slice(0, 1))[0]?.image_url;
+    const title = `${name} on CampusFlip`;
+    const desc = count ? `${count} item${count === 1 ? "" : "s"} for sale from a KUHeS student seller.` : "Shop on CampusFlip, the KUHeS student marketplace.";
+    const ogImage = buildOgImage(firstPhoto || "", name);
+    const html = `<!doctype html>
+<html><head><meta charset="utf-8">
+<title>${esc(title)}</title>
+<meta property="og:title" content="${esc(title)}" />
+<meta property="og:description" content="${esc(desc)}" />
+<meta property="og:image" content="${esc(ogImage)}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="${esc(ogImage)}" />
+</head><body></body></html>`;
+    return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+  } catch {
+    return context.next();
+  }
 }

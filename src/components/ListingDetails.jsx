@@ -43,6 +43,7 @@ const quickReplyTexts = {
 };
 
 export default function ListingDetails({
+  onOpenSeller,
   listing,
   onClose,
   onToast,
@@ -905,6 +906,25 @@ export default function ListingDetails({
                       )}
                     </div>
                   </div>
+                  {onOpenSeller && details.seller_id && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenSeller(details.seller_id)}
+                      style={{
+                        flexShrink: 0,
+                        border: '1px solid var(--cf-line)',
+                        background: '#fff',
+                        color: 'var(--cf-navy)',
+                        borderRadius: 12,
+                        padding: '9px 12px',
+                        fontSize: 12.5,
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      View shop
+                    </button>
+                  )}
                 </motion.div>
               </div>
 
