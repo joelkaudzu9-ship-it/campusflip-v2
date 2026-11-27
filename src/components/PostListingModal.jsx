@@ -185,6 +185,18 @@ export default function PostListingModal({
       setError('Enter a valid price greater than MK 0.'); return;
     }
 
+    // Buyers can only reach a seller through their WhatsApp number, so a post without one is useless.
+    const { data: contact, error: contactError } = await supabase
+      .from('seller_contacts')
+      .select('whatsapp_number')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+    if (contactError) { setError(friendlyError(contactError, 'Could not check your contact number.')); return; }
+    if (!contact?.whatsapp_number) {
+      setError('Add your WhatsApp number in the box above and tap Save first, so buyers can contact you.');
+      return;
+    }
+
     setBusy(true);
     const status = kind === 'sale' ? 'pending_payment' : 'active';
 
