@@ -220,7 +220,10 @@ export default function App() {
     if (!bonusUserId || bonusTried.current === bonusUserId) return;
     bonusTried.current = bonusUserId;
     supabase.rpc('claim_welcome_bonus').then(({ data, error }) => {
-      if (!error && data?.success) ping(`Welcome to CampusFlip! ${data.bonus} free listings (MK ${data.bonus * 200}) have been added to your account.`);
+      if (!error && data?.success) {
+        ping(`Welcome to CampusFlip! ${data.bonus} free listings (MK ${data.bonus * 200}) have been added to your account.`);
+        window.dispatchEvent(new Event('cf:profile-changed'));   // lets the Account page show the new balance now
+      }
     });
   }, [bonusUserId, ping]);
 
@@ -233,6 +236,7 @@ export default function App() {
     if (code) {
       const { data, error } = await supabase.rpc('claim_referral', { p_code: code });
       ping(!error && data?.success ? 'Welcome! Your MK 200 referral credit is ready.' : 'Welcome to CampusFlip!');
+      window.dispatchEvent(new Event('cf:profile-changed'));
       safeStorage.remove('campusflip_invite_code');
     } else {
       ping('Welcome to CampusFlip!');

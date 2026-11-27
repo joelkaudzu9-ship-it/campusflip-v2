@@ -108,9 +108,17 @@ export default function AccountPage({
 
     const poll = setInterval(() => loadProfile(), 45000);
 
+    // Refresh straight away when the bonus is claimed, or when the student comes back to the app.
+    const refresh = () => loadProfile();
+    const onVisible = () => { if (document.visibilityState === 'visible') loadProfile(); };
+    window.addEventListener('cf:profile-changed', refresh);
+    document.addEventListener('visibilitychange', onVisible);
+
     return () => {
       supabase.removeChannel(channel);
       clearInterval(poll);
+      window.removeEventListener('cf:profile-changed', refresh);
+      document.removeEventListener('visibilitychange', onVisible);
     };
   }, [session?.user?.id, loadProfile]);
 
