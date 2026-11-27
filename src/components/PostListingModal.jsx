@@ -92,9 +92,9 @@ export default function PostListingModal({
       }
 
       if (session?.user?.id) {
-        const { data: creditRow } = await supabase
-          .from('profiles').select('referral_credits').eq('id', session.user.id).maybeSingle();
-        if (alive) setCredits(creditRow?.referral_credits || 0);
+        // referral_credits is not a readable column; the stats function is how the Account page reads it.
+        const { data: stats } = await supabase.rpc('get_referral_stats');
+        if (alive && stats?.success) setCredits(Number(stats.credits) || 0);
         const { data } = await supabase
           .from('seller_contacts')
           .select('whatsapp_number')
