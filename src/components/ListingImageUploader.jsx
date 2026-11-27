@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   UploadCloud,
@@ -18,7 +18,7 @@ import { friendlyError, withRetry } from '../lib/errors';
 const MAX_IMAGES = 5;
 const MAX_SIZE = MAX_PICKED_BYTES; // photos are resized before upload, so large originals are fine
 
-export default function ListingImageUploader({ listingId, onUploaded }) {
+const ListingImageUploader = forwardRef(function ListingImageUploader({ listingId, onUploaded, deferred = false }, ref) {
   const inputRef = useRef(null);
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -92,20 +92,20 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
     }
   }
 
-  async function uploadImages() {
+  async function uploadImages(targetId = listingId) {
     if (!isSupabaseConfigured || !supabase) {
       setError('Supabase is not configured.');
-      return;
+      return false;
     }
 
-    if (!listingId) {
+    if (!targetId) {
       setError('Create a listing before uploading its photos.');
-      return;
+      return false;
     }
 
     if (!files.length) {
       setError('Choose at least one image.');
-      return;
+      return false;
     }
 
     let done = 0;
@@ -174,10 +174,10 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         const { count: existing } = await supabase
           .from('listing_photos')
           .select('id', { count: 'exact', head: true })
-          .eq('listing_id', listingId);
+          .eq('listing_id', targetId);
         const start = typeof existing === 'number' ? existing : 0;
         const rows = uploadedUrls.map((url, index) => ({
-          listing_id: listingId,
+          listing_id: targetId,
           image_url: url,
           display_order: start + index,
         }));
@@ -191,18 +191,26 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         setError(
           `${failedFiles.length} photo(s) could not be uploaded. ${uploadedUrls.length ? `${uploadedUrls.length} saved. ` : ''}Tap upload to retry the rest.`
         );
-        return;
+        return false;
       }
 
       setMessage(`${uploadedUrls.length} photo(s) uploaded successfully.`);
       setFiles([]);
+      return true;
     } catch (err) {
       console.error('Image upload error:', err);
       setError(friendlyError(err, 'Something went wrong during upload.'));
+      return false;
     } finally {
       setUploading(false);
     }
   }
+
+  // Lets the post form hold the chosen photos and upload them the moment the listing exists.
+  useImperativeHandle(ref, () => ({
+    count: () => files.length,
+    upload: id => (files.length ? uploadImages(id) : Promise.resolve(true)),
+  }));
 
   const remaining = MAX_IMAGES - files.length;
 
@@ -605,7 +613,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
         </div>
       )}
 
-      <button
+      {!deferred && <button
         type="button"
         className="cf-upload-submit"
         onClick={uploadImages}
@@ -622,7 +630,7 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
             Upload {files.length ? `${files.length} photo(s)` : 'photos'}
           </>
         )}
-      </button>
+      </button>}
 
       <div className="cf-uploader-footer">
         <CheckCircle2 size={12} />
@@ -630,4 +638,6 @@ export default function ListingImageUploader({ listingId, onUploaded }) {
       </div>
     </section>
   );
-}
+});
+
+export default ListingImageUploader;

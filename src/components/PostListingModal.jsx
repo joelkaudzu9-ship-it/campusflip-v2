@@ -66,6 +66,7 @@ export default function PostListingModal({
   const [paidWithCredit, setPaidWithCredit] = useState(false);
   const [credits, setCredits] = useState(0);
 
+  const photoRef = useRef(null);
   const listingPaymentKey = useRef(null);
   const fallbackTimerRef = useRef(null);
 
@@ -222,6 +223,16 @@ export default function PostListingModal({
 
     setBusy(false);
     if (insertError) { setError(friendlyError(insertError, 'Could not publish your listing.')); return; }
+
+    // Photos chosen on this form are uploaded right away, before payment or publishing.
+    let photosOk = true;
+    if (photoRef.current?.count() > 0) {
+      setBusy(true);
+      photosOk = await photoRef.current.upload(data.id);
+      setBusy(false);
+      if (photosOk) setPhotosUploaded(true);
+      else setPaymentError('Some photos could not upload. You can add them again below.');
+    }
 
     setCreatedListing(data);
     setPaymentStatus('idle'); setChargeId('');
@@ -819,12 +830,8 @@ export default function PostListingModal({
                   )}
                 </label>
 
-                <div className="cf-upload-placeholder">
-                  <ImagePlus size={19} />
-                  <div>
-                    <b>Photos are optional</b>
-                    <small>You can add photos after creating your post, or skip them completely.</small>
-                  </div>
+                <div className="cf-form-photos">
+                  <ListingImageUploader ref={photoRef} deferred />
                 </div>
 
                 <WhatsAppPrompt session={session} onSaved={() => setError('')} />
@@ -837,7 +844,7 @@ export default function PostListingModal({
                   disabled={busy || !categories.length || !spots.length}
                 >
                   {busy ? (
-                    <><LoaderCircle className="cf-spin" size={17} />Creating post...</>
+                    <><LoaderCircle className="cf-spin" size={17} />Posting...</>
                   ) : kind === 'sale' ? (
                     credits > 0
                       ? <>Post listing free <ArrowRight size={17} /></>
