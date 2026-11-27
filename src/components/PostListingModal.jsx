@@ -64,6 +64,7 @@ export default function PostListingModal({
   const [paymentStatus, setPaymentStatus] = useState('idle');
   const [chargeId, setChargeId] = useState('');
   const [paidWithCredit, setPaidWithCredit] = useState(false);
+  const [credits, setCredits] = useState(0);
 
   const listingPaymentKey = useRef(null);
   const fallbackTimerRef = useRef(null);
@@ -90,6 +91,9 @@ export default function PostListingModal({
       }
 
       if (session?.user?.id) {
+        const { data: creditRow } = await supabase
+          .from('profiles').select('referral_credits').eq('id', session.user.id).maybeSingle();
+        if (alive) setCredits(creditRow?.referral_credits || 0);
         const { data } = await supabase
           .from('seller_contacts')
           .select('whatsapp_number')
@@ -224,6 +228,9 @@ export default function PostListingModal({
     setPaymentError(''); setPaidWithCredit(false);
     listingPaymentKey.current = null;
     onCreated?.(data);
+    if (kind === 'sale' && data.status === 'pending_payment' && credits > 0) {
+      startPayment({ listing: data, useCredit: true });
+    }
   }
 
   async function manuallyCheckPayment() {
@@ -256,11 +263,13 @@ export default function PostListingModal({
     listingPaymentKey.current = null;
   }
 
-  async function startPayment() {
+  async function startPayment(opts = {}) {
+    const useCredit = opts.useCredit === true;
+    const target = opts.listing || createdListing;
     setPaymentError(''); setPaidWithCredit(false);
     clearFallbackTimer(); setChargeId('');
-    if (!createdListing?.id || !session?.user?.id) { setPaymentError('Your listing information is missing.'); return; }
-    if (!phone.trim()) { setPaymentError('Enter your mobile-money phone number.'); return; }
+    if (!target?.id || !session?.user?.id) { setPaymentError('Your listing information is missing.'); return; }
+    if (!useCredit && !phone.trim()) { setPaymentError('Enter your mobile-money phone number.'); return; }
     setPaymentBusy(true);
 
     try {
@@ -269,10 +278,9 @@ export default function PostListingModal({
         'campusflip-payment',
         {
           body: {
-            listingId: createdListing.id,
+            listingId: target.id,
             paymentType: 'listing',
-            operator,
-            phone: phone.trim(),
+            ...(useCredit ? {} : { operator, phone: phone.trim() }),
             idempotencyKey: listingPaymentKey.current,
           },
         }
@@ -289,8 +297,9 @@ export default function PostListingModal({
       if (data.paid_with_credit) {
         setPaidWithCredit(true); setPaymentStatus('successful');
         setChargeId(''); setPaymentBusy(false);
-        const activeListing = { ...createdListing, status: 'active' };
+        const activeListing = { ...target, status: 'active' };
         setCreatedListing(activeListing); onCreated?.(activeListing);
+        setCredits(c => Math.max(0, c - 1));
         return;
       }
       setChargeId(data.charge_id); setPaymentStatus('pending');
@@ -490,6 +499,26 @@ export default function PostListingModal({
                           {paymentBusy ? 'Connecting...' : 'Try payment again'}
                         </button>
                       </div>
+                    ) : credits > 0 ? (
+                      <>
+                        <p style={{ fontSize: 14, color: 'var(--cf-body)', lineHeight: 1.6, margin: '0 0 12px' }}>
+                          You have <strong>{credits} free listing {credits === 1 ? 'credit' : 'credits'}</strong>.
+                          Publishing uses one. No payment and no phone number needed.
+                        </p>
+                        {paymentError && <p className="cf-post-error" role="alert">{paymentError}</p>}
+                        <button
+                          type="button"
+                          className="cf-post-submit"
+                          onClick={() => startPayment({ useCredit: true })}
+                          disabled={paymentBusy}
+                        >
+                          {paymentBusy ? (
+                            <><LoaderCircle className="cf-spin" size={17} />Publishing...</>
+                          ) : (
+                            <>Publish free with 1 credit <ArrowRight size={17} /></>
+                          )}
+                        </button>
+                      </>
                     ) : (
                       <>
                         <label className="cf-field">
