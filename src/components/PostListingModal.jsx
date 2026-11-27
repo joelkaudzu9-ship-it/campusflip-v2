@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { friendlyError } from '../lib/errors';
+import { LISTING_DAYS } from '../lib/site';
 import { usePaymentStatus } from '../lib/usePaymentStatus';
 import ListingImageUploader from './ListingImageUploader';
 import WhatsAppPrompt from './WhatsAppPrompt';
@@ -422,7 +423,7 @@ export default function PostListingModal({
                           MK 200
                         </h2>
                         <small style={{ color: 'var(--cf-body)' }}>
-                          Active for 14 days · Free with referral credits
+                          Active for {LISTING_DAYS} days · Free with referral credits
                         </small>
                       </div>
                       <div style={{
@@ -597,7 +598,7 @@ export default function PostListingModal({
                 <div className={kind === 'sale' ? 'cf-fee-banner' : 'cf-fee-banner cf-fee-banner-free'} role="note">
                   {kind === 'sale' ? (
                     <>
-                      <strong>MK 200</strong> to publish · live for 14 days · free with referral credits
+                      <strong>MK 200</strong> to publish · live for {LISTING_DAYS} days · free with referral credits
                     </>
                   ) : (
                     <>
