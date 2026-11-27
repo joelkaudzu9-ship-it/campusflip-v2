@@ -627,7 +627,11 @@ export default function PostListingModal({
                 <div className={kind === 'sale' ? 'cf-fee-banner' : 'cf-fee-banner cf-fee-banner-free'} role="note">
                   {kind === 'sale' ? (
                     <>
-                      <strong>MK 200</strong> to publish · live for {LISTING_DAYS} days · free with referral credits
+                      {credits > 0 ? (
+                        <><strong>Free</strong> · uses 1 of your {credits} free listing {credits === 1 ? 'credit' : 'credits'} · live for {LISTING_DAYS} days</>
+                      ) : (
+                        <><strong>MK 200</strong> to publish · live for {LISTING_DAYS} days · free with referral credits</>
+                      )}
                     </>
                   ) : (
                     <>
@@ -835,7 +839,9 @@ export default function PostListingModal({
                   {busy ? (
                     <><LoaderCircle className="cf-spin" size={17} />Creating post...</>
                   ) : kind === 'sale' ? (
-                    <>Continue to payment <ArrowRight size={17} /></>
+                    credits > 0
+                      ? <>Post listing free <ArrowRight size={17} /></>
+                      : <>Continue to payment <ArrowRight size={17} /></>
                   ) : (
                     <>Create post <ArrowRight size={17} /></>
                   )}
@@ -843,8 +849,10 @@ export default function PostListingModal({
 
                 {kind === 'sale' ? (
                   <p className="cf-post-note">
-                    Sale posts require a one-time MK 200 publication payment (free if you have referral credits).
-                    Your listing will remain pending until payment is confirmed.
+                    {credits > 0
+                      ? 'This post is published with a free credit. You can add photos right after.'
+                      : 'Sale posts require a one-time MK 200 publication payment (free if you have referral credits).'}
+                    {credits > 0 ? '' : ' Your listing will remain pending until payment is confirmed.'}
                   </p>
                 ) : (
                   <p className="cf-post-note">
