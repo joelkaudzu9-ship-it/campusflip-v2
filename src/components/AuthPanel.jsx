@@ -112,7 +112,7 @@ export default function AuthPanel({ onAuthenticated, onToast }) {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="e.g. Joel Kaudzu"
+                placeholder="e.g. Jay Neuro"
                 autoComplete="name"
                 required
               />
