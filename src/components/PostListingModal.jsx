@@ -297,6 +297,10 @@ export default function PostListingModal({
         }
       );
       if (invokeError) {
+        // supabase-js hides the server's reason behind a generic message; read it from the response.
+        let serverMessage = '';
+        try { serverMessage = (await invokeError.context?.json?.())?.error || ''; } catch { /* ignore */ }
+        if (serverMessage) throw new Error(serverMessage);
         const message = invokeError.message?.toLowerCase().includes('session')
           ? 'Your session expired. Please sign out and back in, then retry.'
           : invokeError.message || 'Could not contact the payment service.';
