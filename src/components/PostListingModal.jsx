@@ -793,7 +793,7 @@ export default function PostListingModal({
                   </div>
                 </div>
 
-                <WhatsAppPrompt session={session} />
+                <WhatsAppPrompt session={session} onSaved={() => setError('')} />
 
                 {error && <p className="cf-post-error" role="alert">{error}</p>}
 

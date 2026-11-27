@@ -29,8 +29,10 @@ export default function WhatsAppPrompt({ session, onSaved }) {
 
   if (!userId || !missing) return null;
 
+  // This box sits inside the Post form, and forms cannot be nested: a second <form> made its Save button
+  // submit the whole post. So it is a plain <div> with its own Save button and Enter-key handling.
   async function save(event) {
-    event.preventDefault();
+    event?.preventDefault?.();
     const number = normaliseMalawiPhone(value);
     if (!number) {
       setError('Enter a valid Malawi mobile number, for example 0991234567.');
@@ -51,7 +53,7 @@ export default function WhatsAppPrompt({ session, onSaved }) {
   }
 
   return (
-    <form className="cf-wa-prompt" onSubmit={save}>
+    <div className="cf-wa-prompt" role="group" aria-label="WhatsApp number">
       <div className="cf-wa-prompt-head">
         <MessageCircle size={18} />
         <div>
@@ -65,14 +67,15 @@ export default function WhatsAppPrompt({ session, onSaved }) {
           inputMode="tel"
           value={value}
           onChange={e => setValue(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); if (value.trim() && !busy) save(e); } }}
           placeholder="e.g. 0991234567"
           aria-label="WhatsApp number"
         />
-        <button type="submit" disabled={busy || !value.trim()}>
+        <button type="button" onClick={save} disabled={busy || !value.trim()}>
           {busy ? <LoaderCircle size={15} className="cf-spin" /> : 'Save'}
         </button>
       </div>
       {error && <p role="alert">{error}</p>}
-    </form>
+    </div>
   );
 }

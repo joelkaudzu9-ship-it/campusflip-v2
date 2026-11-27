@@ -161,6 +161,16 @@ try {
 
   await page.goto(`${origin}/post`); await wait(2500);
   check('signed in: /post opens the post screen', path() === '/post', path());
+  check('the post form has no nested <form> (the WhatsApp box used to submit the whole post)', (await page.evaluate(() => document.querySelectorAll('form form').length)) === 0);
+  if (await page.locator('.cf-wa-prompt').count()) {
+    const titleBox = page.getByPlaceholder('e.g. HP laptop, barely used');
+    await titleBox.fill('Keep me');
+    await page.locator('.cf-wa-prompt input').fill('0991234567');
+    await page.locator('.cf-wa-prompt button').click(); await wait(1200);
+    check('saving the WhatsApp number does not clear or submit the post form', path() === '/post' && (await titleBox.inputValue()) === 'Keep me', `${path()} title="${await titleBox.inputValue().catch(() => '?')}"`);
+  } else {
+    check('WhatsApp number box is shown on the post form when no number is saved', false, 'prompt not found');
+  }
   await page.keyboard.press('Escape'); await wait(900);
   check('closing /post directly-opened goes home (no exit from the site)', path() === '/', path());
 
