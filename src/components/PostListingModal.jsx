@@ -231,7 +231,7 @@ export default function PostListingModal({
       photosOk = await photoRef.current.upload(data.id);
       setBusy(false);
       if (photosOk) setPhotosUploaded(true);
-      else setPaymentError('Some photos could not upload. You can add them again below.');
+      else setPaymentError('Some photos could not upload. You can add them later from My shop.');
     }
 
     setCreatedListing(data);
@@ -597,19 +597,6 @@ export default function PostListingModal({
                     </div>
                   </div>
                 )}
-
-                <div style={{ marginBottom: 18 }}>
-                  <h4 style={{ marginBottom: 6 }}>
-                    Add photos <span style={{ fontWeight: 400 }}>(optional)</span>
-                  </h4>
-                  <p style={{ fontSize: 13, color: 'var(--cf-body)' }}>
-                    Photos help buyers understand what you are offering. You can skip this step and add them later.
-                  </p>
-                  <ListingImageUploader
-                    listingId={createdListing.id}
-                    onUploaded={() => setPhotosUploaded(true)}
-                  />
-                </div>
 
                 {photosUploaded && (
                   <p style={{ color: 'var(--cf-success)', fontSize: 13, textAlign: 'center' }}>
