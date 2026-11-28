@@ -50,3 +50,15 @@
   color: #fff; font-size: 14px; font-weight: 800; cursor: pointer;
 }
 @media (max-width: 480px) { .cf-greeting { margin-inline: 12px; } }
+
+/* Post button on phones: centre it with auto margins, not a sideways transform, so the hover and
+   tap effects (which set their own transform) can no longer push it off to the side. */
+@media (max-width: 767px) {
+  .shell .cf-post-button.post {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    transform: translateZ(0);
+  }
+}
