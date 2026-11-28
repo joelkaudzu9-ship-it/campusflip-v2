@@ -43,7 +43,7 @@ const quickReplyTexts = {
   meet: 'When and where can we meet?',
 };
 
-export default function ListingDetails({
+function ListingDetailsSheet({
   onOpenSeller,
   listing,
   onClose,
@@ -401,7 +401,6 @@ export default function ListingDetails({
     .join('');
 
   return (
-    <AnimatePresence>
       <motion.div
         key="listing-details-backdrop"
         initial={{ opacity: 0 }}
@@ -1461,7 +1460,6 @@ export default function ListingDetails({
           </AnimatePresence>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
   );
 }
 
@@ -1559,3 +1557,15 @@ const submitButton = {
   cursor: 'pointer',
 };
 
+/**
+ * Keeps the sheet on screen while it plays its closing animation. Without this the sheet used to
+ * vanish the moment the listing was cleared, so closing a listing felt abrupt.
+ */
+export default function ListingDetails(props) {
+  const { listing } = props;
+  return (
+    <AnimatePresence>
+      {listing && <ListingDetailsSheet key={listing.id} {...props} />}
+    </AnimatePresence>
+  );
+}
