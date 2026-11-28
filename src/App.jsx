@@ -27,7 +27,8 @@ import { useOnline } from './hooks/useOnline';
 import Overlays from './components/Overlays';
 import Splash from './components/home/Splash';
 import AppHeader from './components/home/AppHeader';
-import Hero from './components/home/Hero';
+import HomeGreeting from './components/home/HomeGreeting';
+import FilterSheet from './components/home/FilterSheet';
 import SearchBar from './components/home/SearchBar';
 import FilterBar from './components/home/FilterBar';
 import FlashDeals from './components/home/FlashDeals';
@@ -37,6 +38,7 @@ import BottomNav from './components/home/BottomNav';
 import AuthModal from './components/home/AuthModal';
 import './premium.css';
 import './audit-fixes.css';
+import './home-clean.css';
 
 const NAV_PATHS = { Home: PATHS.home, Saved: PATHS.saved, 'My Shop': PATHS.shop, Profile: PATHS.account };
 
@@ -59,6 +61,7 @@ export default function App() {
   const [contactIntent, setContactIntent] = useState(null);
   const [contactReplayToken, setContactReplayToken] = useState(0);
   const [contactReplyId, setContactReplyId] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
   const pendingContact = useRef(null);
   const returnTo = useRef(null);       // where to go after signing in
   const lastTab = useRef('Home');      // keeps the bottom-nav highlight on listing/search/post screens
@@ -307,14 +310,20 @@ export default function App() {
         />
 
         <main className="cf-app-main">
-          <Hero totalListings={totalListings} />
-          <SearchBar onOpen={() => go(PATHS.search)} />
-          <FilterBar
-            cat={cat} onCat={setCat}
+          {deals.length
+            ? <FlashDeals deals={deals} onOpen={openListing} />
+            : <HomeGreeting session={session} totalListings={totalListings} onNewListing={openPost} />}
+          <SearchBar
+            onOpen={() => go(PATHS.search)}
+            onFilters={() => setShowFilters(true)}
+            filtersActive={verifiedOnly || sort !== 'recent'}
+          />
+          <FilterBar cat={cat} onCat={setCat} />
+          <FilterSheet
+            open={showFilters} onClose={() => setShowFilters(false)}
             verifiedOnly={verifiedOnly} onVerified={setVerifiedOnly}
             sort={sort} onSort={setSort}
           />
-          <FlashDeals deals={deals} onOpen={openListing} />
           <Feed
             tab={tab}
             onTab={next => { setTab(next); setCat('All'); }}

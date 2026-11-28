@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion';
-import {
-  BookOpen, Clock3, Laptop, MoreHorizontal, ShieldCheck, ShoppingBasket, Shirt, Utensils,
-} from 'lucide-react';
-import { SORT_LABELS, SORT_ORDER } from '../../lib/listings';
+import { BookOpen, Laptop, MoreHorizontal, ShoppingBasket, Shirt, Utensils } from 'lucide-react';
 
 const cats = [
   ['All', ShoppingBasket],
@@ -13,25 +10,7 @@ const cats = [
   ['More', MoreHorizontal],
 ];
 
-const chipStyle = (active) => ({
-  border: '1px solid',
-  borderColor: active ? 'var(--cf-blue)' : 'var(--cf-line)',
-  background: active ? 'var(--cf-blue)' : '#fff',
-  color: active ? '#fff' : 'var(--cf-body)',
-  borderRadius: 20,
-  padding: '10px 14px',
-  minHeight: 40,
-  fontSize: 12,
-  fontWeight: 700,
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 5,
-  flexShrink: 0,
-  transition: 'background 0.2s, color 0.2s, border-color 0.2s',
-});
-
-export default function FilterBar({ cat, onCat, verifiedOnly, onVerified, sort, onSort }) {
+export default function FilterBar({ cat, onCat }) {
   return (
     <>
         <nav className="cats cf-categories" aria-label="Categories">
@@ -52,49 +31,6 @@ export default function FilterBar({ cat, onCat, verifiedOnly, onVerified, sort, 
             );
           })}
         </nav>
-  
-        <div
-          style={{
-            display: 'flex',
-            gap: 6,
-            padding: '10px 0 0',
-            alignItems: 'center',
-            overflowX: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
-          }}
-        >
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onVerified(false)}
-            style={chipStyle(!verifiedOnly)}
-          >
-            All sellers
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onVerified(true)}
-            style={chipStyle(verifiedOnly)}
-          >
-            <ShieldCheck size={13} />
-            Verified
-          </motion.button>
-  
-          <div style={{ width: 1, height: 20, background: 'var(--cf-line)', margin: '0 4px', flexShrink: 0 }} />
-  
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              const next = SORT_ORDER[(SORT_ORDER.indexOf(sort) + 1) % SORT_ORDER.length];
-              onSort(next);
-            }}
-            style={chipStyle(sort !== 'recent')}
-            aria-label={`Sort: ${SORT_LABELS[sort]}. Tap to change.`}
-          >
-            <Clock3 size={13} />
-            {SORT_LABELS[sort]}
-          </motion.button>
-        </div>
     </>
   );
 }
