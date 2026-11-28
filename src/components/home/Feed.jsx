@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowRight, LoaderCircle, Search, Store, Users, X } from 'lucide-react';
 import { AnimatedTabs } from '../MotionUI';
 import EmptyState from '../EmptyState';
@@ -48,13 +48,11 @@ export default function Feed({
           </div>
         )}
   
-        <AnimatePresence mode="wait">
           <motion.div
             key={`grid-${tab}`}
             className="grid cf-listings-grid"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.28, ease: [0.2, 0.9, 0.3, 1] }}
           >
             {loading ? (
@@ -112,7 +110,6 @@ export default function Feed({
               />
             )}
           </motion.div>
-        </AnimatePresence>
   
         {!loading && hasMore && (
           <div style={{ padding: '8px 16px 24px' }}>
